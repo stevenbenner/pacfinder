@@ -14,26 +14,18 @@
  * limitations under the License.
  */
 
-#include "main.h"
+#ifndef PF_INTERFACE_H
+#define PF_INTERFACE_H
 
 #include <gtk/gtk.h>
 
-#include "interface.h"
+extern GtkWidget *repo_treeview;
+extern GtkWidget *package_treeview;
 
-static void on_activate_app(GtkApplication *app, gpointer user_data)
-{
-	create_app_window(app);
-}
+extern GtkTreeStore *repo_tree_store;
+extern GtkListStore *package_list_store;
+extern GtkListStore *package_details_list_store;
 
-int main(int argc, char **argv)
-{
-	GtkApplication *app;
-	int status;
+void create_app_window(GtkApplication *);
 
-	app = gtk_application_new(APPLICATION_ID, G_APPLICATION_FLAGS_NONE);
-	g_signal_connect(app, "activate", G_CALLBACK(on_activate_app), NULL);
-	status = g_application_run(G_APPLICATION(app), argc, argv);
-	g_object_unref(app);
-
-	return status;
-}
+#endif /* PF_INTERFACE_H */
