@@ -116,7 +116,7 @@ static GtkWidget *create_package_list(void)
 		);
 
 		if (i == 0) {
-			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, "weight-set", TRUE, NULL);
+			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
 		}
 
 		if (i == 2) {
@@ -164,7 +164,7 @@ static GtkWidget *create_package_details(void)
 		);
 
 		if (i == 0) {
-			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, "weight-set", TRUE, NULL);
+			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
 		}
 
 		gtk_tree_view_append_column(GTK_TREE_VIEW(package_details_treeview), column);
