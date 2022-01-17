@@ -18,6 +18,8 @@
 
 #include <gtk/gtk.h>
 
+#include "database.h"
+
 GtkWidget *window;
 
 GtkWidget *repo_treeview;
@@ -66,6 +68,21 @@ static GtkWidget *create_repo_tree(void)
 	return scrolled_window;
 }
 
+static void reason_cell_data_fn(GtkTreeViewColumn *column, GtkCellRenderer *renderer,
+                                GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data)
+{
+	static gchar * const reason_map[] = {
+		[PKG_REASON_NOT_INSTALLED] = "",
+		[PKG_REASON_EXPLICIT] = "Explicit",
+		[PKG_REASON_DEPEND] = "Depend",
+		[PKG_REASON_OPTIONAL] = "Optional"
+	};
+
+	install_reason_t reason;
+	gtk_tree_model_get(model, iter, 2, &reason, -1);
+	g_object_set(renderer, "text", reason_map[reason], NULL);
+}
+
 static GtkWidget *create_package_list(void)
 {
 	const gint column_count = 4;
@@ -78,7 +95,7 @@ static GtkWidget *create_package_list(void)
 		column_count + 1, /* column_count+1 for the non-visible pointer column */
 		G_TYPE_STRING,
 		G_TYPE_STRING,
-		G_TYPE_STRING,
+		G_TYPE_INT,
 		G_TYPE_STRING,
 		G_TYPE_POINTER
 	);
@@ -100,6 +117,10 @@ static GtkWidget *create_package_list(void)
 
 		if (i == 0) {
 			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, "weight-set", TRUE, NULL);
+		}
+
+		if (i == 2) {
+			gtk_tree_view_column_set_cell_data_func(column, renderer, reason_cell_data_fn, NULL, NULL);
 		}
 
 		gtk_tree_view_column_set_fixed_width(column, 150);
