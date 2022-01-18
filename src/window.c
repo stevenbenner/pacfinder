@@ -17,7 +17,6 @@
 #include "window.h"
 
 #include <alpm.h>
-#include <alpm_list.h>
 #include <glib.h>
 
 #include "database.h"
