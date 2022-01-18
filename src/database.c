@@ -17,7 +17,6 @@
 #include "database.h"
 
 #include <alpm.h>
-#include <alpm_list.h>
 #include <glib.h>
 
 static alpm_handle_t *handle = NULL;

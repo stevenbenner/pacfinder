@@ -18,7 +18,6 @@
 #define PF_DATABASE_H
 
 #include <alpm.h>
-#include <alpm_list.h>
 #include <glib.h>
 
 typedef enum {
