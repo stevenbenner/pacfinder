@@ -17,7 +17,7 @@
 #include "window.h"
 
 #include <alpm.h>
-#include <glib.h>
+#include <gtk/gtk.h>
 
 #include "database.h"
 #include "interface.h"
