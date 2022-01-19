@@ -27,6 +27,10 @@ typedef enum {
 	PKG_REASON_OPTIONAL
 } install_reason_t;
 
+extern alpm_list_t *foreign_pkg_list;
+
+int package_cmp(const void *p1, const void *p2);
+
 alpm_handle_t *get_alpm_handle(void);
 alpm_list_t *get_all_packages(void);
 install_reason_t get_pkg_status(alpm_pkg_t *);

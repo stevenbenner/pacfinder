@@ -29,7 +29,9 @@ enum {
 	HIDE_UNINSTALLED = (1 << 1),
 	HIDE_EXPLICIT = (1 << 2),
 	HIDE_DEPEND = (1 << 3),
-	HIDE_OPTION = (1 << 4)
+	HIDE_OPTION = (1 << 4),
+	HIDE_NATIVE = (1 << 5),
+	HIDE_FOREIGN = (1 << 6)
 };
 
 /* package list filters */
@@ -155,6 +157,9 @@ static void populate_db_tree_view(void)
 			);
 		}
 	}
+
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(repo_tree_store, &toplevel, 0, "gtk-harddisk", 1, "Foreign", -1);
 }
 
 static void block_signal_package_treeview_selection(gboolean block)
@@ -209,6 +214,8 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION;
 		} else if (g_strcmp0(repo_name, "Optional") == 0) {
 			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND;
+		} else if (g_strcmp0(repo_name, "Foreign") == 0) {
+			package_filters.status_filter = HIDE_NATIVE;
 		} else if (group != NULL) {
 			package_filters.group = group;
 			package_filters.db = db;
@@ -257,6 +264,12 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	}
 	if (package_filters.status_filter & HIDE_OPTION) {
 		if (reason == PKG_REASON_OPTIONAL) return FALSE;
+	}
+	if (package_filters.status_filter & HIDE_NATIVE) {
+		if (g_strcmp0(db_name, "local") != 0) return FALSE;
+	}
+	if (package_filters.status_filter & HIDE_FOREIGN) {
+		if (g_strcmp0(db_name, "local") == 0) return FALSE;
 	}
 	if (package_filters.db != NULL) {
 		if (g_strcmp0(db_name, alpm_db_get_name(package_filters.db)) != 0) return FALSE;

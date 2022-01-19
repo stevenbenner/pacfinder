@@ -19,6 +19,8 @@
 #include <alpm.h>
 #include <glib.h>
 
+alpm_list_t *foreign_pkg_list = NULL;
+
 static alpm_handle_t *handle = NULL;
 static alpm_list_t *all_packages_list = NULL;
 
@@ -74,6 +76,13 @@ static void initialize_alpm(void)
 	register_syncs();
 }
 
+int package_cmp(const void *p1, const void *p2) {
+	alpm_pkg_t *pkg1 = (alpm_pkg_t *)p1;
+	alpm_pkg_t *pkg2 = (alpm_pkg_t *)p2;
+
+	return g_strcmp0(alpm_pkg_get_name(pkg1), alpm_pkg_get_name(pkg2));
+}
+
 alpm_handle_t *get_alpm_handle(void)
 {
 	if (handle == NULL) {
@@ -85,7 +94,9 @@ alpm_handle_t *get_alpm_handle(void)
 alpm_list_t *get_all_packages(void)
 {
 	alpm_list_t *i;
+	alpm_db_t *db_local;
 
+	/* collect all packages from the syncdbs */
 	if (all_packages_list == NULL) {
 		for(i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
 			alpm_db_t *db = i->data;
@@ -96,6 +107,26 @@ alpm_list_t *get_all_packages(void)
 			}
 		}
 	}
+
+	/* iterate the localdb packages and find any that are not listed in the
+	 * syncdbs - when found, add it to the "all packages" list as well as keep
+	 * track of them in the "foreign" packages list */
+	db_local = alpm_get_localdb(get_alpm_handle());
+	for (i = alpm_db_get_pkgcache(db_local); i; i = i->next) {
+		alpm_pkg_t *pkg = i->data;
+
+		if (!alpm_list_find(all_packages_list, pkg, package_cmp)) {
+			foreign_pkg_list = alpm_list_add(foreign_pkg_list, pkg);
+			all_packages_list = alpm_list_add(all_packages_list, pkg);
+		}
+	}
+
+	/* sort the final list */
+	all_packages_list = alpm_list_msort(
+		all_packages_list,
+		alpm_list_count(all_packages_list),
+		package_cmp
+	);
 
 	return all_packages_list;
 }
