@@ -22,13 +22,14 @@
 #include "database.h"
 #include "interface.h"
 
-/* install reasons bitmask for filtering list */
+/* package list filtering */
 enum {
-	S_INSTALLED = (1 << 0),
-	S_UNINSTALLED = (1 << 1),
-	S_EXPLICIT = (1 << 2),
-	S_DEPEND = (1 << 3),
-	S_OPTION = (1 << 4)
+	HIDE_NONE = 0,
+	HIDE_INSTALLED = (1 << 0),
+	HIDE_UNINSTALLED = (1 << 1),
+	HIDE_EXPLICIT = (1 << 2),
+	HIDE_DEPEND = (1 << 3),
+	HIDE_OPTION = (1 << 4)
 };
 
 /* package list filters */
@@ -194,34 +195,24 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 		gtk_tree_model_get(repo_model, &repo_iter, 2, &db, -1);
 		gtk_tree_model_get(repo_model, &repo_iter, 3, &group, -1);
 
+		/* reset filters */
+		package_filters.status_filter = HIDE_NONE;
+		package_filters.group = NULL;
+		package_filters.db = NULL;
+
 		/* set filters based on selection */
-		if (g_strcmp0(repo_name, "All Packages") == 0) {
-			package_filters.status_filter = S_INSTALLED | S_UNINSTALLED | S_EXPLICIT | S_DEPEND | S_OPTION;
-			package_filters.group = NULL;
-			package_filters.db = NULL;
-		} else if (g_strcmp0(repo_name, "Installed") == 0) {
-			package_filters.status_filter = S_INSTALLED | S_EXPLICIT | S_DEPEND | S_OPTION;
-			package_filters.group = NULL;
-			package_filters.db = NULL;
+		if (g_strcmp0(repo_name, "Installed") == 0) {
+			package_filters.status_filter = HIDE_UNINSTALLED;
 		} else if (g_strcmp0(repo_name, "Explicit") == 0) {
-			package_filters.status_filter = S_INSTALLED | S_EXPLICIT;
-			package_filters.group = NULL;
-			package_filters.db = NULL;
+			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION;
 		} else if (g_strcmp0(repo_name, "Dependancy") == 0) {
-			package_filters.status_filter = S_INSTALLED | S_DEPEND;
-			package_filters.group = NULL;
-			package_filters.db = NULL;
+			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION;
 		} else if (g_strcmp0(repo_name, "Optional") == 0) {
-			package_filters.status_filter = S_INSTALLED | S_OPTION;
-			package_filters.group = NULL;
-			package_filters.db = NULL;
+			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND;
 		} else if (group != NULL) {
-			package_filters.status_filter = S_INSTALLED | S_UNINSTALLED | S_EXPLICIT | S_DEPEND | S_OPTION;
 			package_filters.group = group;
 			package_filters.db = db;
 		} else if (db != NULL) {
-			package_filters.status_filter = S_INSTALLED | S_UNINSTALLED | S_EXPLICIT | S_DEPEND | S_OPTION;
-			package_filters.group = NULL;
 			package_filters.db = db;
 		}
 
@@ -252,19 +243,19 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	gtk_tree_model_get(model, iter, 4, &pkg, -1);
 
 	/* find any filters that would exclude this row */
-	if (!(package_filters.status_filter & S_INSTALLED)) {
+	if (package_filters.status_filter & HIDE_INSTALLED) {
 		if (reason != PKG_REASON_NOT_INSTALLED) return FALSE;
 	}
-	if (!(package_filters.status_filter & S_UNINSTALLED)) {
+	if (package_filters.status_filter & HIDE_UNINSTALLED) {
 		if (reason == PKG_REASON_NOT_INSTALLED) return FALSE;
 	}
-	if (!(package_filters.status_filter & S_EXPLICIT)) {
+	if (package_filters.status_filter & HIDE_EXPLICIT) {
 		if (reason == PKG_REASON_EXPLICIT) return FALSE;
 	}
-	if (!(package_filters.status_filter & S_DEPEND)) {
+	if (package_filters.status_filter & HIDE_DEPEND) {
 		if (reason == PKG_REASON_DEPEND) return FALSE;
 	}
-	if (!(package_filters.status_filter & S_OPTION)) {
+	if (package_filters.status_filter & HIDE_OPTION) {
 		if (reason == PKG_REASON_OPTIONAL) return FALSE;
 	}
 	if (package_filters.db != NULL) {
