@@ -231,13 +231,6 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 	}
 }
 
-static int group_cmp(const void *p1, const void *p2) {
-	const alpm_group_t *grp1 = (alpm_group_t *)&p1;
-	const alpm_group_t *grp2 = p2;
-
-	return g_strcmp0(grp1->name, grp2->name);
-}
-
 static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer data)
 {
 	install_reason_t reason;

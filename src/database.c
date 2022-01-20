@@ -83,6 +83,13 @@ int package_cmp(const void *p1, const void *p2) {
 	return g_strcmp0(alpm_pkg_get_name(pkg1), alpm_pkg_get_name(pkg2));
 }
 
+int group_cmp(const void *p1, const void *p2) {
+	const alpm_group_t *grp1 = (alpm_group_t *)&p1;
+	const alpm_group_t *grp2 = p2;
+
+	return g_strcmp0(grp1->name, grp2->name);
+}
+
 alpm_handle_t *get_alpm_handle(void)
 {
 	if (handle == NULL) {
