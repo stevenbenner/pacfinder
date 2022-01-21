@@ -20,14 +20,9 @@
 
 #include "database.h"
 
+struct main_window_gui_t main_window_gui;
+
 GtkWidget *window;
-
-GtkWidget *repo_treeview;
-GtkWidget *package_treeview;
-
-GtkTreeStore *repo_tree_store;
-GtkListStore *package_list_store;
-GtkListStore *package_details_list_store;
 
 static void create_header_bar(void)
 {
@@ -46,12 +41,12 @@ static GtkWidget *create_repo_tree(void)
 	GtkCellRenderer *renderer;
 	GtkWidget *scrolled_window;
 
-	repo_tree_store = gtk_tree_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_POINTER);
-	repo_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(repo_tree_store));
+	main_window_gui.repo_tree_store = gtk_tree_store_new(4, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_POINTER);
+	main_window_gui.repo_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.repo_tree_store));
 
 	column = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(column, "Repositories");
-	gtk_tree_view_append_column(GTK_TREE_VIEW(repo_treeview), column);
+	gtk_tree_view_append_column(GTK_TREE_VIEW(main_window_gui.repo_treeview), column);
 
 	renderer = gtk_cell_renderer_pixbuf_new();
 	gtk_tree_view_column_pack_start(column, renderer, FALSE);
@@ -62,7 +57,7 @@ static GtkWidget *create_repo_tree(void)
 	gtk_tree_view_column_set_attributes(column, renderer, "text", 1, NULL);
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-	gtk_container_add(GTK_CONTAINER(scrolled_window), repo_treeview);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), main_window_gui.repo_treeview);
 	gtk_widget_set_size_request(scrolled_window, 200, -1);
 
 	return scrolled_window;
@@ -91,7 +86,7 @@ static GtkWidget *create_package_list(void)
 	GtkWidget *scrolled_window;
 	gint i;
 
-	package_list_store = gtk_list_store_new(
+	main_window_gui.package_list_store = gtk_list_store_new(
 		column_count + 1, /* column_count+1 for the non-visible pointer column */
 		G_TYPE_STRING,
 		G_TYPE_STRING,
@@ -100,7 +95,7 @@ static GtkWidget *create_package_list(void)
 		G_TYPE_POINTER
 	);
 
-	package_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(package_list_store));
+	main_window_gui.package_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_list_store));
 
 	for (i = 0; i < column_count; i++) {
 		GtkCellRenderer *renderer;
@@ -127,11 +122,11 @@ static GtkWidget *create_package_list(void)
 		gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
 		gtk_tree_view_column_set_resizable(column, TRUE);
 		gtk_tree_view_column_set_sort_column_id(column, i);
-		gtk_tree_view_append_column(GTK_TREE_VIEW(package_treeview), column);
+		gtk_tree_view_append_column(GTK_TREE_VIEW(main_window_gui.package_treeview), column);
 	}
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-	gtk_container_add(GTK_CONTAINER(scrolled_window), package_treeview);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), main_window_gui.package_treeview);
 	gtk_widget_set_size_request(scrolled_window, 400, 200);
 
 	return scrolled_window;
@@ -145,8 +140,8 @@ static GtkWidget *create_package_details(void)
 	GtkWidget *scrolled_window, *package_details_treeview;
 	gint i;
 
-	package_details_list_store = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
-	package_details_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(package_details_list_store));
+	main_window_gui.package_details_list_store = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	package_details_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_details_list_store));
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(package_details_treeview), FALSE);
 	gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(package_details_treeview)), GTK_SELECTION_NONE);
 

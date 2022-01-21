@@ -19,12 +19,14 @@
 
 #include <gtk/gtk.h>
 
-extern GtkWidget *repo_treeview;
-extern GtkWidget *package_treeview;
-
-extern GtkTreeStore *repo_tree_store;
-extern GtkListStore *package_list_store;
-extern GtkListStore *package_details_list_store;
+struct main_window_gui_t {
+	GtkWidget *repo_treeview;
+	GtkWidget *package_treeview;
+	GtkTreeStore *repo_tree_store;
+	GtkListStore *package_list_store;
+	GtkListStore *package_details_list_store;
+};
+extern struct main_window_gui_t main_window_gui;
 
 void create_app_window(GtkApplication *);
 

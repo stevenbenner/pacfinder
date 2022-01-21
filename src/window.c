@@ -56,9 +56,9 @@ static void show_package_list(void)
 
 		pkg = i->data;
 
-		gtk_list_store_append(package_list_store, &iter);
+		gtk_list_store_append(main_window_gui.package_list_store, &iter);
 		gtk_list_store_set(
-			package_list_store,
+			main_window_gui.package_list_store,
 			&iter,
 			0, alpm_pkg_get_name(pkg),
 			1, alpm_pkg_get_version(pkg),
@@ -69,9 +69,9 @@ static void show_package_list(void)
 		);
 	}
 
-	package_list_model = gtk_tree_model_filter_new(GTK_TREE_MODEL(package_list_store), NULL);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(package_treeview), GTK_TREE_MODEL(package_list_model));
-	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(package_list_store), 0, GTK_SORT_ASCENDING);
+	package_list_model = gtk_tree_model_filter_new(GTK_TREE_MODEL(main_window_gui.package_list_store), NULL);
+	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window_gui.package_treeview), GTK_TREE_MODEL(package_list_model));
+	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(main_window_gui.package_list_store), 0, GTK_SORT_ASCENDING);
 }
 
 static void show_package_details(alpm_pkg_t *pkg)
@@ -79,25 +79,25 @@ static void show_package_details(alpm_pkg_t *pkg)
 	GtkTreeIter iter;
 
 	/* empty list from any previously selected package */
-	gtk_list_store_clear(package_details_list_store);
+	gtk_list_store_clear(main_window_gui.package_details_list_store);
 
 	if (pkg == NULL) {
 		return;
 	}
 
 	/* add detail rows */
-	gtk_list_store_append(package_details_list_store, &iter);
-	gtk_list_store_set(package_details_list_store, &iter, 0, "Name:", 1, alpm_pkg_get_name(pkg), -1);
-	gtk_list_store_append(package_details_list_store, &iter);
-	gtk_list_store_set(package_details_list_store, &iter, 0, "Version:", 1, alpm_pkg_get_version(pkg), -1);
-	gtk_list_store_append(package_details_list_store, &iter);
-	gtk_list_store_set(package_details_list_store, &iter, 0, "Description:", 1, alpm_pkg_get_desc(pkg), -1);
-	gtk_list_store_append(package_details_list_store, &iter);
-	gtk_list_store_set(package_details_list_store, &iter, 0, "Architecture:", 1, alpm_pkg_get_arch(pkg), -1);
-	gtk_list_store_append(package_details_list_store, &iter);
-	gtk_list_store_set(package_details_list_store, &iter, 0, "URL:", 1, alpm_pkg_get_url(pkg), -1);
-	gtk_list_store_append(package_details_list_store, &iter);
-	gtk_list_store_set(package_details_list_store, &iter, 0, "Packager:", 1, alpm_pkg_get_packager(pkg), -1);
+	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Name:", 1, alpm_pkg_get_name(pkg), -1);
+	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Version:", 1, alpm_pkg_get_version(pkg), -1);
+	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Description:", 1, alpm_pkg_get_desc(pkg), -1);
+	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Architecture:", 1, alpm_pkg_get_arch(pkg), -1);
+	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "URL:", 1, alpm_pkg_get_url(pkg), -1);
+	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Packager:", 1, alpm_pkg_get_packager(pkg), -1);
 }
 
 static void package_row_selected(GtkTreeSelection *selection, gpointer user_data)
@@ -118,16 +118,16 @@ static void populate_db_tree_view(void)
 	alpm_list_t *i;
 
 	/* add standard filter lists */
-	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(repo_tree_store, &toplevel, 0, "gtk-home", 1, "All Packages", -1);
-	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(repo_tree_store, &toplevel, 0, "gtk-media-play", 1, "Installed", -1);
-	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(repo_tree_store, &toplevel, 0, "gtk-yes", 1, "Explicit", -1);
-	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(repo_tree_store, &toplevel, 0, "gtk-leave-fullscreen", 1, "Dependancy", -1);
-	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(repo_tree_store, &toplevel, 0, "gtk-connect", 1, "Optional", -1);
+	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-home", 1, "All Packages", -1);
+	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-media-play", 1, "Installed", -1);
+	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-yes", 1, "Explicit", -1);
+	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-leave-fullscreen", 1, "Dependancy", -1);
+	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-connect", 1, "Optional", -1);
 
 	/* add known databases */
 	for (i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
@@ -136,8 +136,8 @@ static void populate_db_tree_view(void)
 
 		db = i->data;
 
-		gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
-		gtk_tree_store_set(repo_tree_store, &toplevel,
+		gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+		gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel,
 			0, "gtk-directory",
 			1, alpm_db_get_name(db),
 			2, db,
@@ -147,8 +147,8 @@ static void populate_db_tree_view(void)
 		/* add any groups found for this database */
 		for (j = alpm_db_get_groupcache(db); j; j = j->next) {
 			alpm_group_t *group = j->data;
-			gtk_tree_store_append(repo_tree_store, &child, &toplevel);
-			gtk_tree_store_set(repo_tree_store, &child,
+			gtk_tree_store_append(main_window_gui.repo_tree_store, &child, &toplevel);
+			gtk_tree_store_set(main_window_gui.repo_tree_store, &child,
 				0, "gtk-file",
 				1, group->name,
 				2, db,
@@ -158,13 +158,13 @@ static void populate_db_tree_view(void)
 		}
 	}
 
-	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(repo_tree_store, &toplevel, 0, "gtk-harddisk", 1, "Foreign", -1);
+	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-harddisk", 1, "Foreign", -1);
 }
 
 static void block_signal_package_treeview_selection(gboolean block)
 {
-	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(package_treeview));
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
 
 	if (block) {
 		g_signal_handler_block(selection, pkg_selchange_handler_id);
@@ -184,7 +184,7 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 
 	if (gtk_tree_selection_get_selected(selection, &repo_model, &repo_iter)) {
 		/* if any package list row is selected then unselect it */
-		pkg_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(package_treeview));
+		pkg_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
 		if (gtk_tree_selection_get_selected(pkg_selection, &package_model, &package_iter)) {
 			gtk_tree_selection_unselect_iter(pkg_selection, &package_iter);
 		}
@@ -285,7 +285,7 @@ static void bind_events_to_widgets(void)
 {
 	GtkTreeSelection *selection;
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(repo_treeview));
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.repo_treeview));
 	g_signal_connect(
 		G_OBJECT(selection),
 		"changed",
@@ -293,7 +293,7 @@ static void bind_events_to_widgets(void)
 		NULL
 	);
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(package_treeview));
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
 	pkg_selchange_handler_id = g_signal_connect(
 		G_OBJECT(selection),
 		"changed",
