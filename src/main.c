@@ -17,6 +17,7 @@
 #include "main.h"
 
 #include <gtk/gtk.h>
+#include <unistd.h>
 
 #include "interface.h"
 #include "window.h"
@@ -32,6 +33,12 @@ int main(int argc, char **argv)
 	GtkApplication *app;
 	int status;
 
+	/* prevent users from running as root */
+	if (geteuid() == 0) {
+		g_error("Do not run this program as root.");
+	}
+
+	/* launch gtk application */
 	app = gtk_application_new(APPLICATION_ID, G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(app, "activate", G_CALLBACK(on_activate_app), NULL);
 	status = g_application_run(G_APPLICATION(app), argc, argv);
