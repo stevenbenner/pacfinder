@@ -132,7 +132,7 @@ static void populate_db_tree_view(void)
 	/* add known databases */
 	for (i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
 		alpm_db_t *db;
-		alpm_list_t *j;
+		alpm_list_t *group_list;
 
 		db = i->data;
 
@@ -145,8 +145,10 @@ static void populate_db_tree_view(void)
 		);
 
 		/* add any groups found for this database */
-		for (j = alpm_db_get_groupcache(db); j; j = j->next) {
-			alpm_group_t *group = j->data;
+		group_list = alpm_db_get_groupcache(db);
+		group_list = alpm_list_msort(group_list, alpm_list_count(group_list), group_cmp);
+		for (; group_list; group_list = group_list->next) {
+			alpm_group_t *group = group_list->data;
 			gtk_tree_store_append(main_window_gui.repo_tree_store, &child, &toplevel);
 			gtk_tree_store_set(main_window_gui.repo_tree_store, &child,
 				0, "gtk-file",
@@ -272,7 +274,7 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 		if (alpm_list_count(pkg_groups) == 0) {
 			return FALSE;
 		} else {
-			if (!alpm_list_find(pkg_groups, package_filters.group, group_cmp)) return FALSE;
+			if (!alpm_list_find(pkg_groups, package_filters.group, group_cmp_find)) return FALSE;
 		}
 	}
 

@@ -84,6 +84,13 @@ int package_cmp(const void *p1, const void *p2) {
 }
 
 int group_cmp(const void *p1, const void *p2) {
+	const alpm_group_t *grp1 = p1;
+	const alpm_group_t *grp2 = p2;
+
+	return g_strcmp0(grp1->name, grp2->name);
+}
+
+int group_cmp_find(const void *p1, const void *p2) {
 	const alpm_group_t *grp1 = (alpm_group_t *)&p1;
 	const alpm_group_t *grp2 = p2;
 
