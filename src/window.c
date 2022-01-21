@@ -125,7 +125,7 @@ static void populate_db_tree_view(void)
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-yes", 1, "Explicit", -1);
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-leave-fullscreen", 1, "Dependancy", -1);
+	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-leave-fullscreen", 1, "Dependency", -1);
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-connect", 1, "Optional", -1);
 
@@ -210,7 +210,7 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 			package_filters.status_filter = HIDE_UNINSTALLED;
 		} else if (g_strcmp0(repo_name, "Explicit") == 0) {
 			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION;
-		} else if (g_strcmp0(repo_name, "Dependancy") == 0) {
+		} else if (g_strcmp0(repo_name, "Dependency") == 0) {
 			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION;
 		} else if (g_strcmp0(repo_name, "Optional") == 0) {
 			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND;

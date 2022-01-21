@@ -71,7 +71,7 @@ static void initialize_alpm(void)
 
 	handle = alpm_initialize("/", "/var/lib/pacman/", &err);
 	if (!handle) {
-		g_error("Failed to initalize libalpm: %s", alpm_strerror(err));
+		g_error("Failed to initialize libalpm: %s", alpm_strerror(err));
 	}
 	register_syncs();
 }
