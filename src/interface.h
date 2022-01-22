@@ -32,6 +32,7 @@ struct details_overview_t {
 };
 
 struct main_window_gui_t {
+	GtkWidget *window;
 	GtkWidget *repo_treeview;
 	GtkWidget *package_treeview;
 	GtkTreeStore *repo_tree_store;

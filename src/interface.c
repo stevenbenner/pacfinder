@@ -22,8 +22,6 @@
 
 struct main_window_gui_t main_window_gui;
 
-GtkWidget *window;
-
 static void create_header_bar(void)
 {
 	GtkWidget *header_bar;
@@ -32,7 +30,7 @@ static void create_header_bar(void)
 	gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), "PacFinder");
 	gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header_bar), TRUE);
 
-	gtk_window_set_titlebar(GTK_WINDOW(window), header_bar);
+	gtk_window_set_titlebar(GTK_WINDOW(main_window_gui.window), header_bar);
 }
 
 static GtkWidget *create_repo_tree(void)
@@ -265,14 +263,14 @@ static void create_user_interface(void)
 	gtk_paned_pack1(GTK_PANED(hpaned), create_repo_tree(), TRUE, FALSE);
 	gtk_paned_pack2(GTK_PANED(hpaned), vpaned, TRUE, FALSE);
 
-	gtk_container_add(GTK_CONTAINER(window), hpaned);
+	gtk_container_add(GTK_CONTAINER(main_window_gui.window), hpaned);
 }
 
 void create_app_window(GtkApplication *app)
 {
-	window = gtk_application_window_new(app);
-	gtk_window_set_title(GTK_WINDOW(window), "PacFinder");
-	gtk_window_set_default_size(GTK_WINDOW(window), 900, 700);
+	main_window_gui.window = gtk_application_window_new(app);
+	gtk_window_set_title(GTK_WINDOW(main_window_gui.window), "PacFinder");
+	gtk_window_set_default_size(GTK_WINDOW(main_window_gui.window), 900, 700);
 	create_user_interface();
-	gtk_widget_show_all(window);
+	gtk_widget_show_all(main_window_gui.window);
 }
