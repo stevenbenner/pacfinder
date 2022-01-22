@@ -147,7 +147,7 @@ alpm_list_t *get_all_packages(void)
 
 install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 {
-	static install_reason_t const reason_map[] = {
+	static const install_reason_t reason_map[] = {
 		[ALPM_PKG_REASON_EXPLICIT] = PKG_REASON_EXPLICIT,
 		[ALPM_PKG_REASON_DEPEND] = PKG_REASON_DEPEND
 	};

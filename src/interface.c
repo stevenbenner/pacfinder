@@ -66,7 +66,7 @@ static GtkWidget *create_repo_tree(void)
 static void reason_cell_data_fn(GtkTreeViewColumn *column, GtkCellRenderer *renderer,
                                 GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data)
 {
-	static gchar * const reason_map[] = {
+	static const gchar *reason_map[] = {
 		[PKG_REASON_NOT_INSTALLED] = "",
 		[PKG_REASON_EXPLICIT] = "Explicit",
 		[PKG_REASON_DEPEND] = "Depend",
