@@ -24,11 +24,16 @@ struct main_window_gui_t main_window_gui;
 
 static void create_header_bar(void)
 {
-	GtkWidget *header_bar;
+	GtkWidget *header_bar, *menu_image;
 
 	header_bar = gtk_header_bar_new();
 	gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), "PacFinder");
 	gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header_bar), TRUE);
+
+	main_window_gui.menu_button = gtk_menu_button_new();
+	menu_image = gtk_image_new_from_icon_name("open-menu-symbolic", GTK_ICON_SIZE_BUTTON);
+	gtk_button_set_image(GTK_BUTTON(main_window_gui.menu_button), menu_image);
+	gtk_header_bar_pack_end(GTK_HEADER_BAR(header_bar), main_window_gui.menu_button);
 
 	gtk_window_set_titlebar(GTK_WINDOW(main_window_gui.window), header_bar);
 }

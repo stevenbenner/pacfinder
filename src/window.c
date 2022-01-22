@@ -399,6 +399,45 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	return TRUE;
 }
 
+static void activate_quit(GSimpleAction *simple, GVariant *parameter, gpointer user_data)
+{
+	exit(0);
+}
+
+static GActionGroup *create_action_group(void)
+{
+	const GActionEntry entries[] = {
+		{ "quit", activate_quit, NULL, NULL, NULL, { 0, 0, 0 } }
+	};
+
+	GSimpleActionGroup *group;
+
+	group = g_simple_action_group_new();
+	g_action_map_add_action_entries(G_ACTION_MAP(group), entries, G_N_ELEMENTS(entries), NULL);
+
+	return G_ACTION_GROUP(group);
+}
+
+static GMenuModel *create_app_menu(void)
+{
+	GMenu *section, *menu;
+
+	menu = g_menu_new();
+
+	section = g_menu_new();
+	g_menu_insert(section, 0, "Quit", "app.quit");
+	g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
+	g_object_unref(section);
+
+	return G_MENU_MODEL(menu);
+}
+
+static void create_main_menu(void)
+{
+	gtk_menu_button_set_menu_model(GTK_MENU_BUTTON(main_window_gui.menu_button), create_app_menu());
+	gtk_widget_insert_action_group(main_window_gui.menu_button, "app", create_action_group());
+}
+
 static void bind_events_to_widgets(void)
 {
 	GtkTreeSelection *selection;
@@ -422,6 +461,7 @@ static void bind_events_to_widgets(void)
 
 void initialize_main_window(void)
 {
+	create_main_menu();
 	populate_db_tree_view();
 	show_package_list();
 	gtk_tree_model_filter_set_visible_func(
