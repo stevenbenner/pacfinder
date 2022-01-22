@@ -19,11 +19,24 @@
 
 #include <gtk/gtk.h>
 
+struct details_overview_t {
+	GtkWidget *status_image;
+	GtkWidget *heading_label;
+	GtkWidget *desc_label;
+	GtkWidget *left_label;
+	GtkWidget *middle_label;
+	GtkWidget *right_label;
+	GtkWidget *required_by_label;
+	GtkWidget *optional_for_label;
+	GtkWidget *dependencies_label;
+};
+
 struct main_window_gui_t {
 	GtkWidget *repo_treeview;
 	GtkWidget *package_treeview;
 	GtkTreeStore *repo_tree_store;
 	GtkListStore *package_list_store;
+	struct details_overview_t details_overview;
 	GtkListStore *package_details_list_store;
 };
 extern struct main_window_gui_t main_window_gui;

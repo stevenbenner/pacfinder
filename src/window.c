@@ -21,6 +21,7 @@
 
 #include "database.h"
 #include "interface.h"
+#include "util.h"
 
 /* package list filtering */
 enum {
@@ -74,6 +75,115 @@ static void show_package_list(void)
 	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(main_window_gui.package_list_store), 0, GTK_SORT_ASCENDING);
 }
 
+static void show_package_overview(alpm_pkg_t *pkg)
+{
+	gchar *str;
+	alpm_list_t *dep_list;
+
+	/* clear the overview content if we receive null */
+	if (pkg == NULL) {
+		gtk_image_clear(GTK_IMAGE(main_window_gui.details_overview.status_image));
+		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.heading_label), "");
+		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.desc_label), "");
+		gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.left_label), "");
+		gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.middle_label), "");
+		gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.right_label), "");
+		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.required_by_label), "");
+		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.optional_for_label), "");
+		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.dependencies_label), "");
+		return;
+	}
+
+	/* set icon */
+	switch (get_pkg_status(pkg)) {
+		case PKG_REASON_EXPLICIT:
+			gtk_image_set_from_icon_name(
+				GTK_IMAGE(main_window_gui.details_overview.status_image),
+				"gtk-yes",
+				GTK_ICON_SIZE_DIALOG
+			);
+			break;
+		case PKG_REASON_DEPEND:
+			gtk_image_set_from_icon_name(
+				GTK_IMAGE(main_window_gui.details_overview.status_image),
+				"gtk-leave-fullscreen",
+				GTK_ICON_SIZE_DIALOG
+			);
+			break;
+		case PKG_REASON_OPTIONAL:
+			gtk_image_set_from_icon_name(
+				GTK_IMAGE(main_window_gui.details_overview.status_image),
+				"gtk-connect",
+				GTK_ICON_SIZE_DIALOG
+			);
+			break;
+		case PKG_REASON_NOT_INSTALLED:
+			gtk_image_set_from_icon_name(
+				GTK_IMAGE(main_window_gui.details_overview.status_image),
+				"open-menu-symbolic",
+				GTK_ICON_SIZE_DIALOG
+			);
+			break;
+	}
+
+	/* set labels */
+	str = g_strdup_printf(
+		"<span size=\"xx-large\">%s</span>\n"
+		"<i>version %s</i>",
+		alpm_pkg_get_name(pkg),
+		alpm_pkg_get_version(pkg)
+	);
+	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.heading_label), str);
+	g_free(str);
+
+	str = g_strdup_printf(
+		"%s\n"
+		"<a href=\"%s\">%s</a>",
+		alpm_pkg_get_desc(pkg),
+		alpm_pkg_get_url(pkg),
+		alpm_pkg_get_url(pkg)
+	);
+	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.desc_label), str);
+	g_free(str);
+
+	str = human_readable_size(alpm_pkg_get_isize(pkg));
+	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.left_label), str);
+	g_free(str);
+	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.middle_label), alpm_pkg_get_arch(pkg));
+	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.right_label), alpm_db_get_name(alpm_pkg_get_db(pkg)));
+
+	dep_list = alpm_pkg_compute_requiredby(pkg);
+	str = g_strdup_printf(
+		"<b><u>Required by:</u></b>\n"
+		"    %ld packages",
+		alpm_list_count(dep_list)
+	);
+	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.required_by_label), str);
+	g_free(str);
+	alpm_list_free_inner(dep_list, g_free);
+	alpm_list_free(dep_list);
+
+	dep_list = alpm_pkg_compute_optionalfor(pkg);
+	str = g_strdup_printf(
+		"<b><u>Optional for:</u></b>\n"
+		"    %ld packages",
+		alpm_list_count(dep_list)
+	);
+	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.optional_for_label), str);
+	g_free(str);
+	alpm_list_free_inner(dep_list, g_free);
+	alpm_list_free(dep_list);
+
+	dep_list = alpm_pkg_get_depends(pkg);
+	str = g_strdup_printf(
+		"<b><u>Dependencies:</u></b>\n"
+		"    %ld packages",
+		alpm_list_count(dep_list)
+	);
+	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.dependencies_label), str);
+	g_free(str);
+}
+
 static void show_package_details(alpm_pkg_t *pkg)
 {
 	GtkTreeIter iter;
@@ -100,6 +210,12 @@ static void show_package_details(alpm_pkg_t *pkg)
 	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Packager:", 1, alpm_pkg_get_packager(pkg), -1);
 }
 
+static void show_package(alpm_pkg_t *pkg)
+{
+	show_package_overview(pkg);
+	show_package_details(pkg);
+}
+
 static void package_row_selected(GtkTreeSelection *selection, gpointer user_data)
 {
 	GtkTreeModel *model;
@@ -108,7 +224,7 @@ static void package_row_selected(GtkTreeSelection *selection, gpointer user_data
 
 	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
 		gtk_tree_model_get(model, &iter, 4, &pkg, -1);
-		show_package_details(pkg);
+		show_package(pkg);
 	}
 }
 
@@ -192,7 +308,7 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 		}
 
 		/* clear any open package details */
-		show_package_details(NULL);
+		show_package(NULL);
 
 		/* prevent selecting a different repo row while we're filtering */
 		block_signal_package_treeview_selection(TRUE);

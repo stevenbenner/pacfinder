@@ -132,6 +132,73 @@ static GtkWidget *create_package_list(void)
 	return scrolled_window;
 }
 
+static GtkWidget *create_package_overview(void)
+{
+	GtkWidget *aside_hbox, *middle_vbox, *right_vbox, *hbox, *scrolled_window;
+
+	main_window_gui.details_overview.left_label = gtk_label_new(NULL);
+	main_window_gui.details_overview.middle_label = gtk_label_new(NULL);
+	main_window_gui.details_overview.right_label = gtk_label_new(NULL);
+
+	aside_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_box_pack_start(GTK_BOX(aside_hbox), main_window_gui.details_overview.left_label, TRUE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(aside_hbox), main_window_gui.details_overview.middle_label, TRUE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(aside_hbox), main_window_gui.details_overview.right_label, TRUE, FALSE, 0);
+
+	main_window_gui.details_overview.heading_label = gtk_label_new(NULL);
+	gtk_label_set_justify(GTK_LABEL(main_window_gui.details_overview.heading_label), GTK_JUSTIFY_LEFT);
+	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.heading_label), GTK_ALIGN_START);
+	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.heading_label), 0);
+	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.heading_label), 20);
+
+	main_window_gui.details_overview.desc_label = gtk_label_new(NULL);
+	gtk_label_set_justify(GTK_LABEL(main_window_gui.details_overview.desc_label), GTK_JUSTIFY_LEFT);
+	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.desc_label), GTK_ALIGN_START);
+	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.desc_label), 0);
+	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.desc_label), 20);
+	gtk_label_set_line_wrap(GTK_LABEL(main_window_gui.details_overview.desc_label), TRUE);
+
+	middle_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.heading_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.desc_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(middle_vbox), aside_hbox, FALSE, FALSE, 0);
+
+	main_window_gui.details_overview.required_by_label = gtk_label_new(NULL);
+	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.required_by_label), 0);
+	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.required_by_label), 20);
+	main_window_gui.details_overview.optional_for_label = gtk_label_new(NULL);
+	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.optional_for_label), 0);
+	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.optional_for_label), 20);
+	main_window_gui.details_overview.dependencies_label = gtk_label_new(NULL);
+	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.dependencies_label), 0);
+	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.dependencies_label), 20);
+
+	right_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+	gtk_widget_set_margin_start(GTK_WIDGET(right_vbox), 20);
+	gtk_widget_set_margin_end(GTK_WIDGET(right_vbox), 20);
+	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.required_by_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.optional_for_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.dependencies_label, FALSE, FALSE, 0);
+
+	main_window_gui.details_overview.status_image = gtk_image_new();
+	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.status_image), GTK_ALIGN_END);
+	gtk_widget_set_valign(GTK_WIDGET(main_window_gui.details_overview.status_image), GTK_ALIGN_START);
+	gtk_widget_set_margin_end(GTK_WIDGET(main_window_gui.details_overview.status_image), 10);
+
+	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+	gtk_widget_set_margin_top(GTK_WIDGET(hbox), 10);
+	gtk_widget_set_margin_start(GTK_WIDGET(hbox), 10);
+	gtk_widget_set_margin_end(GTK_WIDGET(hbox), 10);
+	gtk_box_pack_start(GTK_BOX(hbox), main_window_gui.details_overview.status_image, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), middle_vbox, TRUE, TRUE, 0);
+	gtk_box_pack_start(GTK_BOX(hbox), right_vbox, FALSE, FALSE, 0);
+
+	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), hbox);
+
+	return scrolled_window;
+}
+
 static GtkWidget *create_package_details(void)
 {
 	const gint column_count = 2;
@@ -176,6 +243,7 @@ static GtkWidget *create_package_info(void)
 	GtkNotebook *notebook;
 
 	notebook = GTK_NOTEBOOK(gtk_notebook_new());
+	gtk_notebook_append_page_menu(GTK_NOTEBOOK(notebook), create_package_overview(), gtk_label_new("Overview"), NULL);
 	gtk_notebook_append_page_menu(GTK_NOTEBOOK(notebook), create_package_details(), gtk_label_new("Details"), NULL);
 
 	return GTK_WIDGET(notebook);
