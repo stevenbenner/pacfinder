@@ -19,6 +19,7 @@
 #include <alpm.h>
 #include <gtk/gtk.h>
 
+#include "aboutdialog.h"
 #include "database.h"
 #include "interface.h"
 #include "util.h"
@@ -399,6 +400,11 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	return TRUE;
 }
 
+static void activate_about(GSimpleAction *simple, GVariant *parameter, gpointer user_data)
+{
+	show_about_dialog(main_window_gui.window);
+}
+
 static void activate_quit(GSimpleAction *simple, GVariant *parameter, gpointer user_data)
 {
 	exit(0);
@@ -407,6 +413,7 @@ static void activate_quit(GSimpleAction *simple, GVariant *parameter, gpointer u
 static GActionGroup *create_action_group(void)
 {
 	const GActionEntry entries[] = {
+		{ "about", activate_about, NULL, NULL, NULL, { 0, 0, 0 } },
 		{ "quit", activate_quit, NULL, NULL, NULL, { 0, 0, 0 } }
 	};
 
@@ -423,6 +430,11 @@ static GMenuModel *create_app_menu(void)
 	GMenu *section, *menu;
 
 	menu = g_menu_new();
+
+	section = g_menu_new();
+	g_menu_insert(section, 0, "About PacFinder", "app.about");
+	g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
+	g_object_unref(section);
 
 	section = g_menu_new();
 	g_menu_insert(section, 0, "Quit", "app.quit");
