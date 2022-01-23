@@ -1,0 +1,5 @@
+*.o
+/.deps/
+/config.h
+/config.h.in
+/pacfinder
