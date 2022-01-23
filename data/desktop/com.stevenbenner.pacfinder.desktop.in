@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=PacFinder
+Comment=Package & repository explorer
+Icon=com.stevenbenner.pacfinder
+Exec=pacfinder
+Terminal=false
+Categories=GTK;System;
+Keywords=pacman;
+StartupNotify=true

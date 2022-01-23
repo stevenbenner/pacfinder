@@ -29,6 +29,7 @@ AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_FILES([
+	data/desktop/Makefile
 	data/icons/scalable/Makefile
 	data/icons/Makefile
 	data/Makefile
