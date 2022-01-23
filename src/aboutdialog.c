@@ -34,6 +34,8 @@ void show_about_dialog(GtkWidget *parent)
 	gtk_show_about_dialog(
 		GTK_WINDOW(parent),
 		"program-name", "PacFinder",
+		"icon-name", APPLICATION_ID,
+		"logo-icon-name", APPLICATION_ID,
 		"version", version_str,
 		"comments", "Repository & package explorer for Arch Linux.",
 		"website-label", "PacFinder on GitHub",

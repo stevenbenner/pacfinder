@@ -22,6 +22,7 @@
 #include "aboutdialog.h"
 #include "database.h"
 #include "interface.h"
+#include "main.h"
 #include "util.h"
 
 /* package list filtering */
@@ -483,4 +484,5 @@ void initialize_main_window(void)
 		NULL
 	);
 	bind_events_to_widgets();
+	gtk_window_set_icon_name(GTK_WINDOW(main_window_gui.window), APPLICATION_ID);
 }
