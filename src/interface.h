@@ -38,6 +38,7 @@ struct main_window_gui_t {
 	GtkWidget *package_treeview;
 	GtkTreeStore *repo_tree_store;
 	GtkListStore *package_list_store;
+	GtkNotebook *details_notebook;
 	struct details_overview_t details_overview;
 	GtkListStore *package_details_list_store;
 };

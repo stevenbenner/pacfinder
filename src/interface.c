@@ -236,13 +236,23 @@ static GtkWidget *create_package_details(void)
 
 static GtkWidget *create_package_info(void)
 {
-	GtkNotebook *notebook;
+	main_window_gui.details_notebook = GTK_NOTEBOOK(gtk_notebook_new());
 
-	notebook = GTK_NOTEBOOK(gtk_notebook_new());
-	gtk_notebook_append_page_menu(GTK_NOTEBOOK(notebook), create_package_overview(), gtk_label_new("Overview"), NULL);
-	gtk_notebook_append_page_menu(GTK_NOTEBOOK(notebook), create_package_details(), gtk_label_new("Details"), NULL);
+	gtk_notebook_append_page_menu(
+		main_window_gui.details_notebook,
+		create_package_overview(),
+		gtk_label_new("Overview"),
+		NULL
+	);
 
-	return GTK_WIDGET(notebook);
+	gtk_notebook_append_page_menu(
+		main_window_gui.details_notebook,
+		create_package_details(),
+		gtk_label_new("Details"),
+		NULL
+	);
+
+	return GTK_WIDGET(main_window_gui.details_notebook);
 }
 
 static void create_user_interface(void)

@@ -82,20 +82,6 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	gchar *str;
 	alpm_list_t *dep_list;
 
-	/* clear the overview content if we receive null */
-	if (pkg == NULL) {
-		gtk_image_clear(GTK_IMAGE(main_window_gui.details_overview.status_image));
-		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.heading_label), "");
-		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.desc_label), "");
-		gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.left_label), "");
-		gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.middle_label), "");
-		gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.right_label), "");
-		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.required_by_label), "");
-		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.optional_for_label), "");
-		gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.dependencies_label), "");
-		return;
-	}
-
 	/* set icon */
 	switch (get_pkg_status(pkg)) {
 		case PKG_REASON_EXPLICIT:
@@ -193,10 +179,6 @@ static void show_package_details(alpm_pkg_t *pkg)
 	/* empty list from any previously selected package */
 	gtk_list_store_clear(main_window_gui.package_details_list_store);
 
-	if (pkg == NULL) {
-		return;
-	}
-
 	/* add detail rows */
 	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
 	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Name:", 1, alpm_pkg_get_name(pkg), -1);
@@ -214,8 +196,15 @@ static void show_package_details(alpm_pkg_t *pkg)
 
 static void show_package(alpm_pkg_t *pkg)
 {
+	if (pkg == NULL) {
+		gtk_widget_hide(GTK_WIDGET(main_window_gui.details_notebook));
+		return;
+	}
+
 	show_package_overview(pkg);
 	show_package_details(pkg);
+
+	gtk_widget_show(GTK_WIDGET(main_window_gui.details_notebook));
 }
 
 static void package_row_selected(GtkTreeSelection *selection, gpointer user_data)
@@ -477,6 +466,7 @@ void initialize_main_window(void)
 	create_main_menu();
 	populate_db_tree_view();
 	show_package_list();
+	show_package(NULL);
 	gtk_tree_model_filter_set_visible_func(
 		GTK_TREE_MODEL_FILTER(package_list_model),
 		(GtkTreeModelFilterVisibleFunc)row_visible,
