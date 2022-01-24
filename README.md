@@ -4,7 +4,10 @@
 
 PacFinder is a GTK 3 desktop application for browsing packages installed on your [Arch Linux][archlinux] system as well as exploring packages in the Arch Linux official package repositories.
 
+This software is licensed under the [Apache License, Version 2.0][license].
+
 [archlinux]: https://archlinux.org/
+[license]: COPYING
 
 ## Building from source
 
