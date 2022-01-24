@@ -205,7 +205,6 @@ static GtkWidget *create_package_overview(void)
 static GtkWidget *create_package_details(void)
 {
 	const gint column_count = 2;
-	const gchar *column_titles[] = { "Name", "Value" };
 
 	GtkWidget *scrolled_window, *package_details_treeview;
 	gint i;
@@ -220,13 +219,7 @@ static GtkWidget *create_package_details(void)
 		GtkTreeViewColumn *column;
 
 		renderer = gtk_cell_renderer_text_new();
-		column = gtk_tree_view_column_new_with_attributes(
-			column_titles[i],
-			renderer,
-			"text",
-			i,
-			NULL
-		);
+		column = gtk_tree_view_column_new_with_attributes("", renderer, "text", i, NULL);
 
 		if (i == 0) {
 			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
