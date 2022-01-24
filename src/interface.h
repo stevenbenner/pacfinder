@@ -43,6 +43,6 @@ struct main_window_gui_t {
 };
 extern struct main_window_gui_t main_window_gui;
 
-void create_app_window(GtkApplication *);
+void create_app_window(GtkApplication *app);
 
 #endif /* PF_INTERFACE_H */

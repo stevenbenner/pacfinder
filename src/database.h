@@ -35,7 +35,7 @@ int group_cmp_find(const void *p1, const void *p2);
 
 alpm_handle_t *get_alpm_handle(void);
 alpm_list_t *get_all_packages(void);
-install_reason_t get_pkg_status(alpm_pkg_t *);
+install_reason_t get_pkg_status(alpm_pkg_t *pkg);
 void database_free(void);
 
 #endif /* PF_DATABASE_H */
