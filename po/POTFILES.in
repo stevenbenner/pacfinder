@@ -1,0 +1,7 @@
+data/desktop/com.stevenbenner.pacfinder.desktop.in
+src/aboutdialog.c
+src/database.c
+src/interface.c
+src/main.c
+src/util.c
+src/window.c

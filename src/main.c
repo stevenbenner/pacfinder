@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "config.h"
+
 #include "main.h"
 
 #include <gtk/gtk.h>
@@ -21,6 +23,16 @@
 
 #include "interface.h"
 #include "window.h"
+
+static void init_i18n(void)
+{
+#ifdef ENABLE_NLS
+	setlocale(LC_ALL, "");
+	bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+	textdomain(GETTEXT_PACKAGE);
+#endif
+}
 
 static void on_activate_app(GtkApplication *app, gpointer user_data)
 {
@@ -32,6 +44,9 @@ int main(int argc, char **argv)
 {
 	GtkApplication *app;
 	int status;
+
+	/* set up internationalization */
+	init_i18n();
 
 	/* prevent users from running as root */
 	if (geteuid() == 0) {

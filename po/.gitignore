@@ -1,0 +1,9 @@
+*.gmo
+*.header
+*.pot
+*.sed
+*.sin
+LINGUAS
+Makevars.template
+POTFILES
+Rules-quot

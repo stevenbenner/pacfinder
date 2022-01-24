@@ -18,6 +18,7 @@ pacfinder_CFLAGS = \
 	-Wall \
 	-Wextra \
 	-Wno-unused-parameter \
+	-DLOCALEDIR=\"$(localedir)\" \
 	@GTK_CFLAGS@
 
 pacfinder_LDADD = \

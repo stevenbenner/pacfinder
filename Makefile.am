@@ -2,6 +2,10 @@ SUBDIRS = \
 	data \
 	src
 
+if USE_NLS
+    SUBDIRS += po
+endif
+
 DIST_SUBDIRS = $(SUBDIRS)
 
 EXTRA_DIST = \

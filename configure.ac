@@ -33,6 +33,7 @@ AC_CONFIG_FILES([
 	data/icons/scalable/Makefile
 	data/icons/Makefile
 	data/Makefile
+	po/Makefile.in
 	src/Makefile
 	Makefile
 ])
@@ -49,6 +50,20 @@ PKG_CHECK_MODULES([LIBALPM], [libalpm >= 13.0.0])
 dnl Initialize automake
 AM_INIT_AUTOMAKE
 AM_SILENT_RULES([yes])
+
+dnl Generate LINGUAS file
+rm -f $srcdir/po/LINGUAS
+for po_file in `ls $srcdir/po/*.po | sort`; do
+	lang=`echo "$po_file" | sed "s|.*/po/\(.*\)\.po|\1|g"`
+	echo $lang >> $srcdir/po/LINGUAS
+done
+
+dnl Internationalization
+AM_GNU_GETTEXT([external], [need-ngettext])
+AM_GNU_GETTEXT_VERSION([0.21])
+AM_CONDITIONAL([USE_NLS], [test "x${USE_NLS}" = "xyes"])
+AC_SUBST([GETTEXT_PACKAGE], [$PACKAGE])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$PACKAGE"], [Gettext package.])
 
 dnl Generate output
 AC_OUTPUT
