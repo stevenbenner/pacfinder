@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
+#include "config.h"
+
 #include "window.h"
 
 #include <alpm.h>
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "aboutdialog.h"
@@ -143,7 +146,8 @@ static void show_package_overview(alpm_pkg_t *pkg)
 
 	dep_list = alpm_pkg_compute_requiredby(pkg);
 	count = alpm_list_count(dep_list);
-	str = g_strdup_printf("%ld packages", count);
+	/* l10n: package dependency counts - %ld will be a number (zero or more) */
+	str = g_strdup_printf(ngettext("%ld package", "%ld packages", count), count);
 	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.required_by_label), str);
 	g_free(str);
 	alpm_list_free_inner(dep_list, g_free);
@@ -151,7 +155,7 @@ static void show_package_overview(alpm_pkg_t *pkg)
 
 	dep_list = alpm_pkg_compute_optionalfor(pkg);
 	count = alpm_list_count(dep_list);
-	str = g_strdup_printf("%ld packages", count);
+	str = g_strdup_printf(ngettext("%ld package", "%ld packages", count), count);
 	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.optional_for_label), str);
 	g_free(str);
 	alpm_list_free_inner(dep_list, g_free);
@@ -159,7 +163,7 @@ static void show_package_overview(alpm_pkg_t *pkg)
 
 	dep_list = alpm_pkg_get_depends(pkg);
 	count = alpm_list_count(dep_list);
-	str = g_strdup_printf("%ld packages", count);
+	str = g_strdup_printf(ngettext("%ld package", "%ld packages", count), count);
 	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.dependencies_label), str);
 	g_free(str);
 }
@@ -173,17 +177,18 @@ static void show_package_details(alpm_pkg_t *pkg)
 
 	/* add detail rows */
 	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Name:", 1, alpm_pkg_get_name(pkg), -1);
+	/* l10n: package details tab row labels */
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Name:"), 1, alpm_pkg_get_name(pkg), -1);
 	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Version:", 1, alpm_pkg_get_version(pkg), -1);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Version:"), 1, alpm_pkg_get_version(pkg), -1);
 	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Description:", 1, alpm_pkg_get_desc(pkg), -1);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Description:"), 1, alpm_pkg_get_desc(pkg), -1);
 	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Architecture:", 1, alpm_pkg_get_arch(pkg), -1);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Architecture:"), 1, alpm_pkg_get_arch(pkg), -1);
 	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "URL:", 1, alpm_pkg_get_url(pkg), -1);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("URL:"), 1, alpm_pkg_get_url(pkg), -1);
 	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, "Packager:", 1, alpm_pkg_get_packager(pkg), -1);
+	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Packager:"), 1, alpm_pkg_get_packager(pkg), -1);
 }
 
 static void show_package(alpm_pkg_t *pkg)
@@ -222,7 +227,8 @@ static void populate_db_tree_view(void)
 		main_window_gui.repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-home",
-		FILTERS_COL_TITLE, "All Packages",
+		/* l10n: filter names shown in main filter list */
+		FILTERS_COL_TITLE, _("All Packages"),
 		FILTERS_COL_MASK, HIDE_NONE,
 		-1
 	);
@@ -232,7 +238,7 @@ static void populate_db_tree_view(void)
 		main_window_gui.repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-media-play",
-		FILTERS_COL_TITLE, "Installed",
+		FILTERS_COL_TITLE, _("Installed"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED,
 		-1
 	);
@@ -242,7 +248,7 @@ static void populate_db_tree_view(void)
 		main_window_gui.repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-yes",
-		FILTERS_COL_TITLE, "Explicit",
+		FILTERS_COL_TITLE, _("Explicit"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION,
 		-1
 	);
@@ -252,7 +258,7 @@ static void populate_db_tree_view(void)
 		main_window_gui.repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-leave-fullscreen",
-		FILTERS_COL_TITLE, "Dependency",
+		FILTERS_COL_TITLE, _("Dependency"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION,
 		-1
 	);
@@ -262,7 +268,7 @@ static void populate_db_tree_view(void)
 		main_window_gui.repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-connect",
-		FILTERS_COL_TITLE, "Optional",
+		FILTERS_COL_TITLE, _("Optional"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND,
 		-1
 	);
@@ -305,7 +311,7 @@ static void populate_db_tree_view(void)
 		main_window_gui.repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-harddisk",
-		FILTERS_COL_TITLE, "Foreign",
+		FILTERS_COL_TITLE, _("Foreign"),
 		FILTERS_COL_MASK, HIDE_NATIVE,
 		-1
 	);
@@ -444,12 +450,13 @@ static GMenuModel *create_app_menu(void)
 	menu = g_menu_new();
 
 	section = g_menu_new();
-	g_menu_insert(section, 0, "About PacFinder", "app.about");
+	/* l10n: header menu items */
+	g_menu_insert(section, 0, _("About PacFinder"), "app.about");
 	g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
 	g_object_unref(section);
 
 	section = g_menu_new();
-	g_menu_insert(section, 0, "Quit", "app.quit");
+	g_menu_insert(section, 0, _("Quit"), "app.quit");
 	g_menu_append_section(menu, NULL, G_MENU_MODEL(section));
 	g_object_unref(section);
 

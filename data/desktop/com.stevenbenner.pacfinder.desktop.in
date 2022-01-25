@@ -1,11 +1,14 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
+# l10n: program name used in OS menus
 Name=PacFinder
+# l10n: program description used in OS menus - prefer short text
 Comment=Package & repository explorer
 Icon=com.stevenbenner.pacfinder
 Exec=pacfinder
 Terminal=false
 Categories=GTK;System;
+# l10n: keywords used to search for the program - leave semicolons unlocalized, list must end in semicolon
 Keywords=pacman;
 StartupNotify=true

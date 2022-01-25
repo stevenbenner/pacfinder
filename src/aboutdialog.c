@@ -18,6 +18,7 @@
 
 #include "aboutdialog.h"
 
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "main.h"
@@ -29,22 +30,29 @@ static const gchar *authors[] = {
 
 void show_about_dialog(GtkWidget *parent)
 {
-	gchar *version_str = g_strdup_printf("Version %s", VERSION);
+	/* l10n: program version shown in about dialog - %s is version number (e.g. 1.2) */
+	gchar *version_str = g_strdup_printf(_("Version %s"), VERSION);
+	/* l10n: program copyright shown in about dialog - %s is year (e.g. 2022, or 2022-2023) */
+	gchar *copyright_str = g_strdup_printf(_("Copyright %s Steven Benner"), "2022");
 
 	gtk_show_about_dialog(
 		GTK_WINDOW(parent),
-		"program-name", "PacFinder",
+		/* l10n: program name shown in about dialog */
+		"program-name", _("PacFinder"),
 		"icon-name", APPLICATION_ID,
 		"logo-icon-name", APPLICATION_ID,
 		"version", version_str,
-		"comments", "Repository & package explorer for Arch Linux.",
-		"website-label", "PacFinder on GitHub",
+		/* l10n: program description shown in about dialog */
+		"comments", _("Repository & package explorer for Arch Linux."),
+		/* l10n: program web site link label shown in about dialog */
+		"website-label", _("PacFinder on GitHub"),
 		"website", PACKAGE_URL,
-		"copyright", "Copyright 2022 Steven Benner",
+		"copyright", copyright_str,
 		"authors", authors,
 		"license-type", GTK_LICENSE_APACHE_2_0,
 		NULL
 	);
 
+	g_free(copyright_str);
 	g_free(version_str);
 }

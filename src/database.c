@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
+#include "config.h"
+
 #include "database.h"
 
 #include <alpm.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 
 alpm_list_t *foreign_pkg_list = NULL;
 
@@ -56,7 +59,8 @@ static gint register_syncs(void)
 			}
 		}
 	} else {
-		g_error("Failed to read pacman config file: %s", file_name);
+		/* l10n: error message shown in cli or log */
+		g_error(_("Failed to read pacman config file: %s"), file_name);
 	}
 
 	g_strfreev(lines);
@@ -71,7 +75,8 @@ static void initialize_alpm(void)
 
 	handle = alpm_initialize("/", "/var/lib/pacman/", &err);
 	if (!handle) {
-		g_error("Failed to initialize libalpm: %s", alpm_strerror(err));
+		/* l10n: error message shown in cli or log */
+		g_error(_("Failed to initialize libalpm: %s"), alpm_strerror(err));
 	}
 	register_syncs();
 }
@@ -185,7 +190,8 @@ void database_free(void)
 	if (handle) {
 		alpm_list_free(all_packages_list);
 		if (alpm_release(handle) == -1) {
-			g_error("Failed to release libalpm!");
+			/* l10n: error message shown in cli or log */
+			g_error(_("Failed to release libalpm."));
 		}
 	}
 }

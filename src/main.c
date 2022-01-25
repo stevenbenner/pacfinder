@@ -18,6 +18,7 @@
 
 #include "main.h"
 
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <unistd.h>
 
@@ -50,7 +51,8 @@ int main(int argc, char **argv)
 
 	/* prevent users from running as root */
 	if (geteuid() == 0) {
-		g_error("Do not run this program as root.");
+		/* l10n: error message shown in cli or log */
+		g_error(_("Do not run this program as root."));
 	}
 
 	/* launch gtk application */

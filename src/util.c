@@ -14,14 +14,18 @@
  * limitations under the License.
  */
 
+#include "config.h"
+
 #include "util.h"
 
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <sys/types.h>
 
 gchar *human_readable_size(off_t size)
 {
-	const gchar *sizes[] = { "B", "KiB", "MiB", "GiB", "TiB" };
+	/* l10n: file size units */
+	const gchar *sizes[] = { N_("B"), N_("KiB"), N_("MiB"), N_("GiB"), N_("TiB") };
 	guint size_index = 0;
 	gfloat file_size = size;
 
@@ -30,5 +34,5 @@ gchar *human_readable_size(off_t size)
 		file_size = file_size / 1024;
 	}
 
-	return g_strdup_printf("%.2f %s", file_size, sizes[size_index]);
+	return g_strdup_printf("%.2f %s", file_size, _(sizes[size_index]));
 }

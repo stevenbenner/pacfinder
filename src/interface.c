@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+#include "config.h"
+
 #include "interface.h"
 
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
 #include "database.h"
@@ -27,7 +30,8 @@ static void create_header_bar(void)
 	GtkWidget *header_bar, *menu_image;
 
 	header_bar = gtk_header_bar_new();
-	gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), "PacFinder");
+	/* l10n: main window title */
+	gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), _("PacFinder"));
 	gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header_bar), TRUE);
 
 	main_window_gui.menu_button = gtk_menu_button_new();
@@ -55,7 +59,8 @@ static GtkWidget *create_repo_tree(void)
 	main_window_gui.repo_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.repo_tree_store));
 
 	column = gtk_tree_view_column_new();
-	gtk_tree_view_column_set_title(column, "Repositories");
+	/* l10n: filter list tree view heading */
+	gtk_tree_view_column_set_title(column, _("Repositories"));
 	gtk_tree_view_append_column(GTK_TREE_VIEW(main_window_gui.repo_treeview), column);
 
 	renderer = gtk_cell_renderer_pixbuf_new();
@@ -78,20 +83,30 @@ static void reason_cell_data_fn(GtkTreeViewColumn *column, GtkCellRenderer *rend
 {
 	static const gchar *reason_map[] = {
 		[PKG_REASON_NOT_INSTALLED] = "",
-		[PKG_REASON_EXPLICIT] = "Explicit",
-		[PKG_REASON_DEPEND] = "Depend",
-		[PKG_REASON_OPTIONAL] = "Optional"
+		/* l10n: package install reasons - shown in package list */
+		[PKG_REASON_EXPLICIT] = N_("Explicit"),
+		[PKG_REASON_DEPEND] = N_("Depend"),
+		[PKG_REASON_OPTIONAL] = N_("Optional")
 	};
 
 	install_reason_t reason;
+
 	gtk_tree_model_get(model, iter, 2, &reason, -1);
-	g_object_set(renderer, "text", reason_map[reason], NULL);
+
+	/* only set localized string for installed packages to
+	 * prevent sending an empty string to gettext */
+	if (reason == PKG_REASON_NOT_INSTALLED) {
+		g_object_set(renderer, "text", "", NULL);
+	} else {
+		g_object_set(renderer, "text", _(reason_map[reason]), NULL);
+	}
 }
 
 static GtkWidget *create_package_list(void)
 {
 	const gint column_count = 4;
-	const gchar *column_titles[] = { "Name", "Version", "Reason", "Repository" };
+	/* l10n: package list column names */
+	const gchar *column_titles[] = { N_("Name"), N_("Version"), N_("Reason"), N_("Repository") };
 
 	GtkWidget *scrolled_window;
 	gint i;
@@ -113,7 +128,7 @@ static GtkWidget *create_package_list(void)
 
 		renderer = gtk_cell_renderer_text_new();
 		column = gtk_tree_view_column_new_with_attributes(
-			column_titles[i],
+			_(column_titles[i]),
 			renderer,
 			"text",
 			i,
@@ -176,19 +191,20 @@ static GtkWidget *create_package_overview(void)
 
 	required_by_heading = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(required_by_heading), 0);
-	gtk_label_set_markup(GTK_LABEL(required_by_heading), "<b><u>Required by:</u></b>");
+	/* l10n: package overview tab right column labels */
+	gtk_label_set_markup(GTK_LABEL(required_by_heading), _("<b><u>Required by:</u></b>"));
 	main_window_gui.details_overview.required_by_label = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.required_by_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.required_by_label), 20);
 	optional_for_heading = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(optional_for_heading), 0);
-	gtk_label_set_markup(GTK_LABEL(optional_for_heading), "<b><u>Optional for:</u></b>");
+	gtk_label_set_markup(GTK_LABEL(optional_for_heading), _("<b><u>Optional for:</u></b>"));
 	main_window_gui.details_overview.optional_for_label = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.optional_for_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.optional_for_label), 20);
 	dependencies_heading = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(dependencies_heading), 0);
-	gtk_label_set_markup(GTK_LABEL(dependencies_heading), "<b><u>Dependencies:</u></b>");
+	gtk_label_set_markup(GTK_LABEL(dependencies_heading), _("<b><u>Dependencies:</u></b>"));
 	main_window_gui.details_overview.dependencies_label = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.dependencies_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.dependencies_label), 20);
@@ -261,14 +277,16 @@ static GtkWidget *create_package_info(void)
 	gtk_notebook_append_page_menu(
 		main_window_gui.details_notebook,
 		create_package_overview(),
-		gtk_label_new("Overview"),
+		/* l10n: package overview tab name */
+		gtk_label_new(_("Overview")),
 		NULL
 	);
 
 	gtk_notebook_append_page_menu(
 		main_window_gui.details_notebook,
 		create_package_details(),
-		gtk_label_new("Details"),
+		/* l10n: package details tab name */
+		gtk_label_new(_("Details")),
 		NULL
 	);
 
@@ -297,7 +315,7 @@ static void create_user_interface(void)
 void create_app_window(GtkApplication *app)
 {
 	main_window_gui.window = gtk_application_window_new(app);
-	gtk_window_set_title(GTK_WINDOW(main_window_gui.window), "PacFinder");
+	gtk_window_set_title(GTK_WINDOW(main_window_gui.window), _("PacFinder"));
 	gtk_window_set_default_size(GTK_WINDOW(main_window_gui.window), 900, 700);
 	create_user_interface();
 	gtk_widget_show_all(main_window_gui.window);
