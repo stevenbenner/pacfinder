@@ -3,7 +3,7 @@ SUBDIRS = \
 	src
 
 if USE_NLS
-    SUBDIRS += po
+	SUBDIRS += po
 endif
 
 DIST_SUBDIRS = $(SUBDIRS)
