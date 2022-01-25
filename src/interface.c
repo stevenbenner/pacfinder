@@ -48,6 +48,7 @@ static GtkWidget *create_repo_tree(void)
 		FILTERS_NUM_COLS,
 		G_TYPE_STRING,  /* stock image */
 		G_TYPE_STRING,  /* item name */
+		G_TYPE_INT,     /* filters */
 		G_TYPE_POINTER, /* database */
 		G_TYPE_POINTER  /* group */
 	);

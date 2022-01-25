@@ -223,6 +223,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-home",
 		FILTERS_COL_TITLE, "All Packages",
+		FILTERS_COL_MASK, HIDE_NONE,
 		-1
 	);
 
@@ -232,6 +233,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-media-play",
 		FILTERS_COL_TITLE, "Installed",
+		FILTERS_COL_MASK, HIDE_UNINSTALLED,
 		-1
 	);
 
@@ -241,6 +243,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-yes",
 		FILTERS_COL_TITLE, "Explicit",
+		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION,
 		-1
 	);
 
@@ -250,6 +253,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-leave-fullscreen",
 		FILTERS_COL_TITLE, "Dependency",
+		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION,
 		-1
 	);
 
@@ -259,6 +263,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-connect",
 		FILTERS_COL_TITLE, "Optional",
+		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND,
 		-1
 	);
 
@@ -273,6 +278,7 @@ static void populate_db_tree_view(void)
 		gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel,
 			FILTERS_COL_ICON, "gtk-directory",
 			FILTERS_COL_TITLE, alpm_db_get_name(db),
+			FILTERS_COL_MASK, HIDE_NONE,
 			FILTERS_COL_DB, db,
 			-1
 		);
@@ -286,6 +292,7 @@ static void populate_db_tree_view(void)
 			gtk_tree_store_set(main_window_gui.repo_tree_store, &child,
 				FILTERS_COL_ICON, "gtk-file",
 				FILTERS_COL_TITLE, group->name,
+				FILTERS_COL_MASK, HIDE_NONE,
 				FILTERS_COL_DB, db,
 				FILTERS_COL_GROUP, group,
 				-1
@@ -299,6 +306,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-harddisk",
 		FILTERS_COL_TITLE, "Foreign",
+		FILTERS_COL_MASK, HIDE_NATIVE,
 		-1
 	);
 }
@@ -319,8 +327,8 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 	GtkTreeModel *repo_model, *package_model;
 	GtkTreeIter repo_iter, package_iter;
 	GtkTreeSelection *pkg_selection;
-	gchar *repo_name;
-	alpm_db_t *db;
+	guint filters;
+	alpm_db_t *db = NULL;
 	alpm_group_t *group = NULL;
 
 	if (gtk_tree_selection_get_selected(selection, &repo_model, &repo_iter)) {
@@ -337,37 +345,19 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 		block_signal_package_treeview_selection(TRUE);
 
 		/* get row data from model */
-		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_TITLE, &repo_name, -1);
+		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_MASK, &filters, -1);
 		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_DB, &db, -1);
 		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_GROUP, &group, -1);
 
-		/* reset filters */
-		package_filters.status_filter = HIDE_NONE;
-		package_filters.group = NULL;
-		package_filters.db = NULL;
+		/* set filters */
+		package_filters.status_filter = filters;
+		package_filters.group = group;
+		package_filters.db = db;
 
-		/* set filters based on selection */
-		if (g_strcmp0(repo_name, "Installed") == 0) {
-			package_filters.status_filter = HIDE_UNINSTALLED;
-		} else if (g_strcmp0(repo_name, "Explicit") == 0) {
-			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION;
-		} else if (g_strcmp0(repo_name, "Dependency") == 0) {
-			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION;
-		} else if (g_strcmp0(repo_name, "Optional") == 0) {
-			package_filters.status_filter = HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND;
-		} else if (g_strcmp0(repo_name, "Foreign") == 0) {
-			package_filters.status_filter = HIDE_NATIVE;
-		} else if (group != NULL) {
-			package_filters.group = group;
-			package_filters.db = db;
-		} else if (db != NULL) {
-			package_filters.db = db;
-		}
-
-		g_free(repo_name);
-
+		/* trigger refilter of package list */
 		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(package_list_model));
 
+		/* release selection blocking */
 		block_signal_package_treeview_selection(FALSE);
 	}
 }
