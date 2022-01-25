@@ -218,15 +218,49 @@ static void populate_db_tree_view(void)
 
 	/* add standard filter lists */
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-home", 1, "All Packages", -1);
+	gtk_tree_store_set(
+		main_window_gui.repo_tree_store,
+		&toplevel,
+		FILTERS_COL_ICON, "gtk-home",
+		FILTERS_COL_TITLE, "All Packages",
+		-1
+	);
+
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-media-play", 1, "Installed", -1);
+	gtk_tree_store_set(
+		main_window_gui.repo_tree_store,
+		&toplevel,
+		FILTERS_COL_ICON, "gtk-media-play",
+		FILTERS_COL_TITLE, "Installed",
+		-1
+	);
+
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-yes", 1, "Explicit", -1);
+	gtk_tree_store_set(
+		main_window_gui.repo_tree_store,
+		&toplevel,
+		FILTERS_COL_ICON, "gtk-yes",
+		FILTERS_COL_TITLE, "Explicit",
+		-1
+	);
+
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-leave-fullscreen", 1, "Dependency", -1);
+	gtk_tree_store_set(
+		main_window_gui.repo_tree_store,
+		&toplevel,
+		FILTERS_COL_ICON, "gtk-leave-fullscreen",
+		FILTERS_COL_TITLE, "Dependency",
+		-1
+	);
+
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-connect", 1, "Optional", -1);
+	gtk_tree_store_set(
+		main_window_gui.repo_tree_store,
+		&toplevel,
+		FILTERS_COL_ICON, "gtk-connect",
+		FILTERS_COL_TITLE, "Optional",
+		-1
+	);
 
 	/* add known databases */
 	for (i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
@@ -237,9 +271,9 @@ static void populate_db_tree_view(void)
 
 		gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
 		gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel,
-			0, "gtk-directory",
-			1, alpm_db_get_name(db),
-			2, db,
+			FILTERS_COL_ICON, "gtk-directory",
+			FILTERS_COL_TITLE, alpm_db_get_name(db),
+			FILTERS_COL_DB, db,
 			-1
 		);
 
@@ -250,17 +284,23 @@ static void populate_db_tree_view(void)
 			alpm_group_t *group = group_list->data;
 			gtk_tree_store_append(main_window_gui.repo_tree_store, &child, &toplevel);
 			gtk_tree_store_set(main_window_gui.repo_tree_store, &child,
-				0, "gtk-file",
-				1, group->name,
-				2, db,
-				3, group,
+				FILTERS_COL_ICON, "gtk-file",
+				FILTERS_COL_TITLE, group->name,
+				FILTERS_COL_DB, db,
+				FILTERS_COL_GROUP, group,
 				-1
 			);
 		}
 	}
 
 	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-	gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel, 0, "gtk-harddisk", 1, "Foreign", -1);
+	gtk_tree_store_set(
+		main_window_gui.repo_tree_store,
+		&toplevel,
+		FILTERS_COL_ICON, "gtk-harddisk",
+		FILTERS_COL_TITLE, "Foreign",
+		-1
+	);
 }
 
 static void block_signal_package_treeview_selection(gboolean block)
@@ -297,9 +337,9 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 		block_signal_package_treeview_selection(TRUE);
 
 		/* get row data from model */
-		gtk_tree_model_get(repo_model, &repo_iter, 1, &repo_name, -1);
-		gtk_tree_model_get(repo_model, &repo_iter, 2, &db, -1);
-		gtk_tree_model_get(repo_model, &repo_iter, 3, &group, -1);
+		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_TITLE, &repo_name, -1);
+		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_DB, &db, -1);
+		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_GROUP, &group, -1);
 
 		/* reset filters */
 		package_filters.status_filter = HIDE_NONE;

@@ -19,6 +19,14 @@
 
 #include <gtk/gtk.h>
 
+enum {
+	FILTERS_COL_ICON = 0,
+	FILTERS_COL_TITLE,
+	FILTERS_COL_DB,
+	FILTERS_COL_GROUP,
+	FILTERS_NUM_COLS
+};
+
 struct details_overview_t {
 	GtkWidget *status_image;
 	GtkWidget *heading_label;
