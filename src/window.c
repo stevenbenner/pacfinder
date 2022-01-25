@@ -81,6 +81,7 @@ static void show_package_overview(alpm_pkg_t *pkg)
 {
 	gchar *str;
 	alpm_list_t *dep_list;
+	size_t count;
 
 	/* set icon */
 	switch (get_pkg_status(pkg)) {
@@ -141,33 +142,24 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.right_label), alpm_db_get_name(alpm_pkg_get_db(pkg)));
 
 	dep_list = alpm_pkg_compute_requiredby(pkg);
-	str = g_strdup_printf(
-		"<b><u>Required by:</u></b>\n"
-		"    %ld packages",
-		alpm_list_count(dep_list)
-	);
+	count = alpm_list_count(dep_list);
+	str = g_strdup_printf("%ld packages", count);
 	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.required_by_label), str);
 	g_free(str);
 	alpm_list_free_inner(dep_list, g_free);
 	alpm_list_free(dep_list);
 
 	dep_list = alpm_pkg_compute_optionalfor(pkg);
-	str = g_strdup_printf(
-		"<b><u>Optional for:</u></b>\n"
-		"    %ld packages",
-		alpm_list_count(dep_list)
-	);
+	count = alpm_list_count(dep_list);
+	str = g_strdup_printf("%ld packages", count);
 	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.optional_for_label), str);
 	g_free(str);
 	alpm_list_free_inner(dep_list, g_free);
 	alpm_list_free(dep_list);
 
 	dep_list = alpm_pkg_get_depends(pkg);
-	str = g_strdup_printf(
-		"<b><u>Dependencies:</u></b>\n"
-		"    %ld packages",
-		alpm_list_count(dep_list)
-	);
+	count = alpm_list_count(dep_list);
+	str = g_strdup_printf("%ld packages", count);
 	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.dependencies_label), str);
 	g_free(str);
 }

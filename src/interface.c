@@ -137,7 +137,8 @@ static GtkWidget *create_package_list(void)
 
 static GtkWidget *create_package_overview(void)
 {
-	GtkWidget *aside_hbox, *middle_vbox, *right_vbox, *hbox, *scrolled_window;
+	GtkWidget *aside_hbox, *middle_vbox, *required_by_heading, *optional_for_heading,
+	          *dependencies_heading, *right_vbox, *hbox, *scrolled_window;
 
 	main_window_gui.details_overview.left_label = gtk_label_new(NULL);
 	main_window_gui.details_overview.middle_label = gtk_label_new(NULL);
@@ -166,12 +167,21 @@ static GtkWidget *create_package_overview(void)
 	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.desc_label, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(middle_vbox), aside_hbox, FALSE, FALSE, 0);
 
+	required_by_heading = gtk_label_new(NULL);
+	gtk_label_set_xalign(GTK_LABEL(required_by_heading), 0);
+	gtk_label_set_markup(GTK_LABEL(required_by_heading), "<b><u>Required by:</u></b>");
 	main_window_gui.details_overview.required_by_label = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.required_by_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.required_by_label), 20);
+	optional_for_heading = gtk_label_new(NULL);
+	gtk_label_set_xalign(GTK_LABEL(optional_for_heading), 0);
+	gtk_label_set_markup(GTK_LABEL(optional_for_heading), "<b><u>Optional for:</u></b>");
 	main_window_gui.details_overview.optional_for_label = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.optional_for_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.optional_for_label), 20);
+	dependencies_heading = gtk_label_new(NULL);
+	gtk_label_set_xalign(GTK_LABEL(dependencies_heading), 0);
+	gtk_label_set_markup(GTK_LABEL(dependencies_heading), "<b><u>Dependencies:</u></b>");
 	main_window_gui.details_overview.dependencies_label = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.dependencies_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.dependencies_label), 20);
@@ -179,8 +189,11 @@ static GtkWidget *create_package_overview(void)
 	right_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_widget_set_margin_start(GTK_WIDGET(right_vbox), 20);
 	gtk_widget_set_margin_end(GTK_WIDGET(right_vbox), 20);
+	gtk_box_pack_start(GTK_BOX(right_vbox), required_by_heading, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.required_by_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(right_vbox), optional_for_heading, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.optional_for_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(right_vbox), dependencies_heading, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.dependencies_label, FALSE, FALSE, 0);
 
 	main_window_gui.details_overview.status_image = gtk_image_new();
