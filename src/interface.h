@@ -41,6 +41,7 @@ struct details_overview_t {
 	GtkWidget *status_image;
 	GtkWidget *heading_label;
 	GtkWidget *desc_label;
+	GtkWidget *link_label;
 	GtkWidget *left_label;
 	GtkWidget *middle_label;
 	GtkWidget *right_label;

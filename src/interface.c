@@ -180,12 +180,19 @@ static GtkWidget *create_package_overview(void)
 	gtk_label_set_justify(GTK_LABEL(main_window_gui.details_overview.desc_label), GTK_JUSTIFY_LEFT);
 	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.desc_label), GTK_ALIGN_START);
 	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.desc_label), 0);
-	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.desc_label), 20);
 	gtk_label_set_line_wrap(GTK_LABEL(main_window_gui.details_overview.desc_label), TRUE);
+
+	main_window_gui.details_overview.link_label = gtk_label_new(NULL);
+	gtk_label_set_justify(GTK_LABEL(main_window_gui.details_overview.link_label), GTK_JUSTIFY_LEFT);
+	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.link_label), GTK_ALIGN_START);
+	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.link_label), 0);
+	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.link_label), 20);
+	gtk_label_set_line_wrap(GTK_LABEL(main_window_gui.details_overview.link_label), TRUE);
 
 	middle_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.heading_label, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.desc_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.link_label, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(middle_vbox), aside_hbox, FALSE, FALSE, 0);
 
 	required_by_heading = gtk_label_new(NULL);

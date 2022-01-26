@@ -132,14 +132,10 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.heading_label), str);
 	g_free(str);
 
-	str = g_strdup_printf(
-		"%s\n"
-		"<a href=\"%s\">%s</a>",
-		alpm_pkg_get_desc(pkg),
-		alpm_pkg_get_url(pkg),
-		alpm_pkg_get_url(pkg)
-	);
-	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.desc_label), str);
+	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.desc_label), alpm_pkg_get_desc(pkg));
+
+	str = g_strdup_printf("<a href=\"%s\">%s</a>", alpm_pkg_get_url(pkg), alpm_pkg_get_url(pkg));
+	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.link_label), str);
 	g_free(str);
 
 	str = human_readable_size(alpm_pkg_get_isize(pkg));
