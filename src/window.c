@@ -422,8 +422,8 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 		alpm_list_t *pkg_groups = alpm_pkg_get_groups(pkg);
 		if (alpm_list_count(pkg_groups) == 0) {
 			return FALSE;
-		} else {
-			if (!alpm_list_find(pkg_groups, package_filters.group, group_cmp_find)) return FALSE;
+		} else if (!alpm_list_find(pkg_groups, package_filters.group, group_cmp_find)) {
+			return FALSE;
 		}
 	}
 
