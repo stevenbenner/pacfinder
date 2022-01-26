@@ -355,9 +355,14 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 		block_signal_package_treeview_selection(TRUE);
 
 		/* get row data from model */
-		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_MASK, &filters, -1);
-		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_DB, &db, -1);
-		gtk_tree_model_get(repo_model, &repo_iter, FILTERS_COL_GROUP, &group, -1);
+		gtk_tree_model_get(
+			repo_model,
+			&repo_iter,
+			FILTERS_COL_MASK, &filters,
+			FILTERS_COL_DB, &db,
+			FILTERS_COL_GROUP, &group,
+			-1
+		);
 
 		/* set filters */
 		package_filters.status_filter = filters;
@@ -379,9 +384,14 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	alpm_pkg_t *pkg;
 
 	/* get row data from model */
-	gtk_tree_model_get(model, iter, PACKAGES_COL_STATUS, &reason, -1);
-	gtk_tree_model_get(model, iter, PACAKGES_COL_REPO, &db_name, -1);
-	gtk_tree_model_get(model, iter, PACKAGES_COL_PKG, &pkg, -1);
+	gtk_tree_model_get(
+		model,
+		iter,
+		PACKAGES_COL_STATUS, &reason,
+		PACAKGES_COL_REPO, &db_name,
+		PACKAGES_COL_PKG, &pkg,
+		-1
+	);
 
 	/* find any filters that would exclude this row */
 	if (package_filters.status_filter & HIDE_INSTALLED) {
