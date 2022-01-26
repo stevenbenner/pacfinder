@@ -66,18 +66,22 @@ static void show_package_list(void)
 		gtk_list_store_set(
 			main_window_gui.package_list_store,
 			&iter,
-			0, alpm_pkg_get_name(pkg),
-			1, alpm_pkg_get_version(pkg),
-			2, get_pkg_status(pkg),
-			3, alpm_db_get_name(alpm_pkg_get_db(pkg)),
-			4, pkg,
+			PACKAGES_COL_NAME, alpm_pkg_get_name(pkg),
+			PACKAGES_COL_VERSION, alpm_pkg_get_version(pkg),
+			PACKAGES_COL_STATUS, get_pkg_status(pkg),
+			PACAKGES_COL_REPO, alpm_db_get_name(alpm_pkg_get_db(pkg)),
+			PACKAGES_COL_PKG, pkg,
 			-1
 		);
 	}
 
 	package_list_model = gtk_tree_model_filter_new(GTK_TREE_MODEL(main_window_gui.package_list_store), NULL);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window_gui.package_treeview), GTK_TREE_MODEL(package_list_model));
-	gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(main_window_gui.package_list_store), 0, GTK_SORT_ASCENDING);
+	gtk_tree_sortable_set_sort_column_id(
+		GTK_TREE_SORTABLE(main_window_gui.package_list_store),
+		PACKAGES_COL_NAME,
+		GTK_SORT_ASCENDING
+	);
 }
 
 static void show_package_overview(alpm_pkg_t *pkg)
@@ -211,7 +215,7 @@ static void package_row_selected(GtkTreeSelection *selection, gpointer user_data
 	alpm_pkg_t *pkg;
 
 	if (gtk_tree_selection_get_selected(selection, &model, &iter)) {
-		gtk_tree_model_get(model, &iter, 4, &pkg, -1);
+		gtk_tree_model_get(model, &iter, PACKAGES_COL_PKG, &pkg, -1);
 		show_package(pkg);
 	}
 }
@@ -375,9 +379,9 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	alpm_pkg_t *pkg;
 
 	/* get row data from model */
-	gtk_tree_model_get(model, iter, 2, &reason, -1);
-	gtk_tree_model_get(model, iter, 3, &db_name, -1);
-	gtk_tree_model_get(model, iter, 4, &pkg, -1);
+	gtk_tree_model_get(model, iter, PACKAGES_COL_STATUS, &reason, -1);
+	gtk_tree_model_get(model, iter, PACAKGES_COL_REPO, &db_name, -1);
+	gtk_tree_model_get(model, iter, PACKAGES_COL_PKG, &pkg, -1);
 
 	/* find any filters that would exclude this row */
 	if (package_filters.status_filter & HIDE_INSTALLED) {

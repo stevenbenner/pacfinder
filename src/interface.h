@@ -28,6 +28,15 @@ enum {
 	FILTERS_NUM_COLS
 };
 
+enum {
+	PACKAGES_COL_NAME = 0,
+	PACKAGES_COL_VERSION,
+	PACKAGES_COL_STATUS,
+	PACAKGES_COL_REPO,
+	PACKAGES_COL_PKG,
+	PACKAGES_NUM_COLS
+};
+
 struct details_overview_t {
 	GtkWidget *status_image;
 	GtkWidget *heading_label;

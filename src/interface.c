@@ -91,7 +91,7 @@ static void reason_cell_data_fn(GtkTreeViewColumn *column, GtkCellRenderer *rend
 
 	install_reason_t reason;
 
-	gtk_tree_model_get(model, iter, 2, &reason, -1);
+	gtk_tree_model_get(model, iter, PACKAGES_COL_STATUS, &reason, -1);
 
 	/* only set localized string for installed packages to
 	 * prevent sending an empty string to gettext */
@@ -104,7 +104,6 @@ static void reason_cell_data_fn(GtkTreeViewColumn *column, GtkCellRenderer *rend
 
 static GtkWidget *create_package_list(void)
 {
-	const gint column_count = 4;
 	/* l10n: package list column names */
 	const gchar *column_titles[] = { N_("Name"), N_("Version"), N_("Reason"), N_("Repository") };
 
@@ -112,17 +111,17 @@ static GtkWidget *create_package_list(void)
 	gint i;
 
 	main_window_gui.package_list_store = gtk_list_store_new(
-		column_count + 1, /* column_count+1 for the non-visible pointer column */
-		G_TYPE_STRING,
-		G_TYPE_STRING,
-		G_TYPE_INT,
-		G_TYPE_STRING,
-		G_TYPE_POINTER
+		PACKAGES_NUM_COLS,
+		G_TYPE_STRING, /* name */
+		G_TYPE_STRING, /* version */
+		G_TYPE_INT,    /* reason */
+		G_TYPE_STRING, /* repository */
+		G_TYPE_POINTER /* alpm_pkg_t */
 	);
 
 	main_window_gui.package_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_list_store));
 
-	for (i = 0; i < column_count; i++) {
+	for (i = 0; i < PACKAGES_NUM_COLS - 1; i++) { /* COLS-1 for the non-visible pointer column */
 		GtkCellRenderer *renderer;
 		GtkTreeViewColumn *column;
 
