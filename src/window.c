@@ -321,6 +321,14 @@ static void unselect_package(void)
 {
 	GtkTreeSelection *selection;
 
+	/* reset tree view cursor to top */
+	gtk_tree_view_set_cursor(
+		GTK_TREE_VIEW(main_window_gui.package_treeview),
+		gtk_tree_path_new_from_indices(0, -1),
+		NULL,
+		FALSE
+	);
+
 	/* if any package list row is selected then unselect it */
 	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
 	gtk_tree_selection_unselect_all(selection);
