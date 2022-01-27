@@ -317,6 +317,18 @@ static void populate_db_tree_view(void)
 	);
 }
 
+static void unselect_package(void)
+{
+	GtkTreeSelection *selection;
+
+	/* if any package list row is selected then unselect it */
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
+	gtk_tree_selection_unselect_all(selection);
+
+	/* clear any open package details */
+	show_package(NULL);
+}
+
 static void block_signal_package_treeview_selection(gboolean block)
 {
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
@@ -330,23 +342,13 @@ static void block_signal_package_treeview_selection(gboolean block)
 
 static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 {
-	GtkTreeModel *repo_model, *package_model;
-	GtkTreeIter repo_iter, package_iter;
-	GtkTreeSelection *pkg_selection;
+	GtkTreeModel *repo_model;
+	GtkTreeIter repo_iter;
 	guint filters;
 	alpm_db_t *db = NULL;
 	alpm_group_t *group = NULL;
 
 	if (gtk_tree_selection_get_selected(selection, &repo_model, &repo_iter)) {
-		/* if any package list row is selected then unselect it */
-		pkg_selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
-		if (gtk_tree_selection_get_selected(pkg_selection, &package_model, &package_iter)) {
-			gtk_tree_selection_unselect_iter(pkg_selection, &package_iter);
-		}
-
-		/* clear any open package details */
-		show_package(NULL);
-
 		/* prevent selecting a different repo row while we're filtering */
 		block_signal_package_treeview_selection(TRUE);
 
@@ -370,6 +372,9 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 
 		/* release selection blocking */
 		block_signal_package_treeview_selection(FALSE);
+
+		/* if any package list row is selected then unselect it */
+		unselect_package();
 	}
 }
 
