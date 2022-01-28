@@ -34,6 +34,9 @@ static void create_header_bar(void)
 	gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), _("PacFinder"));
 	gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header_bar), TRUE);
 
+	main_window_gui.search_entry = gtk_search_entry_new();
+	gtk_header_bar_pack_start(GTK_HEADER_BAR(header_bar), main_window_gui.search_entry);
+
 	main_window_gui.menu_button = gtk_menu_button_new();
 	menu_image = gtk_image_new_from_icon_name("open-menu-symbolic", GTK_ICON_SIZE_BUTTON);
 	gtk_button_set_image(GTK_BUTTON(main_window_gui.menu_button), menu_image);

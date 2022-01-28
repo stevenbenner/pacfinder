@@ -49,7 +49,9 @@ struct _package_filters {
 };
 struct _package_filters package_filters;
 
+/* local variables */
 static gulong pkg_selchange_handler_id;
+static gulong search_changed_handler_id;
 static GtkTreeModel *package_list_model;
 
 static void show_package_list(void)
@@ -348,6 +350,15 @@ static void block_signal_package_treeview_selection(gboolean block)
 	}
 }
 
+static void block_signal_search_changed(gboolean block)
+{
+	if (block) {
+		g_signal_handler_block(main_window_gui.search_entry, search_changed_handler_id);
+	} else {
+		g_signal_handler_unblock(main_window_gui.search_entry, search_changed_handler_id);
+	}
+}
+
 static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 {
 	GtkTreeModel *repo_model;
@@ -435,10 +446,44 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 			return FALSE;
 		}
 	}
+	if (package_filters.search_string != NULL) {
+		if (g_strrstr(alpm_pkg_get_name(pkg), package_filters.search_string) == NULL) return FALSE;
+	}
 
 	g_free(db_name);
 
 	return TRUE;
+}
+
+static void on_search_changed(GtkSearchEntry *entry, gpointer user_data)
+{
+	/* block search events to prevent repeated search invocations */
+	block_signal_search_changed(TRUE);
+
+	/* prevent selecting a different repo row while we're filtering */
+	block_signal_package_treeview_selection(TRUE);
+
+	/* set filters */
+	package_filters.status_filter = HIDE_NONE;
+	package_filters.group = NULL;
+	package_filters.db = NULL;
+	package_filters.search_string = g_ascii_strdown(gtk_entry_get_text(GTK_ENTRY(entry)), -1);
+
+	/* trigger refilter of package list */
+	gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(package_list_model));
+
+	/* clean up */
+	g_free(package_filters.search_string);
+	package_filters.search_string = NULL;
+
+	/* if any package list row is selected then deselect it */
+	unselect_package();
+
+	/* release selection blocking */
+	block_signal_package_treeview_selection(FALSE);
+
+	/* release search block */
+	block_signal_search_changed(FALSE);
 }
 
 static void activate_about(GSimpleAction *simple, GVariant *parameter, gpointer user_data)
@@ -509,6 +554,13 @@ static void bind_events_to_widgets(void)
 		G_OBJECT(selection),
 		"changed",
 		G_CALLBACK(package_row_selected),
+		NULL
+	);
+
+	search_changed_handler_id = g_signal_connect(
+		main_window_gui.search_entry,
+		"search-changed",
+		G_CALLBACK(on_search_changed),
 		NULL
 	);
 }

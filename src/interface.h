@@ -52,6 +52,7 @@ struct details_overview_t {
 
 struct main_window_gui_t {
 	GtkWidget *window;
+	GtkWidget *search_entry;
 	GtkWidget *menu_button;
 	GtkWidget *repo_treeview;
 	GtkWidget *package_treeview;
