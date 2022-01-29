@@ -170,6 +170,12 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	g_free(str);
 }
 
+static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar *value)
+{
+	gtk_list_store_append(main_window_gui.package_details_list_store, iter);
+	gtk_list_store_set(main_window_gui.package_details_list_store, iter, 0, name, 1, value, -1);
+}
+
 static void show_package_details(alpm_pkg_t *pkg)
 {
 	GtkTreeIter iter;
@@ -178,19 +184,13 @@ static void show_package_details(alpm_pkg_t *pkg)
 	gtk_list_store_clear(main_window_gui.package_details_list_store);
 
 	/* add detail rows */
-	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
 	/* l10n: package details tab row labels */
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Name:"), 1, alpm_pkg_get_name(pkg), -1);
-	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Version:"), 1, alpm_pkg_get_version(pkg), -1);
-	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Description:"), 1, alpm_pkg_get_desc(pkg), -1);
-	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Architecture:"), 1, alpm_pkg_get_arch(pkg), -1);
-	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("URL:"), 1, alpm_pkg_get_url(pkg), -1);
-	gtk_list_store_append(main_window_gui.package_details_list_store, &iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, &iter, 0, _("Packager:"), 1, alpm_pkg_get_packager(pkg), -1);
+	append_details_row(&iter, _("Name:"), alpm_pkg_get_name(pkg));
+	append_details_row(&iter, _("Version:"), alpm_pkg_get_version(pkg));
+	append_details_row(&iter, _("Description:"), alpm_pkg_get_desc(pkg));
+	append_details_row(&iter, _("Architecture:"), alpm_pkg_get_arch(pkg));
+	append_details_row(&iter, _("URL:"), alpm_pkg_get_url(pkg));
+	append_details_row(&iter, _("Packager:"), alpm_pkg_get_packager(pkg));
 }
 
 static void show_package(alpm_pkg_t *pkg)
