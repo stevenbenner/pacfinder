@@ -109,6 +109,25 @@ gchar *list_to_string(alpm_list_t *list)
 	return str;
 }
 
+gchar *deplist_to_string(alpm_list_t *list)
+{
+	alpm_list_t *string_list, *i;
+	gchar *str;
+
+	string_list = NULL;
+
+	for (i = list; i; i = alpm_list_next(i)) {
+		alpm_depend_t *dep = i->data;
+		string_list = alpm_list_add(string_list, dep->name);
+	}
+
+	str = list_to_string(string_list);
+
+	alpm_list_free(string_list);
+
+	return str;
+}
+
 int package_cmp(const void *p1, const void *p2) {
 	alpm_pkg_t *pkg1 = (alpm_pkg_t *)p1;
 	alpm_pkg_t *pkg2 = (alpm_pkg_t *)p2;

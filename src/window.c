@@ -178,7 +178,8 @@ static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar
 
 static void show_package_details(alpm_pkg_t *pkg)
 {
-	gchar *licenses_str, *groups_str, *requiredby_str, *optionalfor_str;
+	gchar *licenses_str, *groups_str, *provides_str, *dependson_str, *optionals_str,
+	      *requiredby_str, *optionalfor_str, *conflicts_str, *replaces_str;
 	alpm_list_t *requiredby, *optionalfor;
 	GtkTreeIter iter;
 
@@ -192,8 +193,13 @@ static void show_package_details(alpm_pkg_t *pkg)
 	/* build display strings */
 	licenses_str = list_to_string(alpm_pkg_get_licenses(pkg));
 	groups_str = list_to_string(alpm_pkg_get_groups(pkg));
+	provides_str = deplist_to_string(alpm_pkg_get_provides(pkg));
+	dependson_str = deplist_to_string(alpm_pkg_get_depends(pkg));
+	optionals_str = deplist_to_string(alpm_pkg_get_optdepends(pkg));
 	requiredby_str = list_to_string(requiredby);
 	optionalfor_str = list_to_string(optionalfor);
+	conflicts_str = deplist_to_string(alpm_pkg_get_conflicts(pkg));
+	replaces_str = deplist_to_string(alpm_pkg_get_replaces(pkg));
 
 	/* clean up dependency lists */
 	alpm_list_free_inner(requiredby, g_free);
@@ -210,15 +216,25 @@ static void show_package_details(alpm_pkg_t *pkg)
 	append_details_row(&iter, _("URL:"), alpm_pkg_get_url(pkg));
 	append_details_row(&iter, _("Licenses:"), licenses_str);
 	append_details_row(&iter, _("Groups:"), groups_str);
+	append_details_row(&iter, _("Provides:"), provides_str);
+	append_details_row(&iter, _("Depends On:"), dependson_str);
+	append_details_row(&iter, _("Optional:"), optionals_str);
 	append_details_row(&iter, _("Required By:"), requiredby_str);
 	append_details_row(&iter, _("Optional For:"), optionalfor_str);
+	append_details_row(&iter, _("Conflicts:"), conflicts_str);
+	append_details_row(&iter, _("Replaces:"), replaces_str);
 	append_details_row(&iter, _("Packager:"), alpm_pkg_get_packager(pkg));
 
 	/* clean up display strings */
 	g_free(licenses_str);
 	g_free(groups_str);
+	g_free(provides_str);
+	g_free(dependson_str);
+	g_free(optionals_str);
 	g_free(requiredby_str);
 	g_free(optionalfor_str);
+	g_free(conflicts_str);
+	g_free(replaces_str);
 }
 
 static void show_package(alpm_pkg_t *pkg)
