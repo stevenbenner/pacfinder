@@ -29,6 +29,8 @@ typedef enum {
 
 extern alpm_list_t *foreign_pkg_list;
 
+gchar *list_to_string(alpm_list_t *list);
+
 int package_cmp(const void *p1, const void *p2);
 int group_cmp(const void *p1, const void *p2);
 int group_cmp_find(const void *p1, const void *p2);

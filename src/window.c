@@ -178,10 +178,28 @@ static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar
 
 static void show_package_details(alpm_pkg_t *pkg)
 {
+	gchar *licenses_str, *groups_str, *requiredby_str, *optionalfor_str;
+	alpm_list_t *requiredby, *optionalfor;
 	GtkTreeIter iter;
 
 	/* empty list from any previously selected package */
 	gtk_list_store_clear(main_window_gui.package_details_list_store);
+
+	/* compute dependency lists */
+	requiredby = alpm_pkg_compute_requiredby(pkg);
+	optionalfor = alpm_pkg_compute_optionalfor(pkg);
+
+	/* build display strings */
+	licenses_str = list_to_string(alpm_pkg_get_licenses(pkg));
+	groups_str = list_to_string(alpm_pkg_get_groups(pkg));
+	requiredby_str = list_to_string(requiredby);
+	optionalfor_str = list_to_string(optionalfor);
+
+	/* clean up dependency lists */
+	alpm_list_free_inner(requiredby, g_free);
+	alpm_list_free_inner(optionalfor, g_free);
+	alpm_list_free(requiredby);
+	alpm_list_free(optionalfor);
 
 	/* add detail rows */
 	/* l10n: package details tab row labels */
@@ -190,7 +208,17 @@ static void show_package_details(alpm_pkg_t *pkg)
 	append_details_row(&iter, _("Description:"), alpm_pkg_get_desc(pkg));
 	append_details_row(&iter, _("Architecture:"), alpm_pkg_get_arch(pkg));
 	append_details_row(&iter, _("URL:"), alpm_pkg_get_url(pkg));
+	append_details_row(&iter, _("Licenses:"), licenses_str);
+	append_details_row(&iter, _("Groups:"), groups_str);
+	append_details_row(&iter, _("Required By:"), requiredby_str);
+	append_details_row(&iter, _("Optional For:"), optionalfor_str);
 	append_details_row(&iter, _("Packager:"), alpm_pkg_get_packager(pkg));
+
+	/* clean up display strings */
+	g_free(licenses_str);
+	g_free(groups_str);
+	g_free(requiredby_str);
+	g_free(optionalfor_str);
 }
 
 static void show_package(alpm_pkg_t *pkg)

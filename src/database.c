@@ -81,6 +81,34 @@ static void initialize_alpm(void)
 	register_syncs();
 }
 
+static GPtrArray *list_to_ptrarray(alpm_list_t *list)
+{
+	alpm_list_t *i;
+	GPtrArray *arr;
+
+	arr = g_ptr_array_new_with_free_func(g_free);
+
+	for (i = list; i; i = alpm_list_next(i)) {
+		g_ptr_array_add(arr, g_strdup(i->data));
+	}
+	g_ptr_array_add(arr, NULL);
+
+	return arr;
+}
+
+gchar *list_to_string(alpm_list_t *list)
+{
+	GPtrArray *arr;
+	gchar *str;
+
+	arr = list_to_ptrarray(list);
+	str = g_strjoinv(", ", (gchar **)(arr->pdata));
+
+	g_ptr_array_free(arr, TRUE);
+
+	return str;
+}
+
 int package_cmp(const void *p1, const void *p2) {
 	alpm_pkg_t *pkg1 = (alpm_pkg_t *)p1;
 	alpm_pkg_t *pkg2 = (alpm_pkg_t *)p2;
