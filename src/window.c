@@ -179,7 +179,7 @@ static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar
 static void show_package_details(alpm_pkg_t *pkg)
 {
 	gchar *licenses_str, *groups_str, *provides_str, *dependson_str, *optionals_str,
-	      *requiredby_str, *optionalfor_str, *conflicts_str, *replaces_str;
+	      *requiredby_str, *optionalfor_str, *conflicts_str, *replaces_str, *fsize_str, *isize_str;
 	alpm_list_t *requiredby, *optionalfor;
 	GtkTreeIter iter;
 
@@ -200,6 +200,8 @@ static void show_package_details(alpm_pkg_t *pkg)
 	optionalfor_str = list_to_string(optionalfor);
 	conflicts_str = deplist_to_string(alpm_pkg_get_conflicts(pkg));
 	replaces_str = deplist_to_string(alpm_pkg_get_replaces(pkg));
+	fsize_str = human_readable_size(alpm_pkg_get_size(pkg));
+	isize_str = human_readable_size(alpm_pkg_get_isize(pkg));
 
 	/* clean up dependency lists */
 	alpm_list_free_inner(requiredby, g_free);
@@ -223,6 +225,8 @@ static void show_package_details(alpm_pkg_t *pkg)
 	append_details_row(&iter, _("Optional For:"), optionalfor_str);
 	append_details_row(&iter, _("Conflicts:"), conflicts_str);
 	append_details_row(&iter, _("Replaces:"), replaces_str);
+	append_details_row(&iter, _("File Size:"), fsize_str);
+	append_details_row(&iter, _("Install Size:"), isize_str);
 	append_details_row(&iter, _("Packager:"), alpm_pkg_get_packager(pkg));
 
 	/* clean up display strings */
@@ -235,6 +239,8 @@ static void show_package_details(alpm_pkg_t *pkg)
 	g_free(optionalfor_str);
 	g_free(conflicts_str);
 	g_free(replaces_str);
+	g_free(fsize_str);
+	g_free(isize_str);
 }
 
 static void show_package(alpm_pkg_t *pkg)
