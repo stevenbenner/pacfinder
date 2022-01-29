@@ -183,9 +183,6 @@ static void show_package_details(alpm_pkg_t *pkg)
 	alpm_list_t *requiredby, *optionalfor;
 	GtkTreeIter iter;
 
-	/* empty list from any previously selected package */
-	gtk_list_store_clear(main_window_gui.package_details_list_store);
-
 	/* compute dependency lists */
 	requiredby = alpm_pkg_compute_requiredby(pkg);
 	optionalfor = alpm_pkg_compute_optionalfor(pkg);
@@ -208,6 +205,9 @@ static void show_package_details(alpm_pkg_t *pkg)
 	alpm_list_free_inner(optionalfor, g_free);
 	alpm_list_free(requiredby);
 	alpm_list_free(optionalfor);
+
+	/* empty list from any previously selected package */
+	gtk_list_store_clear(main_window_gui.package_details_list_store);
 
 	/* add detail rows */
 	/* l10n: package details tab row labels */
