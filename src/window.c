@@ -178,14 +178,30 @@ static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar
 
 static void show_package_details(alpm_pkg_t *pkg)
 {
+	alpm_db_t *db_local;
+	alpm_pkg_t *local_pkg;
 	gchar *licenses_str, *groups_str, *provides_str, *dependson_str, *optionals_str,
-	      *requiredby_str, *optionalfor_str, *conflicts_str, *replaces_str, *fsize_str, *isize_str;
+	      *requiredby_str, *optionalfor_str, *conflicts_str, *replaces_str, *fsize_str, *isize_str,
+	      *bdate_str, *idate_str;
 	alpm_list_t *requiredby, *optionalfor;
+	GDateTime *bdate, *idate;
 	GtkTreeIter iter;
+
+	/* grab local package, if it exists */
+	db_local = alpm_get_localdb(get_alpm_handle());
+	local_pkg = alpm_db_get_pkg(db_local, alpm_pkg_get_name(pkg));
 
 	/* compute dependency lists */
 	requiredby = alpm_pkg_compute_requiredby(pkg);
 	optionalfor = alpm_pkg_compute_optionalfor(pkg);
+
+	/* gather dates */
+	bdate = g_date_time_new_from_unix_local(alpm_pkg_get_builddate(pkg));
+	if (local_pkg != NULL) {
+		idate = g_date_time_new_from_unix_local(alpm_pkg_get_installdate(local_pkg));
+	} else {
+		idate = NULL;
+	}
 
 	/* build display strings */
 	licenses_str = list_to_string(alpm_pkg_get_licenses(pkg));
@@ -199,6 +215,16 @@ static void show_package_details(alpm_pkg_t *pkg)
 	replaces_str = deplist_to_string(alpm_pkg_get_replaces(pkg));
 	fsize_str = human_readable_size(alpm_pkg_get_size(pkg));
 	isize_str = human_readable_size(alpm_pkg_get_isize(pkg));
+	bdate_str = g_date_time_format_iso8601(bdate);
+	if (idate != NULL) {
+		idate_str = g_date_time_format_iso8601(idate);
+	} else {
+		idate_str = "";
+	}
+
+	/* clean up dates */
+	g_date_time_unref(bdate);
+	if (idate != NULL) g_date_time_unref(idate);
 
 	/* clean up dependency lists */
 	alpm_list_free_inner(requiredby, g_free);
@@ -228,6 +254,8 @@ static void show_package_details(alpm_pkg_t *pkg)
 	append_details_row(&iter, _("File Size:"), fsize_str);
 	append_details_row(&iter, _("Install Size:"), isize_str);
 	append_details_row(&iter, _("Packager:"), alpm_pkg_get_packager(pkg));
+	append_details_row(&iter, _("Build Date:"), bdate_str);
+	append_details_row(&iter, _("Install Date:"), idate_str);
 
 	/* clean up display strings */
 	g_free(licenses_str);
@@ -241,6 +269,8 @@ static void show_package_details(alpm_pkg_t *pkg)
 	g_free(replaces_str);
 	g_free(fsize_str);
 	g_free(isize_str);
+	g_free(bdate_str);
+	if (idate != NULL) g_free(idate_str);
 }
 
 static void show_package(alpm_pkg_t *pkg)
