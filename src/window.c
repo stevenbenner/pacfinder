@@ -79,11 +79,6 @@ static void show_package_list(void)
 
 	package_list_model = gtk_tree_model_filter_new(GTK_TREE_MODEL(main_window_gui.package_list_store), NULL);
 	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window_gui.package_treeview), GTK_TREE_MODEL(package_list_model));
-	gtk_tree_sortable_set_sort_column_id(
-		GTK_TREE_SORTABLE(main_window_gui.package_list_store),
-		PACKAGES_COL_NAME,
-		GTK_SORT_ASCENDING
-	);
 }
 
 static void show_package_overview(alpm_pkg_t *pkg)
