@@ -59,12 +59,14 @@ static GtkWidget *create_repo_tree(void)
 		G_TYPE_POINTER, /* database */
 		G_TYPE_POINTER  /* group */
 	);
-	main_window_gui.repo_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.repo_tree_store));
+	main_window_gui.repo_treeview = GTK_TREE_VIEW(
+		gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.repo_tree_store))
+	);
 
 	column = gtk_tree_view_column_new();
 	/* l10n: filter list tree view heading */
 	gtk_tree_view_column_set_title(column, _("Repositories"));
-	gtk_tree_view_append_column(GTK_TREE_VIEW(main_window_gui.repo_treeview), column);
+	gtk_tree_view_append_column(main_window_gui.repo_treeview, column);
 
 	renderer = gtk_cell_renderer_pixbuf_new();
 	gtk_tree_view_column_pack_start(column, renderer, FALSE);
@@ -75,7 +77,7 @@ static GtkWidget *create_repo_tree(void)
 	gtk_tree_view_column_set_attributes(column, renderer, "text", FILTERS_COL_TITLE, NULL);
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-	gtk_container_add(GTK_CONTAINER(scrolled_window), main_window_gui.repo_treeview);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(main_window_gui.repo_treeview));
 	gtk_widget_set_size_request(scrolled_window, 200, -1);
 
 	return scrolled_window;

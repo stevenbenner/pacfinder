@@ -616,7 +616,7 @@ static void bind_events_to_widgets(void)
 {
 	GtkTreeSelection *selection;
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.repo_treeview));
+	selection = gtk_tree_view_get_selection(main_window_gui.repo_treeview);
 	g_signal_connect(
 		G_OBJECT(selection),
 		"changed",
