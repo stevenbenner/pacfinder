@@ -39,15 +39,15 @@ enum {
 
 struct details_overview_t {
 	GtkWidget *status_image;
-	GtkWidget *heading_label;
-	GtkWidget *desc_label;
-	GtkWidget *link_label;
-	GtkWidget *left_label;
-	GtkWidget *middle_label;
-	GtkWidget *right_label;
-	GtkWidget *required_by_label;
-	GtkWidget *optional_for_label;
-	GtkWidget *dependencies_label;
+	GtkLabel *heading_label;
+	GtkLabel *desc_label;
+	GtkLabel *link_label;
+	GtkLabel *left_label;
+	GtkLabel *middle_label;
+	GtkLabel *right_label;
+	GtkLabel *required_by_label;
+	GtkLabel *optional_for_label;
+	GtkLabel *dependencies_label;
 };
 
 struct main_window_gui_t {

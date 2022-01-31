@@ -126,26 +126,26 @@ static void show_package_overview(alpm_pkg_t *pkg)
 		alpm_pkg_get_name(pkg),
 		alpm_pkg_get_version(pkg)
 	);
-	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.heading_label), str);
+	gtk_label_set_markup(main_window_gui.details_overview.heading_label, str);
 	g_free(str);
 
-	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.desc_label), alpm_pkg_get_desc(pkg));
+	gtk_label_set_label(main_window_gui.details_overview.desc_label, alpm_pkg_get_desc(pkg));
 
 	str = g_strdup_printf("<a href=\"%s\">%s</a>", alpm_pkg_get_url(pkg), alpm_pkg_get_url(pkg));
-	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.link_label), str);
+	gtk_label_set_markup(main_window_gui.details_overview.link_label, str);
 	g_free(str);
 
 	str = human_readable_size(alpm_pkg_get_isize(pkg));
-	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.left_label), str);
+	gtk_label_set_label(main_window_gui.details_overview.left_label, str);
 	g_free(str);
-	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.middle_label), alpm_pkg_get_arch(pkg));
-	gtk_label_set_label(GTK_LABEL(main_window_gui.details_overview.right_label), alpm_db_get_name(alpm_pkg_get_db(pkg)));
+	gtk_label_set_label(main_window_gui.details_overview.middle_label, alpm_pkg_get_arch(pkg));
+	gtk_label_set_label(main_window_gui.details_overview.right_label, alpm_db_get_name(alpm_pkg_get_db(pkg)));
 
 	dep_list = alpm_pkg_compute_requiredby(pkg);
 	count = alpm_list_count(dep_list);
 	/* l10n: package dependency counts - %ld will be a number (zero or more) */
 	str = g_strdup_printf(ngettext("%ld package", "%ld packages", count), count);
-	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.required_by_label), str);
+	gtk_label_set_markup(main_window_gui.details_overview.required_by_label, str);
 	g_free(str);
 	alpm_list_free_inner(dep_list, g_free);
 	alpm_list_free(dep_list);
@@ -153,7 +153,7 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	dep_list = alpm_pkg_compute_optionalfor(pkg);
 	count = alpm_list_count(dep_list);
 	str = g_strdup_printf(ngettext("%ld package", "%ld packages", count), count);
-	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.optional_for_label), str);
+	gtk_label_set_markup(main_window_gui.details_overview.optional_for_label, str);
 	g_free(str);
 	alpm_list_free_inner(dep_list, g_free);
 	alpm_list_free(dep_list);
@@ -161,7 +161,7 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	dep_list = alpm_pkg_get_depends(pkg);
 	count = alpm_list_count(dep_list);
 	str = g_strdup_printf(ngettext("%ld package", "%ld packages", count), count);
-	gtk_label_set_markup(GTK_LABEL(main_window_gui.details_overview.dependencies_label), str);
+	gtk_label_set_markup(main_window_gui.details_overview.dependencies_label, str);
 	g_free(str);
 }
 

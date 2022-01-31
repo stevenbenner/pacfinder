@@ -167,69 +167,69 @@ static GtkWidget *create_package_overview(void)
 	GtkWidget *aside_hbox, *middle_vbox, *required_by_heading, *optional_for_heading,
 	          *dependencies_heading, *right_vbox, *hbox, *scrolled_window;
 
-	main_window_gui.details_overview.left_label = gtk_label_new(NULL);
-	main_window_gui.details_overview.middle_label = gtk_label_new(NULL);
-	main_window_gui.details_overview.right_label = gtk_label_new(NULL);
+	main_window_gui.details_overview.left_label = GTK_LABEL(gtk_label_new(NULL));
+	main_window_gui.details_overview.middle_label = GTK_LABEL(gtk_label_new(NULL));
+	main_window_gui.details_overview.right_label = GTK_LABEL(gtk_label_new(NULL));
 
 	aside_hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-	gtk_box_pack_start(GTK_BOX(aside_hbox), main_window_gui.details_overview.left_label, TRUE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(aside_hbox), main_window_gui.details_overview.middle_label, TRUE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(aside_hbox), main_window_gui.details_overview.right_label, TRUE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(aside_hbox), GTK_WIDGET(main_window_gui.details_overview.left_label), TRUE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(aside_hbox), GTK_WIDGET(main_window_gui.details_overview.middle_label), TRUE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(aside_hbox), GTK_WIDGET(main_window_gui.details_overview.right_label), TRUE, FALSE, 0);
 
-	main_window_gui.details_overview.heading_label = gtk_label_new(NULL);
-	gtk_label_set_justify(GTK_LABEL(main_window_gui.details_overview.heading_label), GTK_JUSTIFY_LEFT);
+	main_window_gui.details_overview.heading_label = GTK_LABEL(gtk_label_new(NULL));
+	gtk_label_set_justify(main_window_gui.details_overview.heading_label, GTK_JUSTIFY_LEFT);
+	gtk_label_set_xalign(main_window_gui.details_overview.heading_label, 0);
 	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.heading_label), GTK_ALIGN_START);
-	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.heading_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.heading_label), 20);
 
-	main_window_gui.details_overview.desc_label = gtk_label_new(NULL);
-	gtk_label_set_justify(GTK_LABEL(main_window_gui.details_overview.desc_label), GTK_JUSTIFY_LEFT);
+	main_window_gui.details_overview.desc_label = GTK_LABEL(gtk_label_new(NULL));
+	gtk_label_set_justify(main_window_gui.details_overview.desc_label, GTK_JUSTIFY_LEFT);
+	gtk_label_set_xalign(main_window_gui.details_overview.desc_label, 0);
+	gtk_label_set_line_wrap(main_window_gui.details_overview.desc_label, TRUE);
 	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.desc_label), GTK_ALIGN_START);
-	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.desc_label), 0);
-	gtk_label_set_line_wrap(GTK_LABEL(main_window_gui.details_overview.desc_label), TRUE);
 
-	main_window_gui.details_overview.link_label = gtk_label_new(NULL);
-	gtk_label_set_justify(GTK_LABEL(main_window_gui.details_overview.link_label), GTK_JUSTIFY_LEFT);
+	main_window_gui.details_overview.link_label = GTK_LABEL(gtk_label_new(NULL));
+	gtk_label_set_justify(main_window_gui.details_overview.link_label, GTK_JUSTIFY_LEFT);
+	gtk_label_set_xalign(main_window_gui.details_overview.link_label, 0);
+	gtk_label_set_line_wrap(main_window_gui.details_overview.link_label, TRUE);
 	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.link_label), GTK_ALIGN_START);
-	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.link_label), 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.link_label), 20);
-	gtk_label_set_line_wrap(GTK_LABEL(main_window_gui.details_overview.link_label), TRUE);
 
 	middle_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.heading_label, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.desc_label, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(middle_vbox), main_window_gui.details_overview.link_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(middle_vbox), GTK_WIDGET(main_window_gui.details_overview.heading_label), FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(middle_vbox), GTK_WIDGET(main_window_gui.details_overview.desc_label), FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(middle_vbox), GTK_WIDGET(main_window_gui.details_overview.link_label), FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(middle_vbox), aside_hbox, FALSE, FALSE, 0);
 
 	required_by_heading = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(required_by_heading), 0);
 	/* l10n: package overview tab right column labels */
 	gtk_label_set_markup(GTK_LABEL(required_by_heading), _("<b><u>Required by:</u></b>"));
-	main_window_gui.details_overview.required_by_label = gtk_label_new(NULL);
-	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.required_by_label), 0);
+	main_window_gui.details_overview.required_by_label = GTK_LABEL(gtk_label_new(NULL));
+	gtk_label_set_xalign(main_window_gui.details_overview.required_by_label, 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.required_by_label), 20);
 	optional_for_heading = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(optional_for_heading), 0);
 	gtk_label_set_markup(GTK_LABEL(optional_for_heading), _("<b><u>Optional for:</u></b>"));
-	main_window_gui.details_overview.optional_for_label = gtk_label_new(NULL);
-	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.optional_for_label), 0);
+	main_window_gui.details_overview.optional_for_label = GTK_LABEL(gtk_label_new(NULL));
+	gtk_label_set_xalign(main_window_gui.details_overview.optional_for_label, 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.optional_for_label), 20);
 	dependencies_heading = gtk_label_new(NULL);
 	gtk_label_set_xalign(GTK_LABEL(dependencies_heading), 0);
 	gtk_label_set_markup(GTK_LABEL(dependencies_heading), _("<b><u>Dependencies:</u></b>"));
-	main_window_gui.details_overview.dependencies_label = gtk_label_new(NULL);
-	gtk_label_set_xalign(GTK_LABEL(main_window_gui.details_overview.dependencies_label), 0);
+	main_window_gui.details_overview.dependencies_label = GTK_LABEL(gtk_label_new(NULL));
+	gtk_label_set_xalign(main_window_gui.details_overview.dependencies_label, 0);
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.dependencies_label), 20);
 
 	right_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_widget_set_margin_start(GTK_WIDGET(right_vbox), 20);
 	gtk_widget_set_margin_end(GTK_WIDGET(right_vbox), 20);
 	gtk_box_pack_start(GTK_BOX(right_vbox), required_by_heading, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.required_by_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(right_vbox), GTK_WIDGET(main_window_gui.details_overview.required_by_label), FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(right_vbox), optional_for_heading, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.optional_for_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(right_vbox), GTK_WIDGET(main_window_gui.details_overview.optional_for_label), FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(right_vbox), dependencies_heading, FALSE, FALSE, 0);
-	gtk_box_pack_start(GTK_BOX(right_vbox), main_window_gui.details_overview.dependencies_label, FALSE, FALSE, 0);
+	gtk_box_pack_start(GTK_BOX(right_vbox), GTK_WIDGET(main_window_gui.details_overview.dependencies_label), FALSE, FALSE, 0);
 
 	main_window_gui.details_overview.status_image = gtk_image_new();
 	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.status_image), GTK_ALIGN_END);
