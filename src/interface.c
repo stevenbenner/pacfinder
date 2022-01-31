@@ -122,7 +122,9 @@ static GtkWidget *create_package_list(void)
 		G_TYPE_POINTER /* alpm_pkg_t */
 	);
 
-	main_window_gui.package_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_list_store));
+	main_window_gui.package_treeview = GTK_TREE_VIEW(
+		gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_list_store))
+	);
 
 	for (i = 0; i < PACKAGES_NUM_COLS - 1; i++) { /* COLS-1 for the non-visible pointer column */
 		GtkCellRenderer *renderer;
@@ -148,11 +150,11 @@ static GtkWidget *create_package_list(void)
 		gtk_tree_view_column_set_fixed_width(column, 150);
 		gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
 		gtk_tree_view_column_set_resizable(column, TRUE);
-		gtk_tree_view_append_column(GTK_TREE_VIEW(main_window_gui.package_treeview), column);
+		gtk_tree_view_append_column(main_window_gui.package_treeview, column);
 	}
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-	gtk_container_add(GTK_CONTAINER(scrolled_window), main_window_gui.package_treeview);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(main_window_gui.package_treeview));
 	gtk_widget_set_size_request(scrolled_window, 400, 200);
 
 	return scrolled_window;

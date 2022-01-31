@@ -78,7 +78,7 @@ static void show_package_list(void)
 	}
 
 	package_list_model = gtk_tree_model_filter_new(GTK_TREE_MODEL(main_window_gui.package_list_store), NULL);
-	gtk_tree_view_set_model(GTK_TREE_VIEW(main_window_gui.package_treeview), GTK_TREE_MODEL(package_list_model));
+	gtk_tree_view_set_model(main_window_gui.package_treeview, GTK_TREE_MODEL(package_list_model));
 }
 
 static void show_package_overview(alpm_pkg_t *pkg)
@@ -400,14 +400,14 @@ static void unselect_package(void)
 
 	/* reset tree view cursor to top */
 	gtk_tree_view_set_cursor(
-		GTK_TREE_VIEW(main_window_gui.package_treeview),
+		main_window_gui.package_treeview,
 		gtk_tree_path_new_from_indices(0, -1),
 		NULL,
 		FALSE
 	);
 
 	/* if any package list row is selected then unselect it */
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
+	selection = gtk_tree_view_get_selection(main_window_gui.package_treeview);
 	gtk_tree_selection_unselect_all(selection);
 
 	/* clear any open package details */
@@ -416,7 +416,7 @@ static void unselect_package(void)
 
 static void block_signal_package_treeview_selection(gboolean block)
 {
-	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(main_window_gui.package_treeview);
 
 	if (block) {
 		g_signal_handler_block(selection, pkg_selchange_handler_id);
@@ -624,7 +624,7 @@ static void bind_events_to_widgets(void)
 		NULL
 	);
 
-	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(main_window_gui.package_treeview));
+	selection = gtk_tree_view_get_selection(main_window_gui.package_treeview);
 	pkg_selchange_handler_id = g_signal_connect(
 		G_OBJECT(selection),
 		"changed",

@@ -55,7 +55,7 @@ struct main_window_gui_t {
 	GtkWidget *search_entry;
 	GtkWidget *menu_button;
 	GtkWidget *repo_treeview;
-	GtkWidget *package_treeview;
+	GtkTreeView *package_treeview;
 	GtkTreeStore *repo_tree_store;
 	GtkListStore *package_list_store;
 	GtkNotebook *details_notebook;
