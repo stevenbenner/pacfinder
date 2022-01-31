@@ -42,7 +42,7 @@ static void create_header_bar(void)
 	gtk_button_set_image(GTK_BUTTON(main_window_gui.menu_button), menu_image);
 	gtk_header_bar_pack_end(GTK_HEADER_BAR(header_bar), main_window_gui.menu_button);
 
-	gtk_window_set_titlebar(GTK_WINDOW(main_window_gui.window), header_bar);
+	gtk_window_set_titlebar(main_window_gui.window, header_bar);
 }
 
 static GtkWidget *create_repo_tree(void)
@@ -232,14 +232,14 @@ static GtkWidget *create_package_overview(void)
 	gtk_box_pack_start(GTK_BOX(right_vbox), GTK_WIDGET(main_window_gui.details_overview.dependencies_label), FALSE, FALSE, 0);
 
 	main_window_gui.details_overview.status_image = gtk_image_new();
-	gtk_widget_set_halign(GTK_WIDGET(main_window_gui.details_overview.status_image), GTK_ALIGN_END);
-	gtk_widget_set_valign(GTK_WIDGET(main_window_gui.details_overview.status_image), GTK_ALIGN_START);
-	gtk_widget_set_margin_end(GTK_WIDGET(main_window_gui.details_overview.status_image), 10);
+	gtk_widget_set_halign(main_window_gui.details_overview.status_image, GTK_ALIGN_END);
+	gtk_widget_set_valign(main_window_gui.details_overview.status_image, GTK_ALIGN_START);
+	gtk_widget_set_margin_end(main_window_gui.details_overview.status_image, 10);
 
 	hbox = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-	gtk_widget_set_margin_top(GTK_WIDGET(hbox), 10);
-	gtk_widget_set_margin_start(GTK_WIDGET(hbox), 10);
-	gtk_widget_set_margin_end(GTK_WIDGET(hbox), 10);
+	gtk_widget_set_margin_top(hbox, 10);
+	gtk_widget_set_margin_start(hbox, 10);
+	gtk_widget_set_margin_end(hbox, 10);
 	gtk_box_pack_start(GTK_BOX(hbox), main_window_gui.details_overview.status_image, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), middle_vbox, TRUE, TRUE, 0);
 	gtk_box_pack_start(GTK_BOX(hbox), right_vbox, FALSE, FALSE, 0);
