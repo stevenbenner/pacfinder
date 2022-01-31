@@ -28,7 +28,7 @@ static const gchar *authors[] = {
 	NULL
 };
 
-void show_about_dialog(GtkWidget *parent)
+void show_about_dialog(GtkWindow *parent)
 {
 	/* l10n: program version shown in about dialog - %s is version number (e.g. 1.2) */
 	gchar *version_str = g_strdup_printf(_("Version %s"), VERSION);
@@ -36,7 +36,7 @@ void show_about_dialog(GtkWidget *parent)
 	gchar *copyright_str = g_strdup_printf(_("Copyright %s Steven Benner"), "2022");
 
 	gtk_show_about_dialog(
-		GTK_WINDOW(parent),
+		parent,
 		/* l10n: program name shown in about dialog */
 		"program-name", _("PacFinder"),
 		"icon-name", APPLICATION_ID,

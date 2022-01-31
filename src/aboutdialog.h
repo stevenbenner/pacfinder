@@ -19,6 +19,6 @@
 
 #include <gtk/gtk.h>
 
-void show_about_dialog(GtkWidget *parent);
+void show_about_dialog(GtkWindow *parent);
 
 #endif /* PF_ABOUTDIALOG_H */
