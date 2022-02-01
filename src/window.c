@@ -654,4 +654,5 @@ void initialize_main_window(void)
 	);
 	bind_events_to_widgets();
 	gtk_window_set_icon_name(main_window_gui.window, APPLICATION_ID);
+	gtk_widget_show_all(GTK_WIDGET(main_window_gui.window));
 }

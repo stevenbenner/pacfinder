@@ -330,5 +330,4 @@ void create_app_window(GtkApplication *app)
 	gtk_window_set_title(main_window_gui.window, _("PacFinder"));
 	gtk_window_set_default_size(main_window_gui.window, 900, 700);
 	create_user_interface();
-	gtk_widget_show_all(GTK_WIDGET(main_window_gui.window));
 }
