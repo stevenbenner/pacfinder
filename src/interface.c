@@ -305,7 +305,7 @@ static GtkWidget *create_package_info(void)
 	return GTK_WIDGET(main_window_gui.details_notebook);
 }
 
-static void create_user_interface(void)
+static void create_user_interface(GtkWindow *window)
 {
 	GtkWidget *vpaned, *hpaned;
 
@@ -321,12 +321,12 @@ static void create_user_interface(void)
 	gtk_paned_pack1(GTK_PANED(hpaned), create_repo_tree(), TRUE, FALSE);
 	gtk_paned_pack2(GTK_PANED(hpaned), vpaned, TRUE, FALSE);
 
-	gtk_container_add(GTK_CONTAINER(main_window_gui.window), hpaned);
+	gtk_container_add(GTK_CONTAINER(window), hpaned);
 }
 
 void create_app_window(GtkApplication *app)
 {
 	main_window_gui.window = GTK_WINDOW(gtk_application_window_new(app));
 	gtk_window_set_title(main_window_gui.window, _("PacFinder"));
-	create_user_interface();
+	create_user_interface(main_window_gui.window);
 }
