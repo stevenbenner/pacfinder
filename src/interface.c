@@ -25,7 +25,7 @@
 
 struct main_window_gui_t main_window_gui;
 
-static void create_header_bar(void)
+static GtkWidget *create_header_bar(void)
 {
 	GtkWidget *header_bar, *menu_image;
 
@@ -42,7 +42,7 @@ static void create_header_bar(void)
 	gtk_button_set_image(GTK_BUTTON(main_window_gui.menu_button), menu_image);
 	gtk_header_bar_pack_end(GTK_HEADER_BAR(header_bar), main_window_gui.menu_button);
 
-	gtk_window_set_titlebar(main_window_gui.window, header_bar);
+	return header_bar;
 }
 
 static GtkWidget *create_repo_tree(void)
@@ -309,7 +309,7 @@ static void create_user_interface(GtkWindow *window)
 {
 	GtkWidget *vpaned, *hpaned;
 
-	create_header_bar();
+	gtk_window_set_titlebar(window, create_header_bar());
 
 	vpaned = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
 	gtk_paned_set_position(GTK_PANED(vpaned), 400);
