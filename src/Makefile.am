@@ -9,6 +9,8 @@ pacfinder_SOURCES = \
 	interface.h \
 	main.c \
 	main.h \
+	settings.c \
+	settings.h \
 	util.c \
 	util.h \
 	window.c \

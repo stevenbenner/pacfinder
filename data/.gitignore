@@ -1,1 +1,3 @@
 /desktop/*.desktop
+/gsettings/*.compiled
+/gsettings/*.valid

@@ -30,6 +30,7 @@ AC_CONFIG_MACRO_DIRS([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_FILES([
 	data/desktop/Makefile
+	data/gsettings/Makefile
 	data/icons/scalable/Makefile
 	data/icons/Makefile
 	data/Makefile
@@ -50,6 +51,10 @@ PKG_CHECK_MODULES([LIBALPM], [libalpm >= 13.0.0])
 dnl Initialize automake
 AM_INIT_AUTOMAKE
 AM_SILENT_RULES([yes])
+
+dnl GSettings
+AX_REQUIRE_DEFINED([GLIB_GSETTINGS])
+GLIB_GSETTINGS
 
 dnl Generate LINGUAS file
 rm -f $srcdir/po/LINGUAS

@@ -23,6 +23,7 @@
 #include <unistd.h>
 
 #include "interface.h"
+#include "settings.h"
 #include "window.h"
 
 static void init_i18n(void)
@@ -54,6 +55,9 @@ int main(int argc, char **argv)
 		/* l10n: error message shown in cli or log */
 		g_error(_("Do not run this program as root."));
 	}
+
+	/* initialize settings system */
+	initialize_settings();
 
 	/* launch gtk application */
 	app = gtk_application_new(APPLICATION_ID, G_APPLICATION_FLAGS_NONE);

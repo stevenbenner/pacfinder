@@ -1,4 +1,5 @@
 data/desktop/com.stevenbenner.pacfinder.desktop.in
+data/gsettings/com.stevenbenner.pacfinder.gschema.xml
 src/aboutdialog.c
 src/database.c
 src/interface.c

@@ -19,6 +19,8 @@
 #include "window.h"
 
 #include <alpm.h>
+#include <gdk/gdk.h>
+#include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
@@ -26,6 +28,7 @@
 #include "database.h"
 #include "interface.h"
 #include "main.h"
+#include "settings.h"
 #include "util.h"
 
 /* package list filtering */
@@ -612,6 +615,45 @@ static void create_main_menu(void)
 	gtk_widget_insert_action_group(main_window_gui.menu_button, "app", create_action_group());
 }
 
+static void on_window_realize(GtkWindow *window)
+{
+	GdkRectangle geometry = get_saved_window_geometry();
+	gboolean maximized = get_saved_window_state();
+
+	gtk_window_set_default_size(window, geometry.width, geometry.height);
+
+	if (geometry.x > -1 && geometry.y > -1) {
+		gtk_window_move(window, geometry.x, geometry.y);
+	}
+
+	if (maximized) {
+		gtk_window_maximize(window);
+	}
+}
+
+static gboolean on_window_configure(GtkWindow *window, GdkEventConfigure *event)
+{
+	GdkRectangle geometry = { 0 };
+	gboolean maximized;
+
+	gtk_window_get_size(window, &geometry.width, &geometry.height);
+	gtk_window_get_position(window, &geometry.x, &geometry.y);
+	maximized = gtk_window_is_maximized(window);
+
+	if (!maximized) {
+		set_saved_window_geometry(geometry);
+	}
+	set_saved_window_state(maximized);
+
+	return GDK_EVENT_PROPAGATE;
+}
+
+static void bind_events_to_window(GtkWindow *window)
+{
+	g_signal_connect(window, "realize", G_CALLBACK(on_window_realize), NULL);
+	g_signal_connect(window, "configure-event", G_CALLBACK(on_window_configure), NULL);
+}
+
 static void bind_events_to_widgets(void)
 {
 	GtkTreeSelection *selection;
@@ -652,6 +694,7 @@ void initialize_main_window(void)
 		NULL,
 		NULL
 	);
+	bind_events_to_window(main_window_gui.window);
 	bind_events_to_widgets();
 	gtk_window_set_icon_name(main_window_gui.window, APPLICATION_ID);
 	gtk_widget_show_all(GTK_WIDGET(main_window_gui.window));

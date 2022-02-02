@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<schemalist>
+	<schema id="com.stevenbenner.pacfinder" path="/com/stevenbenner/pacfinder/" gettext-domain="pacfinder">
+		<key name="window-size" type="(ii)">
+			<default>(-1, -1)</default>
+			<summary>Window size</summary>
+			<description>Window size (width and height).</description>
+		</key>
+		<key name="window-position" type="(ii)">
+			<default>(-1, -1)</default>
+			<summary>Window position</summary>
+			<description>Window position (x and y).</description>
+		</key>
+		<key name="window-maximized" type="b">
+			<default>false</default>
+			<summary>Window maximized</summary>
+			<description>Window maximized state.</description>
+		</key>
+	</schema>
+</schemalist>
