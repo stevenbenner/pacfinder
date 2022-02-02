@@ -220,9 +220,9 @@ install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 		required_by = alpm_pkg_compute_requiredby(local_pkg);
 
 		if (install_reason == ALPM_PKG_REASON_DEPEND && alpm_list_count(required_by) == 0) {
-			ret =  PKG_REASON_OPTIONAL;
+			ret = PKG_REASON_OPTIONAL;
 		} else {
-			ret =  reason_map[install_reason];
+			ret = reason_map[install_reason];
 		}
 
 		alpm_list_free_inner(required_by, g_free);
