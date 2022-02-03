@@ -191,7 +191,7 @@ static void show_package_details(alpm_pkg_t *pkg)
 	GtkTreeIter iter;
 
 	/* grab local package, if it exists */
-	db_local = alpm_get_localdb(get_alpm_handle());
+	db_local = get_local_db();
 	local_pkg = alpm_db_get_pkg(db_local, alpm_pkg_get_name(pkg));
 
 	/* compute dependency lists */

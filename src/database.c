@@ -29,6 +29,7 @@
 alpm_list_t *foreign_pkg_list = NULL;
 
 static alpm_handle_t *handle = NULL;
+static alpm_db_t *db_local = NULL;
 static alpm_list_t *all_packages_list = NULL;
 
 static gint register_syncs(void)
@@ -161,6 +162,14 @@ alpm_handle_t *get_alpm_handle(void)
 	return handle;
 }
 
+alpm_db_t *get_local_db(void)
+{
+	if (db_local == NULL) {
+		db_local = alpm_get_localdb(get_alpm_handle());
+	}
+	return db_local;
+}
+
 alpm_list_t *get_all_packages(void)
 {
 	alpm_list_t *i;
@@ -181,7 +190,7 @@ alpm_list_t *get_all_packages(void)
 	/* iterate the localdb packages and find any that are not listed in the
 	 * syncdbs - when found, add it to the "all packages" list as well as keep
 	 * track of them in the "foreign" packages list */
-	db_local = alpm_get_localdb(get_alpm_handle());
+	db_local = get_local_db();
 	for (i = alpm_db_get_pkgcache(db_local); i; i = i->next) {
 		alpm_pkg_t *pkg = i->data;
 
@@ -216,7 +225,7 @@ install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 
 	ret = PKG_REASON_NOT_INSTALLED;
 
-	db_local = alpm_get_localdb(get_alpm_handle());
+	db_local = get_local_db();
 	local_pkg = alpm_db_get_pkg(db_local, alpm_pkg_get_name(pkg));
 
 	if (local_pkg != NULL) {
@@ -244,5 +253,6 @@ void database_free(void)
 			/* l10n: error message shown in cli or log */
 			g_error(_("Failed to release libalpm."));
 		}
+		db_local = NULL;
 	}
 }
