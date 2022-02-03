@@ -653,10 +653,17 @@ static gboolean on_window_configure(GtkWindow *window, GdkEventConfigure *event)
 	return GDK_EVENT_PROPAGATE;
 }
 
+static void on_window_destroy(GtkWindow *window)
+{
+	settings_free();
+	database_free();
+}
+
 static void bind_events_to_window(GtkWindow *window)
 {
 	g_signal_connect(window, "realize", G_CALLBACK(on_window_realize), NULL);
 	g_signal_connect(window, "configure-event", G_CALLBACK(on_window_configure), NULL);
+	g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), NULL);
 }
 
 static void bind_events_to_widgets(void)
