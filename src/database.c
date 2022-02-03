@@ -182,7 +182,10 @@ alpm_list_t *get_all_packages(void)
 			alpm_list_t *db_package_list = alpm_db_get_pkgcache(db);
 
 			if (db_package_list != NULL) {
-				all_packages_list = alpm_list_join(all_packages_list, db_package_list);
+				all_packages_list = alpm_list_join(
+					all_packages_list,
+					alpm_list_copy(db_package_list)
+				);
 			}
 		}
 	}
