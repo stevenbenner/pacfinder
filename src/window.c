@@ -15,16 +15,20 @@
  * limitations under the License.
  */
 
+/* build config */
 #include "config.h"
 
+/* file header */
 #include "window.h"
 
+/* system libraries */
 #include <alpm.h>
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+/* pacfinder */
 #include "aboutdialog.h"
 #include "database.h"
 #include "interface.h"

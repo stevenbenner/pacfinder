@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
+/* build config */
 #include "config.h"
 
+/* file header */
 #include "database.h"
 
+/* system libraries */
 #include <alpm.h>
 #include <glib.h>
 #include <glib/gi18n.h>

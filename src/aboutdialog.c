@@ -15,13 +15,17 @@
  * limitations under the License.
  */
 
+/* build config */
 #include "config.h"
 
+/* file header */
 #include "aboutdialog.h"
 
+/* system libraries */
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+/* pacfinder */
 #include "main.h"
 
 static const gchar *authors[] = {

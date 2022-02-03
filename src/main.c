@@ -15,14 +15,18 @@
  * limitations under the License.
  */
 
+/* build config */
 #include "config.h"
 
+/* file header */
 #include "main.h"
 
+/* system libraries */
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <unistd.h>
 
+/* pacfinder */
 #include "interface.h"
 #include "settings.h"
 #include "window.h"

@@ -15,13 +15,17 @@
  * limitations under the License.
  */
 
+/* build config */
 #include "config.h"
 
+/* file header */
 #include "interface.h"
 
+/* system libraries */
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 
+/* pacfinder */
 #include "database.h"
 
 struct main_window_gui_t main_window_gui;

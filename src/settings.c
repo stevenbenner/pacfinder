@@ -15,11 +15,14 @@
  * limitations under the License.
  */
 
+/* file header */
 #include "settings.h"
 
+/* system libraries */
 #include <gdk/gdk.h>
 #include <gio/gio.h>
 
+/* pacfinder */
 #include "main.h"
 
 #define WINDOW_MIN_WIDTH 600

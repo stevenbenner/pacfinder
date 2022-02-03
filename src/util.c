@@ -15,10 +15,13 @@
  * limitations under the License.
  */
 
+/* build config */
 #include "config.h"
 
+/* file header */
 #include "util.h"
 
+/* system libraries */
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <sys/types.h>
