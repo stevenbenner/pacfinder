@@ -1,4 +1,5 @@
-/*
+/* main.c - PacFinder main application entry point and supporting code
+ *
  * Copyright 2022 Steven Benner
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
