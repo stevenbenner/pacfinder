@@ -21,7 +21,7 @@
 #include <gdk/gdk.h>
 
 void initialize_settings(void);
-void free_settings(void);
+void settings_free(void);
 GdkRectangle get_saved_window_geometry(void);
 void set_saved_window_geometry(GdkRectangle geometry);
 gboolean get_saved_window_state(void);

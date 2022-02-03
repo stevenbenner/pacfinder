@@ -37,7 +37,7 @@ void initialize_settings(void)
 	}
 }
 
-void free_settings(void)
+void settings_free(void)
 {
 	if (settings != NULL) {
 		g_object_unref(settings);
