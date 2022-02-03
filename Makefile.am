@@ -19,4 +19,12 @@ AUTHORS:
 		git -C "$(top_srcdir)/.git" log --format='%aN <%aE>' | sort | uniq > $@; \
 	fi
 
-dist-hook: AUTHORS
+.PHONY: ChangeLog
+ChangeLog:
+	$(AM_V_GEN) if test -d "$(top_srcdir)/.git"; then \
+		git -C "$(top_srcdir)/.git" log --date=short --format='%cd %an:%n%x09* %s' | \
+			awk '/^[^\t]/{if(previous==$$0)next;previous=$$0}{print}' | \
+			sed '/^[^\t]/s/\([^ ]*\) \(.*\)/\n\1\n\2/' > $@; \
+	fi
+
+dist-hook: AUTHORS ChangeLog
