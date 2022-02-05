@@ -29,3 +29,9 @@ Run the following commands to build this project from the code in the git reposi
 ./configure
 make
 ```
+
+You can then run the program with the following command:
+
+```shell
+GSETTINGS_SCHEMA_DIR=data/gsettings ./src/pacfinder
+```
