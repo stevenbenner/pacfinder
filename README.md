@@ -17,7 +17,6 @@ In addition to the [base-devel][base-devel] group of packages, you need to have 
 
  * glib2 >= 2.56
  * gtk3 >= 3.22
- * pacman >= 6.0
 
 [base-devel]: https://archlinux.org/groups/x86_64/base-devel/
 
