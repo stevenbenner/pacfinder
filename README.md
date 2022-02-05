@@ -22,11 +22,11 @@ In addition to the [base-devel][base-devel] group of packages, you need to have 
 
 ### Compiling
 
-Run the following commands to build this project from the code in the git repository:
+Run the following commands to build this project from the source code in the git repository and produce an executable suitable for development and debugging:
 
 ```shell
 ./autogen.sh
-./configure
+./configure CFLAGS="-ggdb3 -O0"
 make
 ```
 
