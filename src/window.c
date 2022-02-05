@@ -366,7 +366,9 @@ static void populate_db_tree_view(void)
 		db = i->data;
 
 		gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
-		gtk_tree_store_set(main_window_gui.repo_tree_store, &toplevel,
+		gtk_tree_store_set(
+			main_window_gui.repo_tree_store,
+			&toplevel,
 			FILTERS_COL_ICON, "gtk-directory",
 			FILTERS_COL_TITLE, alpm_db_get_name(db),
 			FILTERS_COL_MASK, HIDE_NONE,
@@ -380,7 +382,9 @@ static void populate_db_tree_view(void)
 		for (; group_list; group_list = group_list->next) {
 			alpm_group_t *group = group_list->data;
 			gtk_tree_store_append(main_window_gui.repo_tree_store, &child, &toplevel);
-			gtk_tree_store_set(main_window_gui.repo_tree_store, &child,
+			gtk_tree_store_set(
+				main_window_gui.repo_tree_store,
+				&child,
 				FILTERS_COL_ICON, "gtk-file",
 				FILTERS_COL_TITLE, group->name,
 				FILTERS_COL_MASK, HIDE_NONE,
