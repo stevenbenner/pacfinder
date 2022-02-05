@@ -227,8 +227,8 @@ static GtkWidget *create_package_overview(void)
 	gtk_widget_set_margin_bottom(GTK_WIDGET(main_window_gui.details_overview.dependencies_label), 20);
 
 	right_vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-	gtk_widget_set_margin_start(GTK_WIDGET(right_vbox), 20);
-	gtk_widget_set_margin_end(GTK_WIDGET(right_vbox), 20);
+	gtk_widget_set_margin_start(right_vbox, 20);
+	gtk_widget_set_margin_end(right_vbox, 20);
 	gtk_box_pack_start(GTK_BOX(right_vbox), required_by_heading, FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(right_vbox), GTK_WIDGET(main_window_gui.details_overview.required_by_label), FALSE, FALSE, 0);
 	gtk_box_pack_start(GTK_BOX(right_vbox), optional_for_heading, FALSE, FALSE, 0);
