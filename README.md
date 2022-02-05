@@ -22,6 +22,13 @@ In addition to the [base-devel][base-devel] group of packages, you need to have 
 
 ### Compiling
 
+Clone the git repository to your local system:
+
+```shell
+git clone https://github.com/stevenbenner/pacfinder.git
+cd pacfinder
+```
+
 Run the following commands to build this project from the source code in the git repository and produce an executable suitable for development and debugging:
 
 ```shell
