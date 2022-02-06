@@ -49,13 +49,12 @@ enum {
 };
 
 /* package list filters */
-struct _package_filters {
+struct {
 	guint status_filter;
 	alpm_db_t *db;
 	alpm_group_t *group;
 	gchar *search_string;
-};
-struct _package_filters package_filters;
+} package_filters;
 
 /* local variables */
 static gulong pkg_selchange_handler_id;
