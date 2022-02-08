@@ -71,3 +71,23 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE], ["$PACKAGE"], [Gettext package.])
 
 dnl Generate output
 AC_OUTPUT
+
+dnl Configuration summary
+echo "
+  ${PACKAGE_NAME} - version ${PACKAGE_VERSION}
+
+  Build information:
+    source code dir : ${srcdir}
+    prefix          : ${prefix}
+    use NLS         : ${USE_NLS}
+    compiler        : ${CC}
+    compiler flags  : ${CFLAGS}
+
+  Install paths:
+    binaries        : $(eval echo $(eval echo ${bindir}))
+    data            : $(eval echo $(eval echo ${datadir}))
+      desktop       : $(eval echo $(eval echo ${datadir}))/applications
+      schemas       : $(eval echo $(eval echo ${gsettingsschemadir}))
+      icons         : $(eval echo $(eval echo ${datadir}))/icons/hicolor
+      locales       : $(eval echo $(eval echo ${localedir}))
+"
