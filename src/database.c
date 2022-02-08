@@ -252,6 +252,7 @@ void database_free(void)
 {
 	if (handle) {
 		alpm_list_free(all_packages_list);
+		all_packages_list = NULL;
 		if (alpm_release(handle) == -1) {
 			/* l10n: error message shown in cli or log */
 			g_error(_("Failed to release libalpm."));
