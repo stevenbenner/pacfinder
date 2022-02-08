@@ -258,5 +258,6 @@ void database_free(void)
 			g_error(_("Failed to release libalpm."));
 		}
 		db_local = NULL;
+		handle = NULL;
 	}
 }
