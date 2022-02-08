@@ -23,7 +23,6 @@ AC_INIT(
 	[pacfinder],
 	[https://github.com/stevenbenner/pacfinder]
 )
-AC_PREFIX_DEFAULT([/usr]) dnl Prefer /usr over /usr/local on Arch Linux
 AC_CONFIG_SRCDIR([src/main.c])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_MACRO_DIRS([m4])
