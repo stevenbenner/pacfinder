@@ -40,6 +40,7 @@ void initialize_settings(void)
 void settings_free(void)
 {
 	if (settings != NULL) {
+		g_settings_sync();
 		g_object_unref(settings);
 	}
 }
