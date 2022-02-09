@@ -25,6 +25,8 @@
 /* pacfinder */
 #include "main.h"
 
+#define LEFT_PANED_MIN 50
+#define LEFT_PANED_MAX 1000
 #define WINDOW_MIN_WIDTH 600
 #define WINDOW_MIN_HEIGHT 450
 
@@ -79,4 +81,20 @@ gboolean get_saved_window_state(void)
 void set_saved_window_state(const gboolean maximized)
 {
 	g_settings_set_boolean(settings, "window-maximized", maximized);
+}
+
+guint get_saved_left_width(void)
+{
+	return g_settings_get_int(settings, "left-width");
+}
+
+void set_saved_left_width(guint width)
+{
+	if (width < LEFT_PANED_MIN) {
+		width = LEFT_PANED_MIN;
+	} else if (width > LEFT_PANED_MAX) {
+		width = LEFT_PANED_MAX;
+	}
+
+	g_settings_set_int(settings, "left-width", width);
 }

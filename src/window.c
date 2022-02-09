@@ -637,6 +637,8 @@ static void on_window_realize(GtkWindow *window)
 	if (maximized) {
 		gtk_window_maximize(window);
 	}
+
+	gtk_paned_set_position(main_window_gui.hpaned, get_saved_left_width());
 }
 
 static gboolean on_window_configure(GtkWindow *window, GdkEventConfigure *event)
@@ -669,10 +671,18 @@ static void bind_events_to_window(GtkWindow *window)
 	g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), NULL);
 }
 
+static gboolean on_paned_reposition(GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
+	set_saved_left_width(gtk_paned_get_position(main_window_gui.hpaned));
+
+	return FALSE;
+}
+
 static void bind_events_to_widgets(void)
 {
 	GtkTreeSelection *selection;
 
+	/* filter list item selected */
 	selection = gtk_tree_view_get_selection(main_window_gui.repo_treeview);
 	g_signal_connect(
 		G_OBJECT(selection),
@@ -681,6 +691,7 @@ static void bind_events_to_widgets(void)
 		NULL
 	);
 
+	/* package list item selected */
 	selection = gtk_tree_view_get_selection(main_window_gui.package_treeview);
 	pkg_selchange_handler_id = g_signal_connect(
 		G_OBJECT(selection),
@@ -689,12 +700,28 @@ static void bind_events_to_widgets(void)
 		NULL
 	);
 
+	/* search entry changed */
 	search_changed_handler_id = g_signal_connect(
 		main_window_gui.search_entry,
 		"search-changed",
 		G_CALLBACK(on_search_changed),
 		NULL
 	);
+
+	/* paned position change */
+	g_signal_connect(
+		main_window_gui.hpaned,
+		"accept-position",
+		G_CALLBACK(on_paned_reposition),
+		NULL
+	);
+	g_signal_connect(
+		main_window_gui.hpaned,
+		"button-release-event",
+		G_CALLBACK(on_paned_reposition),
+		NULL
+	);
+
 }
 
 void initialize_main_window(void)

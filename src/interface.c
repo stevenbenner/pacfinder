@@ -83,7 +83,6 @@ static GtkWidget *create_repo_tree(void)
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(main_window_gui.repo_treeview));
-	gtk_widget_set_size_request(scrolled_window, 200, -1);
 
 	return scrolled_window;
 }
@@ -162,7 +161,6 @@ static GtkWidget *create_package_list(void)
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), GTK_WIDGET(main_window_gui.package_treeview));
-	gtk_widget_set_size_request(scrolled_window, 400, 200);
 
 	return scrolled_window;
 }
@@ -320,9 +318,8 @@ static void create_user_interface(GtkWindow *window)
 	gtk_paned_pack2(main_window_gui.vpaned, create_package_info(), TRUE, FALSE);
 
 	main_window_gui.hpaned = GTK_PANED(gtk_paned_new(GTK_ORIENTATION_HORIZONTAL));
-	gtk_paned_set_position(main_window_gui.hpaned, 200);
-	gtk_paned_pack1(main_window_gui.hpaned, create_repo_tree(), TRUE, FALSE);
-	gtk_paned_pack2(main_window_gui.hpaned, GTK_WIDGET(main_window_gui.vpaned), TRUE, FALSE);
+	gtk_paned_pack1(main_window_gui.hpaned, create_repo_tree(), FALSE, TRUE);
+	gtk_paned_pack2(main_window_gui.hpaned, GTK_WIDGET(main_window_gui.vpaned), TRUE, TRUE);
 
 	gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(main_window_gui.hpaned));
 }

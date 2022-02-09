@@ -16,5 +16,11 @@
 			<summary>Window maximized</summary>
 			<description>Window maximized state.</description>
 		</key>
+		<key name="left-width" type="i">
+			<range min="50" max="1000" />
+			<default>200</default>
+			<summary>Left paned width</summary>
+			<description>Width of the left paned in pixels.</description>
+		</key>
 	</schema>
 </schemalist>

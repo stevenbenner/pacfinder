@@ -26,5 +26,7 @@ GdkRectangle get_saved_window_geometry(void);
 void set_saved_window_geometry(GdkRectangle geometry);
 gboolean get_saved_window_state(void);
 void set_saved_window_state(const gboolean maximized);
+guint get_saved_left_width(void);
+void set_saved_left_width(guint width);
 
 #endif /* PF_SETTINGS_H */
