@@ -19,5 +19,6 @@
 #define PF_MAIN_H
 
 #define APPLICATION_ID "com.stevenbenner.pacfinder"
+#define COPYRIGHT_YEAR "2022"
 
 #endif /* PF_MAIN_H */

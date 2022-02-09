@@ -38,7 +38,7 @@ void show_about_dialog(GtkWindow *parent)
 	/* l10n: program version shown in about dialog - %s is version number (e.g. 1.2) */
 	gchar *version_str = g_strdup_printf(_("Version %s"), VERSION);
 	/* l10n: program copyright shown in about dialog - %s is year (e.g. 2022, or 2022-2023) */
-	gchar *copyright_str = g_strdup_printf(_("Copyright %s Steven Benner"), "2022");
+	gchar *copyright_str = g_strdup_printf(_("Copyright %s Steven Benner"), COPYRIGHT_YEAR);
 
 	gtk_show_about_dialog(
 		parent,
