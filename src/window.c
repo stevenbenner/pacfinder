@@ -617,10 +617,10 @@ static GMenuModel *create_app_menu(void)
 	return G_MENU_MODEL(menu);
 }
 
-static void create_main_menu(void)
+static void create_main_menu(GtkWidget *menu_button)
 {
-	gtk_menu_button_set_menu_model(GTK_MENU_BUTTON(main_window_gui.menu_button), create_app_menu());
-	gtk_widget_insert_action_group(main_window_gui.menu_button, "app", create_action_group());
+	gtk_menu_button_set_menu_model(GTK_MENU_BUTTON(menu_button), create_app_menu());
+	gtk_widget_insert_action_group(menu_button, "app", create_action_group());
 }
 
 static void on_window_realize(GtkWindow *window)
@@ -728,7 +728,7 @@ static void bind_events_to_widgets(void)
 
 void initialize_main_window(void)
 {
-	create_main_menu();
+	create_main_menu(main_window_gui.menu_button);
 	populate_db_tree_view();
 	show_package_list();
 	show_package(NULL);
