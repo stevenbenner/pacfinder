@@ -639,6 +639,7 @@ static void on_window_realize(GtkWindow *window)
 	}
 
 	gtk_paned_set_position(main_window_gui.hpaned, get_saved_left_width());
+	gtk_paned_set_position(main_window_gui.vpaned, get_saved_right_height());
 }
 
 static gboolean on_window_configure(GtkWindow *window, GdkEventConfigure *event)
@@ -674,6 +675,7 @@ static void bind_events_to_window(GtkWindow *window)
 static gboolean on_paned_reposition(GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	set_saved_left_width(gtk_paned_get_position(main_window_gui.hpaned));
+	set_saved_right_height(gtk_paned_get_position(main_window_gui.vpaned));
 
 	return FALSE;
 }

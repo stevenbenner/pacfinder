@@ -27,6 +27,8 @@
 
 #define LEFT_PANED_MIN 50
 #define LEFT_PANED_MAX 1000
+#define RIGHT_PANED_MIN 50
+#define RIGHT_PANED_MAX 1000
 #define WINDOW_MIN_WIDTH 600
 #define WINDOW_MIN_HEIGHT 450
 
@@ -97,4 +99,20 @@ void set_saved_left_width(guint width)
 	}
 
 	g_settings_set_int(settings, "left-width", width);
+}
+
+guint get_saved_right_height(void)
+{
+	return g_settings_get_int(settings, "right-height");
+}
+
+void set_saved_right_height(guint height)
+{
+	if (height < RIGHT_PANED_MIN) {
+		height = RIGHT_PANED_MIN;
+	} else if (height > RIGHT_PANED_MAX) {
+		height = RIGHT_PANED_MAX;
+	}
+
+	g_settings_set_int(settings, "right-height", height);
 }

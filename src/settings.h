@@ -28,5 +28,7 @@ gboolean get_saved_window_state(void);
 void set_saved_window_state(const gboolean maximized);
 guint get_saved_left_width(void);
 void set_saved_left_width(guint width);
+guint get_saved_right_height(void);
+void set_saved_right_height(guint height);
 
 #endif /* PF_SETTINGS_H */
