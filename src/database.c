@@ -26,6 +26,10 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 
+#define FS_ROOT_PATH "/"
+#define PACMAN_CONFIG_PATH "/etc/pacman.conf"
+#define PACMAN_DB_PATH "/var/lib/pacman/"
+
 alpm_list_t *foreign_pkg_list = NULL;
 
 static alpm_handle_t *handle = NULL;
@@ -34,7 +38,6 @@ static alpm_list_t *all_packages_list = NULL;
 
 static gint register_syncs(void)
 {
-	const gchar *file_name = "/etc/pacman.conf";
 	const alpm_siglevel_t level = ALPM_SIG_USE_DEFAULT;
 
 	gboolean ret;
@@ -43,7 +46,7 @@ static gint register_syncs(void)
 	gchar **lines = NULL;
 	guint i;
 
-	ret = g_file_get_contents(file_name, &contents, &length, NULL);
+	ret = g_file_get_contents(PACMAN_CONFIG_PATH, &contents, &length, NULL);
 
 	if (ret) {
 		lines = g_strsplit(contents, "\n", -1);
@@ -65,7 +68,7 @@ static gint register_syncs(void)
 		}
 	} else {
 		/* l10n: error message shown in cli or log */
-		g_error(_("Failed to read pacman config file: %s"), file_name);
+		g_error(_("Failed to read pacman config file: %s"), PACMAN_CONFIG_PATH);
 	}
 
 	g_strfreev(lines);
@@ -78,7 +81,7 @@ static void initialize_alpm(void)
 {
 	alpm_errno_t err;
 
-	handle = alpm_initialize("/", "/var/lib/pacman/", &err);
+	handle = alpm_initialize(FS_ROOT_PATH, PACMAN_DB_PATH, &err);
 	if (!handle) {
 		/* l10n: error message shown in cli or log */
 		g_error(_("Failed to initialize libalpm: %s"), alpm_strerror(err));
