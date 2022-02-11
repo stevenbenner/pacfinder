@@ -312,12 +312,12 @@ static void create_user_interface(GtkWindow *window)
 	gtk_window_set_titlebar(window, create_header_bar());
 
 	main_window_gui.vpaned = GTK_PANED(gtk_paned_new(GTK_ORIENTATION_VERTICAL));
-	gtk_paned_pack1(main_window_gui.vpaned, create_package_list(), FALSE, TRUE);
-	gtk_paned_pack2(main_window_gui.vpaned, create_package_info(), TRUE, TRUE);
+	gtk_paned_add1(main_window_gui.vpaned, create_package_list());
+	gtk_paned_add2(main_window_gui.vpaned, create_package_info());
 
 	main_window_gui.hpaned = GTK_PANED(gtk_paned_new(GTK_ORIENTATION_HORIZONTAL));
-	gtk_paned_pack1(main_window_gui.hpaned, create_repo_tree(), FALSE, TRUE);
-	gtk_paned_pack2(main_window_gui.hpaned, GTK_WIDGET(main_window_gui.vpaned), TRUE, TRUE);
+	gtk_paned_add1(main_window_gui.hpaned, create_repo_tree());
+	gtk_paned_add2(main_window_gui.hpaned, GTK_WIDGET(main_window_gui.vpaned));
 
 	gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(main_window_gui.hpaned));
 }
