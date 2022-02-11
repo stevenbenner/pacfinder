@@ -38,8 +38,6 @@ static alpm_list_t *all_packages_list = NULL;
 
 static gint register_syncs(void)
 {
-	const alpm_siglevel_t level = ALPM_SIG_USE_DEFAULT;
-
 	gboolean ret;
 	gchar *contents = NULL;
 	gsize length;
@@ -60,7 +58,7 @@ static gint register_syncs(void)
 			if (g_str_has_prefix(lines[i], "[") && g_str_has_suffix(lines[i], "]")) {
 				section = g_strndup(&lines[i][1], strlen(lines[i]) - 2);
 				if (g_strcmp0(section, "options") != 0) {
-					db = alpm_register_syncdb(handle, section, level);
+					db = alpm_register_syncdb(handle, section, ALPM_SIG_USE_DEFAULT);
 					alpm_db_set_usage(db, ALPM_DB_USAGE_ALL);
 				}
 				g_free(section);
