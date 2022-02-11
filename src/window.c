@@ -625,19 +625,19 @@ static void create_main_menu(GtkWidget *menu_button)
 
 static void on_window_realize(GtkWindow *window)
 {
-	GdkRectangle geometry = get_saved_window_geometry();
-	gboolean maximized = get_saved_window_state();
+	GdkRectangle geometry;
 
+	/* set window geometry */
+	geometry = get_saved_window_geometry();
 	gtk_window_set_default_size(window, geometry.width, geometry.height);
-
 	if (geometry.x > -1 && geometry.y > -1) {
 		gtk_window_move(window, geometry.x, geometry.y);
 	}
-
-	if (maximized) {
+	if (get_saved_window_state()) {
 		gtk_window_maximize(window);
 	}
 
+	/* set paned positions */
 	gtk_paned_set_position(main_window_gui.hpaned, get_saved_left_width());
 	gtk_paned_set_position(main_window_gui.vpaned, get_saved_right_height());
 }
