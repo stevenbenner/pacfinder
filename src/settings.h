@@ -30,5 +30,7 @@ guint get_saved_left_width(void);
 void set_saved_left_width(guint width);
 guint get_saved_right_height(void);
 void set_saved_right_height(guint height);
+void get_saved_package_column_widths(gint *w1, gint *w2, gint *w3, gint *w4);
+void set_saved_package_column_widths(const gint w1, const gint w2, const gint w3, const gint w4);
 
 #endif /* PF_SETTINGS_H */

@@ -626,6 +626,8 @@ static void create_main_menu(GtkWidget *menu_button)
 static void on_window_realize(GtkWindow *window)
 {
 	GdkRectangle geometry;
+	gint width1, width2, width3, width4;
+	GtkTreeViewColumn *column;
 
 	/* set window geometry */
 	geometry = get_saved_window_geometry();
@@ -640,6 +642,17 @@ static void on_window_realize(GtkWindow *window)
 	/* set paned positions */
 	gtk_paned_set_position(main_window_gui.hpaned, get_saved_left_width());
 	gtk_paned_set_position(main_window_gui.vpaned, get_saved_right_height());
+
+	/* set column widths */
+	get_saved_package_column_widths(&width1, &width2, &width3, &width4);
+	column = gtk_tree_view_get_column(main_window_gui.package_treeview, PACKAGES_COL_NAME);
+	gtk_tree_view_column_set_fixed_width(column, width1);
+	column = gtk_tree_view_get_column(main_window_gui.package_treeview, PACKAGES_COL_VERSION);
+	gtk_tree_view_column_set_fixed_width(column, width2);
+	column = gtk_tree_view_get_column(main_window_gui.package_treeview, PACKAGES_COL_STATUS);
+	gtk_tree_view_column_set_fixed_width(column, width3);
+	column = gtk_tree_view_get_column(main_window_gui.package_treeview, PACAKGES_COL_REPO);
+	gtk_tree_view_column_set_fixed_width(column, width4);
 }
 
 static gboolean on_window_configure(GtkWindow *window, GdkEventConfigure *event)
@@ -672,10 +685,31 @@ static void bind_events_to_window(GtkWindow *window)
 	g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), NULL);
 }
 
+static void save_package_column_widths(GtkTreeView *package_treeview)
+{
+	GtkTreeViewColumn *column;
+	gint width1, width2, width3, width4;
+
+	column = gtk_tree_view_get_column(package_treeview, PACKAGES_COL_NAME);
+	width1 = gtk_tree_view_column_get_width(column);
+
+	column = gtk_tree_view_get_column(package_treeview, PACKAGES_COL_VERSION);
+	width2 = gtk_tree_view_column_get_width(column);
+
+	column = gtk_tree_view_get_column(package_treeview, PACKAGES_COL_STATUS);
+	width3 = gtk_tree_view_column_get_width(column);
+
+	column = gtk_tree_view_get_column(package_treeview, PACAKGES_COL_REPO);
+	width4 = gtk_tree_view_column_get_width(column);
+
+	set_saved_package_column_widths(width1, width2, width3, width4);
+}
+
 static gboolean on_paned_reposition(GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	set_saved_left_width(gtk_paned_get_position(main_window_gui.hpaned));
 	set_saved_right_height(gtk_paned_get_position(main_window_gui.vpaned));
+	save_package_column_widths(main_window_gui.package_treeview);
 
 	return FALSE;
 }

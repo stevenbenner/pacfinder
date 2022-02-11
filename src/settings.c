@@ -117,3 +117,13 @@ void set_saved_right_height(guint height)
 
 	g_settings_set_int(settings, "right-height", height);
 }
+
+void get_saved_package_column_widths(gint *w1, gint *w2, gint *w3, gint *w4)
+{
+	g_settings_get(settings, "package-list-column-widths", "(iiii)", w1, w2, w3, w4);
+}
+
+void set_saved_package_column_widths(const gint w1, const gint w2, const gint w3, const gint w4)
+{
+	g_settings_set(settings, "package-list-column-widths", "(iiii)", w1, w2, w3, w4);
+}

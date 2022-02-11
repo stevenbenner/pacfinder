@@ -153,7 +153,6 @@ static GtkWidget *create_package_list(void)
 			gtk_tree_view_column_set_cell_data_func(column, renderer, reason_cell_data_fn, NULL, NULL);
 		}
 
-		gtk_tree_view_column_set_fixed_width(column, 150);
 		gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
 		gtk_tree_view_column_set_resizable(column, TRUE);
 		gtk_tree_view_append_column(main_window_gui.package_treeview, column);

@@ -28,5 +28,10 @@
 			<summary>Right paned height</summary>
 			<description>Height of the right paned in pixels.</description>
 		</key>
+		<key name="package-list-column-widths" type="(iiii)">
+			<default>(150, 150, 150, 150)</default>
+			<summary>Package list column widths</summary>
+			<description>Width of package list columns in pixels.</description>
+		</key>
 	</schema>
 </schemalist>
