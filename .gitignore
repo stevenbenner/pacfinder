@@ -9,10 +9,12 @@ Makefile.in.in
 /ABOUT-NLS
 /aclocal.m4
 /AUTHORS
+/autoscan.log
 /ChangeLog
 /config.log
 /config.status
 /configure
+/configure.scan
 /INSTALL
 /pacfinder-*.tar.gz
 /README
