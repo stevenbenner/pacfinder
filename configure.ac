@@ -37,7 +37,22 @@ AC_CONFIG_FILES([
 	src/Makefile
 	Makefile
 ])
+
+dnl Check programs
+AC_PROG_AWK
 AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_LN_S
+
+dnl Check types
+AC_TYPE_OFF_T
+AC_TYPE_SIZE_T
+
+dnl Check headers
+AC_CHECK_HEADERS([unistd.h])
+
+dnl Check functions
+AC_CHECK_FUNCS([setlocale])
 
 dnl Check libraries
 AC_CHECK_LIB([alpm], [alpm_version], , AC_MSG_ERROR([pacman is required to compile pacfinder]))
