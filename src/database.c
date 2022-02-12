@@ -225,7 +225,7 @@ install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 	alpm_db_t *db_local;
 	alpm_pkg_t *local_pkg;
 	alpm_pkgreason_t install_reason;
-	alpm_list_t *required_by;
+	alpm_list_t *required_by, *optional_for;
 
 	ret = PKG_REASON_NOT_INSTALLED;
 
@@ -237,7 +237,16 @@ install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 		required_by = alpm_pkg_compute_requiredby(local_pkg);
 
 		if (install_reason == ALPM_PKG_REASON_DEPEND && alpm_list_count(required_by) == 0) {
-			ret = PKG_REASON_OPTIONAL;
+			optional_for = alpm_pkg_compute_optionalfor(local_pkg);
+
+			if (alpm_list_count(optional_for) == 0) {
+				ret = PKG_REASON_ORPHAN;
+			} else {
+				ret = PKG_REASON_OPTIONAL;
+			}
+
+			alpm_list_free_inner(optional_for, g_free);
+			alpm_list_free(optional_for);
 		} else {
 			ret = reason_map[install_reason];
 		}

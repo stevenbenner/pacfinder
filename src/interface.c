@@ -95,7 +95,8 @@ static void reason_cell_data_fn(GtkTreeViewColumn *column, GtkCellRenderer *rend
 		/* l10n: package install reasons - shown in package list */
 		[PKG_REASON_EXPLICIT] = N_("Explicit"),
 		[PKG_REASON_DEPEND] = N_("Depend"),
-		[PKG_REASON_OPTIONAL] = N_("Optional")
+		[PKG_REASON_OPTIONAL] = N_("Optional"),
+		[PKG_REASON_ORPHAN] = N_("Orphan")
 	};
 
 	install_reason_t reason;

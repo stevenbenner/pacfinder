@@ -25,7 +25,8 @@ typedef enum {
 	PKG_REASON_NOT_INSTALLED = 0,
 	PKG_REASON_EXPLICIT,
 	PKG_REASON_DEPEND,
-	PKG_REASON_OPTIONAL
+	PKG_REASON_OPTIONAL,
+	PKG_REASON_ORPHAN
 } install_reason_t;
 
 extern alpm_list_t *foreign_pkg_list;

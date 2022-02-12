@@ -44,8 +44,9 @@ enum {
 	HIDE_EXPLICIT = (1 << 2),
 	HIDE_DEPEND = (1 << 3),
 	HIDE_OPTION = (1 << 4),
-	HIDE_NATIVE = (1 << 5),
-	HIDE_FOREIGN = (1 << 6)
+	HIDE_ORPHAN = (1 << 5),
+	HIDE_NATIVE = (1 << 6),
+	HIDE_FOREIGN = (1 << 7)
 };
 
 /* package list filters */
@@ -114,6 +115,13 @@ static void show_package_overview(alpm_pkg_t *pkg)
 			gtk_image_set_from_icon_name(
 				GTK_IMAGE(main_window_gui.details_overview.status_image),
 				"gtk-connect",
+				GTK_ICON_SIZE_DIALOG
+			);
+			break;
+		case PKG_REASON_ORPHAN:
+			gtk_image_set_from_icon_name(
+				GTK_IMAGE(main_window_gui.details_overview.status_image),
+				"gtk-disconnect",
 				GTK_ICON_SIZE_DIALOG
 			);
 			break;
@@ -333,7 +341,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-yes",
 		FILTERS_COL_TITLE, _("Explicit"),
-		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION,
+		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION | HIDE_ORPHAN,
 		-1
 	);
 
@@ -343,7 +351,7 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-leave-fullscreen",
 		FILTERS_COL_TITLE, _("Dependency"),
-		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION,
+		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION | HIDE_ORPHAN,
 		-1
 	);
 
@@ -353,7 +361,17 @@ static void populate_db_tree_view(void)
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-connect",
 		FILTERS_COL_TITLE, _("Optional"),
-		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND,
+		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND | HIDE_ORPHAN,
+		-1
+	);
+
+	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_set(
+		main_window_gui.repo_tree_store,
+		&toplevel,
+		FILTERS_COL_ICON, "gtk-disconnect",
+		FILTERS_COL_TITLE, _("Orphan"),
+		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND | HIDE_OPTION,
 		-1
 	);
 
@@ -514,6 +532,9 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	}
 	if (package_filters.status_filter & HIDE_OPTION) {
 		if (reason == PKG_REASON_OPTIONAL) return FALSE;
+	}
+	if (package_filters.status_filter & HIDE_ORPHAN) {
+		if (reason == PKG_REASON_ORPHAN) return FALSE;
 	}
 	if (package_filters.status_filter & HIDE_NATIVE) {
 		if (g_strcmp0(db_name, "local") != 0) return FALSE;
