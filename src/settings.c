@@ -86,12 +86,12 @@ void set_saved_window_state(const gboolean maximized)
 	g_settings_set_boolean(settings, "window-maximized", maximized);
 }
 
-guint get_saved_left_width(void)
+gint get_saved_left_width(void)
 {
 	return g_settings_get_int(settings, "left-width");
 }
 
-void set_saved_left_width(guint width)
+void set_saved_left_width(gint width)
 {
 	if (width < LEFT_PANED_MIN) {
 		width = LEFT_PANED_MIN;
@@ -102,12 +102,12 @@ void set_saved_left_width(guint width)
 	g_settings_set_int(settings, "left-width", width);
 }
 
-guint get_saved_right_height(void)
+gint get_saved_right_height(void)
 {
 	return g_settings_get_int(settings, "right-height");
 }
 
-void set_saved_right_height(guint height)
+void set_saved_right_height(gint height)
 {
 	if (height < RIGHT_PANED_MIN) {
 		height = RIGHT_PANED_MIN;

@@ -26,10 +26,10 @@ GdkRectangle get_saved_window_geometry(void);
 void set_saved_window_geometry(GdkRectangle geometry);
 gboolean get_saved_window_state(void);
 void set_saved_window_state(const gboolean maximized);
-guint get_saved_left_width(void);
-void set_saved_left_width(guint width);
-guint get_saved_right_height(void);
-void set_saved_right_height(guint height);
+gint get_saved_left_width(void);
+void set_saved_left_width(gint width);
+gint get_saved_right_height(void);
+void set_saved_right_height(gint height);
 void get_saved_package_column_widths(gint *w1, gint *w2, gint *w3, gint *w4);
 void set_saved_package_column_widths(const gint w1, const gint w2, const gint w3, const gint w4);
 
