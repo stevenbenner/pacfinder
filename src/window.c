@@ -308,15 +308,15 @@ static void package_row_selected(GtkTreeSelection *selection, gpointer user_data
 	}
 }
 
-static void populate_db_tree_view(void)
+static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 {
 	GtkTreeIter toplevel, child;
 	alpm_list_t *i;
 
 	/* add standard filter lists */
-	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
-		main_window_gui.repo_tree_store,
+		repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-home",
 		/* l10n: filter names shown in main filter list */
@@ -325,9 +325,9 @@ static void populate_db_tree_view(void)
 		-1
 	);
 
-	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
-		main_window_gui.repo_tree_store,
+		repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-media-play",
 		FILTERS_COL_TITLE, _("Installed"),
@@ -335,9 +335,9 @@ static void populate_db_tree_view(void)
 		-1
 	);
 
-	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
-		main_window_gui.repo_tree_store,
+		repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-yes",
 		FILTERS_COL_TITLE, _("Explicit"),
@@ -345,9 +345,9 @@ static void populate_db_tree_view(void)
 		-1
 	);
 
-	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
-		main_window_gui.repo_tree_store,
+		repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-leave-fullscreen",
 		FILTERS_COL_TITLE, _("Dependency"),
@@ -355,9 +355,9 @@ static void populate_db_tree_view(void)
 		-1
 	);
 
-	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
-		main_window_gui.repo_tree_store,
+		repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-connect",
 		FILTERS_COL_TITLE, _("Optional"),
@@ -365,9 +365,9 @@ static void populate_db_tree_view(void)
 		-1
 	);
 
-	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
-		main_window_gui.repo_tree_store,
+		repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-disconnect",
 		FILTERS_COL_TITLE, _("Orphan"),
@@ -382,9 +382,9 @@ static void populate_db_tree_view(void)
 
 		db = i->data;
 
-		gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+		gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 		gtk_tree_store_set(
-			main_window_gui.repo_tree_store,
+			repo_tree_store,
 			&toplevel,
 			FILTERS_COL_ICON, "gtk-directory",
 			FILTERS_COL_TITLE, alpm_db_get_name(db),
@@ -398,9 +398,9 @@ static void populate_db_tree_view(void)
 		group_list = alpm_list_msort(group_list, alpm_list_count(group_list), group_cmp);
 		for (; group_list; group_list = group_list->next) {
 			alpm_group_t *group = group_list->data;
-			gtk_tree_store_append(main_window_gui.repo_tree_store, &child, &toplevel);
+			gtk_tree_store_append(repo_tree_store, &child, &toplevel);
 			gtk_tree_store_set(
-				main_window_gui.repo_tree_store,
+				repo_tree_store,
 				&child,
 				FILTERS_COL_ICON, "gtk-file",
 				FILTERS_COL_TITLE, group->name,
@@ -412,9 +412,9 @@ static void populate_db_tree_view(void)
 		}
 	}
 
-	gtk_tree_store_append(main_window_gui.repo_tree_store, &toplevel, NULL);
+	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
-		main_window_gui.repo_tree_store,
+		repo_tree_store,
 		&toplevel,
 		FILTERS_COL_ICON, "gtk-harddisk",
 		FILTERS_COL_TITLE, _("Foreign"),
@@ -784,7 +784,7 @@ static void bind_events_to_widgets(void)
 void initialize_main_window(void)
 {
 	create_main_menu(main_window_gui.menu_button);
-	populate_db_tree_view();
+	populate_db_tree_view(main_window_gui.repo_tree_store);
 	show_package_list();
 	show_package(NULL);
 	gtk_tree_model_filter_set_visible_func(
