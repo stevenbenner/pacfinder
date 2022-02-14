@@ -214,6 +214,11 @@ alpm_list_t *get_all_packages(void)
 	return all_packages_list;
 }
 
+alpm_pkg_t *find_satisfier(const gchar *dep_str)
+{
+	return alpm_find_satisfier(all_packages_list, dep_str);
+}
+
 install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 {
 	static const install_reason_t reason_map[] = {

@@ -253,6 +253,32 @@ static GtkWidget *create_package_overview(void)
 	return scrolled_window;
 }
 
+static GtkWidget *create_package_dependencies(void)
+{
+	GtkWidget *requires_label, *grid, *scrolled_window;
+
+	main_window_gui.package_details_deps_box = GTK_FLOW_BOX(gtk_flow_box_new());
+	gtk_flow_box_set_selection_mode(main_window_gui.package_details_deps_box, GTK_SELECTION_NONE);
+	gtk_widget_set_valign(GTK_WIDGET(main_window_gui.package_details_deps_box), GTK_ALIGN_START);
+	gtk_widget_set_hexpand(GTK_WIDGET(main_window_gui.package_details_deps_box), TRUE);
+
+	/* l10n: labels in package dependencies tab */
+	requires_label = gtk_label_new(_("Requires:"));
+	gtk_widget_set_valign(requires_label, GTK_ALIGN_START);
+	gtk_widget_set_margin_top(requires_label, 5);
+	gtk_widget_set_margin_start(requires_label, 5);
+	gtk_widget_set_margin_end(requires_label, 5);
+
+	grid = gtk_grid_new();
+	gtk_grid_attach(GTK_GRID(grid), requires_label, 0, 0, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(main_window_gui.package_details_deps_box), 1, 0, 1, 1);
+
+	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+	gtk_container_add(GTK_CONTAINER(scrolled_window), grid);
+
+	return scrolled_window;
+}
+
 static GtkWidget *create_package_details(void)
 {
 	const gint column_count = 2;
@@ -294,6 +320,14 @@ static GtkWidget *create_package_info(void)
 		create_package_overview(),
 		/* l10n: package overview tab name */
 		gtk_label_new(_("Overview")),
+		NULL
+	);
+
+	gtk_notebook_append_page_menu(
+		main_window_gui.details_notebook,
+		create_package_dependencies(),
+		/* l10n: package dependencies tab name */
+		gtk_label_new(_("Dependencies")),
 		NULL
 	);
 

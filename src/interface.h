@@ -63,6 +63,7 @@ struct main_window_gui_t {
 	GtkListStore *package_list_store;
 	GtkNotebook *details_notebook;
 	struct details_overview_t details_overview;
+	GtkFlowBox *package_details_deps_box;
 	GtkListStore *package_details_list_store;
 };
 extern struct main_window_gui_t main_window_gui;

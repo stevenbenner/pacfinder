@@ -62,6 +62,8 @@ static gulong pkg_selchange_handler_id;
 static gulong search_changed_handler_id;
 static GtkTreeModel *package_list_model;
 
+static void show_package(alpm_pkg_t *pkg);
+
 static void show_package_list(void)
 {
 	alpm_list_t *i;
@@ -180,6 +182,41 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	g_free(str);
 }
 
+static void on_dep_clicked(GtkButton* self, alpm_depend_t *user_data)
+{
+	alpm_pkg_t *pkg = find_satisfier(user_data->name);
+	if (pkg != NULL) {
+		show_package(pkg);
+	}
+}
+
+static void show_package_deps(alpm_pkg_t *pkg)
+{
+	GList *children, *iter;
+	alpm_list_t *i;
+
+	/* empty the dependencies flow box of any previous children */
+	children = gtk_container_get_children(GTK_CONTAINER(main_window_gui.package_details_deps_box));
+	for (iter = children; iter != NULL; iter = g_list_next(iter)) {
+		gtk_widget_destroy(GTK_WIDGET(iter->data));
+	}
+	g_list_free(children);
+
+	/* append required dependencies */
+	for (i = alpm_pkg_get_depends(pkg); i; i = alpm_list_next(i)) {
+		alpm_depend_t *dep;
+		GtkWidget *button;
+
+		dep = i->data;
+		button = gtk_button_new_with_label(dep->name);
+		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
+
+		gtk_flow_box_insert(main_window_gui.package_details_deps_box, button, -1);
+	}
+
+	gtk_widget_show_all(GTK_WIDGET(main_window_gui.package_details_deps_box));
+}
+
 static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar *value)
 {
 	gtk_list_store_append(main_window_gui.package_details_list_store, iter);
@@ -291,6 +328,7 @@ static void show_package(alpm_pkg_t *pkg)
 	}
 
 	show_package_overview(pkg);
+	show_package_deps(pkg);
 	show_package_details(pkg);
 
 	gtk_widget_show(GTK_WIDGET(main_window_gui.details_notebook));
