@@ -193,23 +193,20 @@ static void on_dep_clicked(GtkButton* self, alpm_depend_t *user_data)
 
 static void show_package_deps(alpm_pkg_t *pkg)
 {
-	GList *children, *iter;
 	alpm_list_t *i;
 	gint row;
 
-	/* empty the dependencies flow box of any previous children */
-	children = gtk_container_get_children(GTK_CONTAINER(main_window_gui.package_details_deps_box));
-	for (iter = children; iter != NULL; iter = g_list_next(iter)) {
-		gtk_widget_destroy(GTK_WIDGET(iter->data));
-	}
-	g_list_free(children);
-
-	/* empty the optionals grid of any previous children */
-	children = gtk_container_get_children(GTK_CONTAINER(main_window_gui.package_details_opts_grid));
-	for (iter = children; iter != NULL; iter = g_list_next(iter)) {
-		gtk_widget_destroy(GTK_WIDGET(iter->data));
-	}
-	g_list_free(children);
+	/* empty the dependencies boxes of any previous children */
+	gtk_container_foreach(
+		GTK_CONTAINER(main_window_gui.package_details_deps_box),
+		(void *)gtk_widget_destroy,
+		NULL
+	);
+	gtk_container_foreach(
+		GTK_CONTAINER(main_window_gui.package_details_opts_grid),
+		(void *)gtk_widget_destroy,
+		NULL
+	);
 
 	/* append required dependencies */
 	for (i = alpm_pkg_get_depends(pkg); i; i = alpm_list_next(i)) {
