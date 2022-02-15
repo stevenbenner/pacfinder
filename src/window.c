@@ -194,9 +194,17 @@ static void show_package_deps(alpm_pkg_t *pkg)
 {
 	GList *children, *iter;
 	alpm_list_t *i;
+	gint row;
 
 	/* empty the dependencies flow box of any previous children */
 	children = gtk_container_get_children(GTK_CONTAINER(main_window_gui.package_details_deps_box));
+	for (iter = children; iter != NULL; iter = g_list_next(iter)) {
+		gtk_widget_destroy(GTK_WIDGET(iter->data));
+	}
+	g_list_free(children);
+
+	/* empty the optionals grid of any previous children */
+	children = gtk_container_get_children(GTK_CONTAINER(main_window_gui.package_details_opts_grid));
 	for (iter = children; iter != NULL; iter = g_list_next(iter)) {
 		gtk_widget_destroy(GTK_WIDGET(iter->data));
 	}
@@ -214,7 +222,28 @@ static void show_package_deps(alpm_pkg_t *pkg)
 		gtk_flow_box_insert(main_window_gui.package_details_deps_box, button, -1);
 	}
 
+	/* append optional dependencies */
+	row = 0;
+	for (i = alpm_pkg_get_optdepends(pkg); i; i = alpm_list_next(i)) {
+		alpm_depend_t *dep;
+		GtkWidget *button, *label;
+
+		dep = i->data;
+
+		button = gtk_button_new_with_label(dep->name);
+		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
+
+		label = gtk_label_new(dep->desc);
+		gtk_widget_set_halign(label, GTK_ALIGN_START);
+
+		gtk_grid_attach(main_window_gui.package_details_opts_grid, button, 0, row, 1, 1);
+		gtk_grid_attach(main_window_gui.package_details_opts_grid, label, 1, row, 1, 1);
+
+		row++;
+	}
+
 	gtk_widget_show_all(GTK_WIDGET(main_window_gui.package_details_deps_box));
+	gtk_widget_show_all(GTK_WIDGET(main_window_gui.package_details_opts_grid));
 }
 
 static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar *value)
