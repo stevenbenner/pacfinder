@@ -33,14 +33,13 @@ extern alpm_list_t *foreign_pkg_list;
 
 gchar *list_to_string(alpm_list_t *list);
 gchar *deplist_to_string(alpm_list_t *list);
-
 int package_cmp(const void *p1, const void *p2);
 int group_cmp(const void *p1, const void *p2);
 int group_cmp_find(const void *p1, const void *p2);
-
 alpm_handle_t *get_alpm_handle(void);
 alpm_db_t *get_local_db(void);
 alpm_list_t *get_all_packages(void);
+alpm_pkg_t *find_package(const gchar *pkg_name);
 alpm_pkg_t *find_satisfier(const gchar *dep_str);
 install_reason_t get_pkg_status(alpm_pkg_t *pkg);
 void database_free(void);

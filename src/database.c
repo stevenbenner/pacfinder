@@ -214,6 +214,11 @@ alpm_list_t *get_all_packages(void)
 	return all_packages_list;
 }
 
+alpm_pkg_t *find_package(const gchar *pkg_name)
+{
+	return alpm_pkg_find(all_packages_list, pkg_name);
+}
+
 alpm_pkg_t *find_satisfier(const gchar *dep_str)
 {
 	return alpm_find_satisfier(all_packages_list, dep_str);
