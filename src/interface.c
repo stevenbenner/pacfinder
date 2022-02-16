@@ -292,7 +292,7 @@ static GtkWidget *create_package_dependencies(void)
 
 static GtkWidget *create_package_dependents(void)
 {
-	GtkWidget *requires_label, *grid, *scrolled_window;
+	GtkWidget *requires_label, *optional_label, *grid, *scrolled_window;
 
 	main_window_gui.package_details_depsfor_box = GTK_FLOW_BOX(gtk_flow_box_new());
 	gtk_flow_box_set_selection_mode(main_window_gui.package_details_depsfor_box, GTK_SELECTION_NONE);
@@ -306,9 +306,20 @@ static GtkWidget *create_package_dependents(void)
 	gtk_widget_set_margin_start(requires_label, 5);
 	gtk_widget_set_margin_end(requires_label, 5);
 
+	optional_label = gtk_label_new(_("Optional For:"));
+	gtk_widget_set_valign(optional_label, GTK_ALIGN_START);
+	gtk_widget_set_margin_top(optional_label, 5);
+	gtk_widget_set_margin_start(optional_label, 5);
+	gtk_widget_set_margin_end(optional_label, 5);
+
+	main_window_gui.package_details_optsfor_grid = GTK_GRID(gtk_grid_new());
+	gtk_grid_set_column_spacing(main_window_gui.package_details_optsfor_grid, 4);
+
 	grid = gtk_grid_new();
 	gtk_grid_attach(GTK_GRID(grid), requires_label, 0, 0, 1, 1);
 	gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(main_window_gui.package_details_depsfor_box), 1, 0, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), optional_label, 0, 1, 1, 1);
+	gtk_grid_attach(GTK_GRID(grid), GTK_WIDGET(main_window_gui.package_details_optsfor_grid), 1, 1, 1, 1);
 
 	scrolled_window = gtk_scrolled_window_new(NULL, NULL);
 	gtk_container_add(GTK_CONTAINER(scrolled_window), grid);

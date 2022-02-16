@@ -255,11 +255,17 @@ static void show_package_deps(alpm_pkg_t *pkg)
 
 static void show_package_depsfor(alpm_pkg_t *pkg)
 {
-	alpm_list_t *required_by, *i;
+	alpm_list_t *required_by, *optional_for, *i;
+	gint row;
 
 	/* empty the dependents boxes of any previous children */
 	gtk_container_foreach(
 		GTK_CONTAINER(main_window_gui.package_details_depsfor_box),
+		(void *)gtk_widget_destroy,
+		NULL
+	);
+	gtk_container_foreach(
+		GTK_CONTAINER(main_window_gui.package_details_optsfor_grid),
 		(void *)gtk_widget_destroy,
 		NULL
 	);
@@ -279,7 +285,61 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 	alpm_list_free_inner(required_by, g_free);
 	alpm_list_free(required_by);
 
+	/* append optional for dependents */
+	optional_for = alpm_pkg_compute_optionalfor(pkg);
+	row = 0;
+	for (i = optional_for; i; i = alpm_list_next(i)) {
+		alpm_pkg_t *dep;
+		alpm_list_t *dep_opts;
+		gchar *dep_desc;
+		GtkWidget *button, *label;
+
+		dep = find_satisfier(i->data);
+		dep_opts = alpm_pkg_get_optdepends(dep);
+		dep_desc = NULL;
+
+		/* find the matching optional dependency in the dependent to
+		 * get the description */
+		for (; dep_opts; dep_opts = alpm_list_next(dep_opts)) {
+			alpm_depend_t *xd = dep_opts->data;
+
+			/* simple name comparison */
+			if (g_strcmp0((char *)xd->name, alpm_pkg_get_name(pkg)) == 0) {
+				dep_desc = (char *)xd->desc;
+				break;
+			}
+
+			/* check all provides for a match */
+			for (alpm_list_t *prov_list = alpm_pkg_get_provides(pkg); prov_list; prov_list = alpm_list_next(prov_list)) {
+				alpm_depend_t *g = prov_list->data;
+				if (g_strcmp0((char *)xd->name, (char *)g->name) == 0) {
+					dep_desc = (char *)xd->desc;
+					break;
+				}
+			}
+
+			/* if we found a match in the provides then we're done */
+			if (dep_desc != NULL) {
+				break;
+			}
+		}
+
+		button = gtk_button_new_with_label(alpm_pkg_get_name(dep));
+		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep);
+
+		label = gtk_label_new(dep_desc);
+		gtk_widget_set_halign(label, GTK_ALIGN_START);
+
+		gtk_grid_attach(main_window_gui.package_details_optsfor_grid, button, 0, row, 1, 1);
+		gtk_grid_attach(main_window_gui.package_details_optsfor_grid, label, 1, row, 1, 1);
+
+		row++;
+	}
+	alpm_list_free_inner(optional_for, g_free);
+	alpm_list_free(optional_for);
+
 	gtk_widget_show_all(GTK_WIDGET(main_window_gui.package_details_depsfor_box));
+	gtk_widget_show_all(GTK_WIDGET(main_window_gui.package_details_optsfor_grid));
 }
 
 static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar *value)
