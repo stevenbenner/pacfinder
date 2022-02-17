@@ -200,6 +200,35 @@ static void on_deppkg_clicked(GtkButton* self, alpm_depend_t *user_data)
 	}
 }
 
+static GtkWidget *create_dep_button(alpm_pkg_t *pkg)
+{
+	GtkWidget *button, *image;
+
+	button = gtk_button_new_with_label(alpm_pkg_get_name(pkg));
+
+	switch (get_pkg_status(pkg)) {
+		case PKG_REASON_EXPLICIT:
+			image = gtk_image_new_from_icon_name("gtk-yes", GTK_ICON_SIZE_BUTTON);
+			break;
+		case PKG_REASON_DEPEND:
+			image = gtk_image_new_from_icon_name("gtk-leave-fullscreen", GTK_ICON_SIZE_BUTTON);
+			break;
+		case PKG_REASON_OPTIONAL:
+			image = gtk_image_new_from_icon_name("gtk-connect", GTK_ICON_SIZE_BUTTON);
+			break;
+		case PKG_REASON_ORPHAN:
+			image = gtk_image_new_from_icon_name("gtk-disconnect", GTK_ICON_SIZE_BUTTON);
+			break;
+		case PKG_REASON_NOT_INSTALLED:
+		default:
+			image = gtk_image_new_from_icon_name("open-menu-symbolic", GTK_ICON_SIZE_BUTTON);
+	}
+
+	gtk_button_set_image(GTK_BUTTON(button), image);
+
+	return button;
+}
+
 static void show_package_deps(alpm_pkg_t *pkg)
 {
 	alpm_list_t *i;
@@ -223,7 +252,7 @@ static void show_package_deps(alpm_pkg_t *pkg)
 		GtkWidget *button;
 
 		dep = i->data;
-		button = gtk_button_new_with_label(dep->name);
+		button = create_dep_button(find_satisfier(dep->name));
 		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
 
 		gtk_flow_box_insert(main_window_gui.package_details_deps_box, button, -1);
@@ -237,7 +266,7 @@ static void show_package_deps(alpm_pkg_t *pkg)
 
 		dep = i->data;
 
-		button = gtk_button_new_with_label(dep->name);
+		button = create_dep_button(find_satisfier(dep->name));
 		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
 
 		label = gtk_label_new(dep->desc);
@@ -277,7 +306,7 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 		GtkWidget *button;
 
 		dep = find_package(i->data);
-		button = gtk_button_new_with_label(alpm_pkg_get_name(dep));
+		button = create_dep_button(dep);
 		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep);
 
 		gtk_flow_box_insert(main_window_gui.package_details_depsfor_box, button, -1);
@@ -324,7 +353,7 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 			}
 		}
 
-		button = gtk_button_new_with_label(alpm_pkg_get_name(dep));
+		button = create_dep_button(dep);
 		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep);
 
 		label = gtk_label_new(dep_desc);
