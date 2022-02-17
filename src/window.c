@@ -330,19 +330,28 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 		/* find the matching optional dependency in the dependent to
 		 * get the description */
 		for (; dep_opts; dep_opts = alpm_list_next(dep_opts)) {
-			alpm_depend_t *xd = dep_opts->data;
+			alpm_depend_t *opt;
+			gchar *opt_name;
+			alpm_list_t *prov_list;
+
+			opt = dep_opts->data;
+			opt_name = opt->name;
 
 			/* simple name comparison */
-			if (g_strcmp0((char *)xd->name, alpm_pkg_get_name(pkg)) == 0) {
-				dep_desc = (char *)xd->desc;
+			if (g_strcmp0(opt_name, alpm_pkg_get_name(pkg)) == 0) {
+				dep_desc = opt->desc;
 				break;
 			}
 
 			/* check all provides for a match */
-			for (alpm_list_t *prov_list = alpm_pkg_get_provides(pkg); prov_list; prov_list = alpm_list_next(prov_list)) {
-				alpm_depend_t *g = prov_list->data;
-				if (g_strcmp0((char *)xd->name, (char *)g->name) == 0) {
-					dep_desc = (char *)xd->desc;
+			prov_list = alpm_pkg_get_provides(pkg);
+			for (; prov_list; prov_list = alpm_list_next(prov_list)) {
+				alpm_depend_t *prov;
+
+				prov = prov_list->data;
+
+				if (g_strcmp0(opt_name, prov->name) == 0) {
+					dep_desc = opt->desc;
 					break;
 				}
 			}
