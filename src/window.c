@@ -271,6 +271,8 @@ static void show_package_deps(alpm_pkg_t *pkg)
 
 		label = gtk_label_new(dep->desc);
 		gtk_widget_set_halign(label, GTK_ALIGN_START);
+		gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+		gtk_label_set_xalign(GTK_LABEL(label), 0);
 
 		gtk_grid_attach(main_window_gui.package_details_opts_grid, button, 0, row, 1, 1);
 		gtk_grid_attach(main_window_gui.package_details_opts_grid, label, 1, row, 1, 1);
@@ -367,6 +369,8 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 
 		label = gtk_label_new(dep_desc);
 		gtk_widget_set_halign(label, GTK_ALIGN_START);
+		gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
+		gtk_label_set_xalign(GTK_LABEL(label), 0);
 
 		gtk_grid_attach(main_window_gui.package_details_optsfor_grid, button, 0, row, 1, 1);
 		gtk_grid_attach(main_window_gui.package_details_optsfor_grid, label, 1, row, 1, 1);
