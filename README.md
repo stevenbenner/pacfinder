@@ -15,6 +15,16 @@ This software is licensed under the [Apache License, Version 2.0][license].
 
 ## Installation
 
+### Dependencies
+
+In addition to the [base-devel][base-devel] group of packages, you need to have
+the following packages installed on your system to compile and run this program:
+
+ * glib2 >= 2.56
+ * gtk3 >= 3.22
+
+[base-devel]: https://archlinux.org/groups/x86_64/base-devel/
+
 ### From tarball
 
 Download the latest distribution tarball from the [releases page][releases] for
@@ -34,16 +44,6 @@ start it from the command line by running `pacfinder`.
 [releases]: https://github.com/stevenbenner/pacfinder/releases
 
 ## Building from source
-
-### Dependencies
-
-In addition to the [base-devel][base-devel] group of packages, you need to have
-the following packages installed on your system to compile and run this program:
-
- * glib2 >= 2.56
- * gtk3 >= 3.22
-
-[base-devel]: https://archlinux.org/groups/x86_64/base-devel/
 
 ### Compiling
 
