@@ -41,7 +41,7 @@ the following packages installed on your system to compile and run this program:
 
 [base-devel]: https://archlinux.org/groups/x86_64/base-devel/
 
-### From tarball
+### Install from tarball
 
 Download the latest distribution tarball from the [releases page][releases] for
 this project on GitHub. Extract the contents of that file to some temporary
