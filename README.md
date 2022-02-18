@@ -13,6 +13,22 @@ This software is licensed under the [Apache License, Version 2.0][license].
 [manjaro]: https://manjaro.org/
 [license]: COPYING
 
+## Features
+
+ * Comprehensive list of all packages known to local pacman
+ * View & filter packages based on installation status
+    * Installed
+    * Not installed
+    * Explicitly installed
+    * Installed as a dependency
+    * Installed as an optional dependency
+    * Orphan packages, not required by anything
+ * Explore packages contained in Arch package repositories and groups
+ * Show installed "foreign" packages (i.e. manually installed or AUR)
+ * Search packages by name
+ * Display and navigate package dependency relationships
+ * GTK desktop application, designed to obey user themes
+
 ## Installation
 
 ### Dependencies
