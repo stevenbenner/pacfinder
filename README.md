@@ -31,7 +31,7 @@ This software is licensed under the [Apache License, Version 2.0][license].
 
 ## Installation
 
-### Dependencies
+### Requirements
 
 In addition to the [base-devel][base-devel] group of packages, you need to have
 the following packages installed on your system to compile and run this program:
