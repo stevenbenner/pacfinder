@@ -61,7 +61,7 @@ start it from the command line by running `pacfinder`.
 
 ## Building from source
 
-### Compiling
+### Clone git repo
 
 Clone the git repository to your local system:
 
@@ -69,6 +69,8 @@ Clone the git repository to your local system:
 git clone https://github.com/stevenbenner/pacfinder.git
 cd pacfinder
 ```
+
+### Compiling
 
 Run the following commands to build this project from the source code in the git
 repository and produce an executable suitable for development and debugging:
