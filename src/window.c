@@ -225,6 +225,7 @@ static GtkWidget *create_dep_button(alpm_pkg_t *pkg)
 	}
 
 	gtk_button_set_image(GTK_BUTTON(button), image);
+	gtk_button_set_always_show_image(GTK_BUTTON(button), TRUE);
 
 	return button;
 }
