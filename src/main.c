@@ -62,7 +62,7 @@ void init_cli_options(GApplication *app, struct app_options_t *options)
 		{ NULL }
 	};
 
-	g_application_add_main_option_entries(G_APPLICATION(app), cli_options);
+	g_application_add_main_option_entries(app, cli_options);
 }
 
 static void on_activate_app(GtkApplication *app, struct app_options_t *options)
