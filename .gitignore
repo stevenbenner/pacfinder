@@ -6,6 +6,7 @@ Makefile.in.in
 /autom4te.cache/
 /build-aux/
 /m4/
+/pacfinder-*/
 /ABOUT-NLS
 /aclocal.m4
 /AUTHORS
