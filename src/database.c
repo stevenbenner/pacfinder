@@ -123,12 +123,13 @@ gchar *deplist_to_string(alpm_list_t *list)
 	string_list = NULL;
 
 	for (i = list; i; i = alpm_list_next(i)) {
-		alpm_depend_t *dep = i->data;
-		string_list = alpm_list_add(string_list, dep->name);
+		gchar *dep_str = alpm_dep_compute_string(i->data);
+		string_list = alpm_list_add(string_list, dep_str);
 	}
 
 	str = list_to_string(string_list);
 
+	alpm_list_free_inner(string_list, g_free);
 	alpm_list_free(string_list);
 
 	return str;
