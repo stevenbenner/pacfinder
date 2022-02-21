@@ -50,7 +50,7 @@ enum {
 };
 
 /* package list filters */
-struct {
+static struct {
 	guint status_filter;
 	alpm_db_t *db;
 	alpm_group_t *group;
