@@ -632,15 +632,18 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 
 static void unselect_package(void)
 {
+	GtkTreePath *path;
 	GtkTreeSelection *selection;
 
 	/* reset tree view cursor to top */
+	path = gtk_tree_path_new_from_indices(0, -1);
 	gtk_tree_view_set_cursor(
 		main_window_gui.package_treeview,
-		gtk_tree_path_new_from_indices(0, -1),
+		path,
 		NULL,
 		FALSE
 	);
+	gtk_tree_path_free(path);
 
 	/* if any package list row is selected then unselect it */
 	selection = gtk_tree_view_get_selection(main_window_gui.package_treeview);
