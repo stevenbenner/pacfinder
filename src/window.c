@@ -716,6 +716,9 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	install_reason_t reason;
 	gchar *db_name;
 	alpm_pkg_t *pkg;
+	gboolean ret;
+
+	ret = TRUE;
 
 	/* get row data from model */
 	gtk_tree_model_get(
@@ -728,48 +731,48 @@ static gboolean row_visible(GtkTreeModel *model, GtkTreeIter *iter, gpointer dat
 	);
 
 	/* find any filters that would exclude this row */
-	if (package_filters.status_filter & HIDE_INSTALLED) {
-		if (reason != PKG_REASON_NOT_INSTALLED) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_INSTALLED) {
+		if (reason != PKG_REASON_NOT_INSTALLED) ret = FALSE;
 	}
-	if (package_filters.status_filter & HIDE_UNINSTALLED) {
-		if (reason == PKG_REASON_NOT_INSTALLED) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_UNINSTALLED) {
+		if (reason == PKG_REASON_NOT_INSTALLED) ret = FALSE;
 	}
-	if (package_filters.status_filter & HIDE_EXPLICIT) {
-		if (reason == PKG_REASON_EXPLICIT) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_EXPLICIT) {
+		if (reason == PKG_REASON_EXPLICIT) ret = FALSE;
 	}
-	if (package_filters.status_filter & HIDE_DEPEND) {
-		if (reason == PKG_REASON_DEPEND) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_DEPEND) {
+		if (reason == PKG_REASON_DEPEND) ret = FALSE;
 	}
-	if (package_filters.status_filter & HIDE_OPTION) {
-		if (reason == PKG_REASON_OPTIONAL) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_OPTION) {
+		if (reason == PKG_REASON_OPTIONAL) ret = FALSE;
 	}
-	if (package_filters.status_filter & HIDE_ORPHAN) {
-		if (reason == PKG_REASON_ORPHAN) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_ORPHAN) {
+		if (reason == PKG_REASON_ORPHAN) ret = FALSE;
 	}
-	if (package_filters.status_filter & HIDE_NATIVE) {
-		if (g_strcmp0(db_name, "local") != 0) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_NATIVE) {
+		if (g_strcmp0(db_name, "local") != 0) ret = FALSE;
 	}
-	if (package_filters.status_filter & HIDE_FOREIGN) {
-		if (g_strcmp0(db_name, "local") == 0) return FALSE;
+	if (ret && package_filters.status_filter & HIDE_FOREIGN) {
+		if (g_strcmp0(db_name, "local") == 0) ret = FALSE;
 	}
-	if (package_filters.db != NULL) {
-		if (g_strcmp0(db_name, alpm_db_get_name(package_filters.db)) != 0) return FALSE;
+	if (ret && package_filters.db != NULL) {
+		if (g_strcmp0(db_name, alpm_db_get_name(package_filters.db)) != 0) ret = FALSE;
 	}
-	if (package_filters.group != NULL) {
+	if (ret && package_filters.group != NULL) {
 		alpm_list_t *pkg_groups = alpm_pkg_get_groups(pkg);
 		if (alpm_list_count(pkg_groups) == 0) {
-			return FALSE;
+			ret = FALSE;
 		} else if (!alpm_list_find(pkg_groups, package_filters.group, group_cmp_find)) {
-			return FALSE;
+			ret = FALSE;
 		}
 	}
-	if (package_filters.search_string != NULL) {
-		if (g_strrstr(alpm_pkg_get_name(pkg), package_filters.search_string) == NULL) return FALSE;
+	if (ret && package_filters.search_string != NULL) {
+		if (g_strrstr(alpm_pkg_get_name(pkg), package_filters.search_string) == NULL) ret = FALSE;
 	}
 
 	g_free(db_name);
 
-	return TRUE;
+	return ret;
 }
 
 static void on_search_changed(GtkSearchEntry *entry, gpointer user_data)
