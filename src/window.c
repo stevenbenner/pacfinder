@@ -601,7 +601,7 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 		);
 
 		/* add any groups found for this database */
-		group_list = alpm_db_get_groupcache(db);
+		group_list = alpm_list_copy(alpm_db_get_groupcache(db));
 		group_list = alpm_list_msort(group_list, alpm_list_count(group_list), group_cmp);
 		for (; group_list; group_list = group_list->next) {
 			alpm_group_t *group = group_list->data;
@@ -617,6 +617,7 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 				-1
 			);
 		}
+		alpm_list_free(group_list);
 	}
 
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
