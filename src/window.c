@@ -200,11 +200,20 @@ static void on_deppkg_clicked(GtkButton* self, alpm_depend_t *user_data)
 	}
 }
 
-static GtkWidget *create_dep_button(alpm_pkg_t *pkg)
+static GtkWidget *create_dep_button(alpm_pkg_t *pkg, const gchar *label)
 {
+	gchar *name, *desc;
 	GtkWidget *button, *image;
 
-	button = gtk_button_new_with_label(alpm_pkg_get_name(pkg));
+	/* handle labels created with alpm_dep_compute_string() by
+	 * removing the description from the string */
+	name = g_strdup(label);
+	desc = g_strrstr(name, ": ");
+	if (desc != NULL) {
+		name[desc - name] = '\0';
+	}
+
+	button = gtk_button_new_with_label(name);
 
 	switch (get_pkg_status(pkg)) {
 		case PKG_REASON_EXPLICIT:
@@ -226,6 +235,8 @@ static GtkWidget *create_dep_button(alpm_pkg_t *pkg)
 
 	gtk_button_set_image(GTK_BUTTON(button), image);
 	gtk_button_set_always_show_image(GTK_BUTTON(button), TRUE);
+
+	g_free(name);
 
 	return button;
 }
@@ -250,24 +261,31 @@ static void show_package_deps(alpm_pkg_t *pkg)
 	/* append required dependencies */
 	for (i = alpm_pkg_get_depends(pkg); i; i = alpm_list_next(i)) {
 		alpm_depend_t *dep;
+		gchar *dep_str;
 		GtkWidget *button;
 
 		dep = i->data;
-		button = create_dep_button(find_satisfier(dep->name));
+		dep_str = alpm_dep_compute_string(dep);
+
+		button = create_dep_button(find_satisfier(dep_str), dep_str);
 		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
 
 		gtk_flow_box_insert(main_window_gui.package_details_deps_box, button, -1);
+
+		g_free(dep_str);
 	}
 
 	/* append optional dependencies */
 	row = 0;
 	for (i = alpm_pkg_get_optdepends(pkg); i; i = alpm_list_next(i)) {
 		alpm_depend_t *dep;
+		gchar *dep_str;
 		GtkWidget *button, *label;
 
 		dep = i->data;
+		dep_str = alpm_dep_compute_string(dep);
 
-		button = create_dep_button(find_satisfier(dep->name));
+		button = create_dep_button(find_satisfier(dep_str), dep_str);
 		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
 
 		label = gtk_label_new(dep->desc);
@@ -279,6 +297,8 @@ static void show_package_deps(alpm_pkg_t *pkg)
 		gtk_grid_attach(main_window_gui.package_details_opts_grid, label, 1, row, 1, 1);
 
 		row++;
+
+		g_free(dep_str);
 	}
 
 	gtk_widget_show_all(GTK_WIDGET(main_window_gui.package_details_deps_box));
@@ -309,7 +329,7 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 		GtkWidget *button;
 
 		dep = find_package(i->data);
-		button = create_dep_button(dep);
+		button = create_dep_button(dep, alpm_pkg_get_name(dep));
 		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep);
 
 		gtk_flow_box_insert(main_window_gui.package_details_depsfor_box, button, -1);
@@ -365,7 +385,7 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 			}
 		}
 
-		button = create_dep_button(dep);
+		button = create_dep_button(dep, alpm_pkg_get_name(dep));
 		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep);
 
 		label = gtk_label_new(dep_desc);
