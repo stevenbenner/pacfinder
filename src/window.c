@@ -286,6 +286,9 @@ static void show_package_deps(alpm_pkg_t *pkg)
 		dep_str = alpm_dep_compute_string(dep);
 
 		button = create_dep_button(find_satisfier(dep_str), dep_str);
+		gtk_widget_set_margin_start(button, 5);
+		gtk_widget_set_margin_top(button, 5);
+		gtk_widget_set_margin_bottom(button, 5);
 		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
 
 		label = gtk_label_new(dep->desc);
@@ -386,6 +389,9 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 		}
 
 		button = create_dep_button(dep, alpm_pkg_get_name(dep));
+		gtk_widget_set_margin_start(button, 5);
+		gtk_widget_set_margin_top(button, 5);
+		gtk_widget_set_margin_bottom(button, 5);
 		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep);
 
 		label = gtk_label_new(dep_desc);
