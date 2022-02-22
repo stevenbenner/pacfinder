@@ -17,5 +17,5 @@ Makefile.in.in
 /configure
 /configure.scan
 /INSTALL
-/pacfinder-*.tar.gz
+/pacfinder-*.tar*
 /README

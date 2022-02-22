@@ -63,7 +63,7 @@ PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.22.0])
 PKG_CHECK_MODULES([LIBALPM], [libalpm >= 13.0.0])
 
 dnl Initialize automake
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([dist-zstd no-dist-gzip])
 AM_SILENT_RULES([yes])
 
 dnl GSettings
