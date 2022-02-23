@@ -33,6 +33,7 @@ AC_CONFIG_FILES([
 	data/icons/scalable/Makefile
 	data/icons/Makefile
 	data/Makefile
+	doc/Makefile
 	po/Makefile.in
 	src/Makefile
 	Makefile

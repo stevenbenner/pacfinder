@@ -1,5 +1,6 @@
 SUBDIRS = \
 	data \
+	doc \
 	src
 
 if USE_NLS
