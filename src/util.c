@@ -38,7 +38,11 @@ gchar *human_readable_size(const off_t size)
 		file_size = file_size / 1024;
 	}
 
-	/* l10n: file size pattern - %.2f is the numeric value (e.g. 8.88) and %s is
-	 * the localized unit (e.g. "MiB"), the order must remain the same */
-	return g_strdup_printf(_("%.2f %s"), file_size, _(sizes[size_index]));
+	if (size >= 1024) {
+		/* l10n: file size patterns - %.2f or %ld is the numeric value (e.g. 8.88 or 8)
+		 * and %s is the localized unit (e.g. "MiB"), the order must remain the same */
+		return g_strdup_printf(_("%.2f %s"), file_size, _(sizes[size_index]));
+	} else {
+		return g_strdup_printf(_("%ld %s"), size, _(sizes[size_index]));
+	}
 }
