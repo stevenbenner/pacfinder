@@ -26,7 +26,7 @@
 #include <glib/gi18n.h>
 #include <sys/types.h>
 
-gchar *human_readable_size(off_t size)
+gchar *human_readable_size(const off_t size)
 {
 	/* l10n: file size units */
 	const gchar *sizes[] = { N_("B"), N_("KiB"), N_("MiB"), N_("GiB"), N_("TiB") };

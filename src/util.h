@@ -21,6 +21,6 @@
 #include <glib.h>
 #include <sys/types.h>
 
-gchar *human_readable_size(off_t size);
+gchar *human_readable_size(const off_t size);
 
 #endif /* PF_UTIL_H */
