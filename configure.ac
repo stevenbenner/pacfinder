@@ -106,4 +106,5 @@ echo "
       schemas       : $(eval echo $(eval echo ${gsettingsschemadir}))
       icons         : $(eval echo $(eval echo ${datadir}))/icons/hicolor
       locales       : $(eval echo $(eval echo ${localedir}))
+      man pages     : $(eval echo $(eval echo ${mandir}))
 "
