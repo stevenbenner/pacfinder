@@ -75,7 +75,7 @@ GLIB_GSETTINGS
 dnl Generate LINGUAS file
 rm -f $srcdir/po/LINGUAS
 for po_file in `ls $srcdir/po/*.po | sort`; do
-	lang=`echo "$po_file" | sed "s|.*/po/\(.*\)\.po|\1|g"`
+	lang=`echo "$po_file" | ${SED} "s|.*/po/\(.*\)\.po|\1|g"`
 	echo $lang >> $srcdir/po/LINGUAS
 done
 
