@@ -13,6 +13,8 @@ This software is licensed under the [Apache License, Version 2.0][license].
 [manjaro]: https://manjaro.org/
 [license]: COPYING
 
+![PacFinder Screenshot](https://stevenbenner.com/misc/pacfinder-screenshot.png)
+
 ## Features
 
  * Comprehensive list of all packages known to local pacman
