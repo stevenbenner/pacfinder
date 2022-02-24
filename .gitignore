@@ -11,6 +11,7 @@ Makefile.in.in
 /aclocal.m4
 /AUTHORS
 /autoscan.log
+/B2SUMS
 /ChangeLog
 /config.log
 /config.status
