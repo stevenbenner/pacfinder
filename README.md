@@ -63,6 +63,10 @@ start it from the command line by running `pacfinder`.
 
 ## Building from source
 
+If you intend to do development work or make other changes to the project then
+you can follow these instructions. If you just want to use the program then you
+should instead follow the installation instructions above.
+
 ### Clone git repo
 
 Clone the git repository to your local system:
