@@ -1,7 +1,8 @@
 SUBDIRS = \
 	data \
 	doc \
-	src
+	src \
+	test
 
 if USE_NLS
 SUBDIRS += po

@@ -36,6 +36,7 @@ AC_CONFIG_FILES([
 	doc/Makefile
 	po/Makefile.in
 	src/Makefile
+	test/Makefile
 	Makefile
 ])
 
@@ -64,8 +65,11 @@ PKG_CHECK_MODULES([GLIB],[glib-2.0 >= 2.56])
 PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.22.0])
 PKG_CHECK_MODULES([LIBALPM], [libalpm >= 13.0.0])
 
+dnl Test suite
+AC_REQUIRE_AUX_FILE([tap-driver.sh])
+
 dnl Initialize automake
-AM_INIT_AUTOMAKE([dist-zstd no-dist-gzip])
+AM_INIT_AUTOMAKE([dist-zstd no-dist-gzip subdir-objects])
 AM_SILENT_RULES([yes])
 
 dnl GSettings

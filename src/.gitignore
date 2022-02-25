@@ -1,5 +1,6 @@
 *.o
 /.deps/
+/.dirstamp
 /config.h
 /config.h.in
 /pacfinder

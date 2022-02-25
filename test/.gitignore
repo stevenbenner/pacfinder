@@ -1,0 +1,5 @@
+*.o
+/.deps/
+/*.log
+/*.trs
+/test_suite
