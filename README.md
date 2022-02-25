@@ -24,7 +24,7 @@ This software is licensed under the [Apache License, Version 2.0][license].
     * Explicitly installed
     * Installed as a dependency
     * Installed as an optional dependency
-    * Orphan packages, not required by anything
+    * Orphan packages (dependencies not required by anything)
  * Explore packages contained in Arch package repositories and groups
  * Show installed "foreign" packages (i.e. manually installed or AUR)
  * Search packages by name
