@@ -69,8 +69,8 @@ static GtkWidget *create_repo_tree(void)
 	);
 
 	column = gtk_tree_view_column_new();
-	/* l10n: filter list tree view heading */
-	gtk_tree_view_column_set_title(column, _("Repositories"));
+	/* l10n: categories list tree view heading */
+	gtk_tree_view_column_set_title(column, _("Categories"));
 	gtk_tree_view_append_column(main_window_gui.repo_treeview, column);
 
 	renderer = gtk_cell_renderer_pixbuf_new();
