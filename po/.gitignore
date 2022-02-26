@@ -1,5 +1,6 @@
 *.gmo
 *.header
+*.mo
 *.pot
 *.sed
 *.sin
