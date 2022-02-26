@@ -69,9 +69,12 @@ static void on_activate_app(GtkApplication *app, struct app_options_t *options)
 {
 	if (options->show_version == TRUE) {
 		/* l10n: cli --version output */
-		g_print(_("PacFinder - version %s\n\n"), VERSION);
-		g_print(_("Copyright %s Steven Benner\n\n"), COPYRIGHT_YEAR);
-		g_print(_("Report bugs to <%s>.\n"), PACKAGE_BUGREPORT);
+		g_print(_("PacFinder - version %s"), VERSION);
+		g_print("\n\n");
+		g_print(_("Copyright %s Steven Benner"), COPYRIGHT_YEAR);
+		g_print("\n\n");
+		g_print(_("Report bugs to <%s>."), PACKAGE_BUGREPORT);
+		g_print("\n");
 		return;
 	}
 
