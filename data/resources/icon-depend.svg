@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" version="1.1" viewBox="0 0 8.4667 8.4667" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<defs>
+		<symbol id="a">
+			<title>Right and Down Arrow</title>
+			<path d="m56 56h-32l-11-11h24l-23-23 8-8 23 23v-24l11 11z"/>
+		</symbol>
+	</defs>
+	<g>
+		<rect x=".26458" y=".26458" width="7.9375" height="7.9375" fill="#008076" stroke="#000001" stroke-linejoin="bevel" stroke-width=".52917"/>
+		<circle cx="5.2917" cy="5.2917" r="2.1167" fill="#800080"/>
+		<use transform="matrix(.067684 0 0 .067684 .14152 .12922)" width="100%" height="100%" fill="#ffffff" stroke="#000000" xlink:href="#a"/>
+	</g>
+</svg>

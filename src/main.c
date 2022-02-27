@@ -78,6 +78,12 @@ static void on_activate_app(GtkApplication *app, struct app_options_t *options)
 		return;
 	}
 
+	/* add icons from gresource */
+	gtk_icon_theme_add_resource_path(
+		gtk_icon_theme_get_default(),
+		"/com/stevenbenner/pacfinder/icons"
+	);
+
 	create_app_window(app);
 	initialize_main_window();
 }

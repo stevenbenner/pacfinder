@@ -32,6 +32,7 @@ AC_CONFIG_FILES([
 	data/gsettings/Makefile
 	data/icons/scalable/Makefile
 	data/icons/Makefile
+	data/resources/Makefile
 	data/Makefile
 	doc/Makefile
 	po/Makefile.in
@@ -75,6 +76,10 @@ AM_SILENT_RULES([yes])
 dnl GSettings
 AX_REQUIRE_DEFINED([GLIB_GSETTINGS])
 GLIB_GSETTINGS
+
+dnl GResource
+GLIB_COMPILE_RESOURCES=`$PKG_CONFIG --variable glib_compile_resources gio-2.0`
+AC_SUBST(GLIB_COMPILE_RESOURCES)
 
 dnl Generate LINGUAS file
 rm -f $srcdir/po/LINGUAS

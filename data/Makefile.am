@@ -1,4 +1,5 @@
 SUBDIRS = \
 	desktop \
 	gsettings \
-	icons
+	icons \
+	resources

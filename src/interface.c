@@ -58,11 +58,11 @@ static GtkWidget *create_repo_tree(void)
 
 	main_window_gui.repo_tree_store = gtk_tree_store_new(
 		FILTERS_NUM_COLS,
-		G_TYPE_STRING,  /* stock image */
-		G_TYPE_STRING,  /* item name */
-		G_TYPE_INT,     /* filters */
-		G_TYPE_POINTER, /* database */
-		G_TYPE_POINTER  /* group */
+		GDK_TYPE_PIXBUF,  /* icon */
+		G_TYPE_STRING,    /* item name */
+		G_TYPE_INT,       /* filters */
+		G_TYPE_POINTER,   /* database */
+		G_TYPE_POINTER    /* group */
 	);
 	main_window_gui.repo_treeview = GTK_TREE_VIEW(
 		gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.repo_tree_store))
@@ -75,7 +75,7 @@ static GtkWidget *create_repo_tree(void)
 
 	renderer = gtk_cell_renderer_pixbuf_new();
 	gtk_tree_view_column_pack_start(column, renderer, FALSE);
-	gtk_tree_view_column_set_attributes(column, renderer, "stock-id", FILTERS_COL_ICON, NULL);
+	gtk_tree_view_column_set_attributes(column, renderer, "pixbuf", FILTERS_COL_ICON, NULL);
 
 	renderer = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(column, renderer, TRUE);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+	<gresource prefix="/com/stevenbenner/pacfinder/icons">
+		<file alias="scalable/actions/icon-depend.svg" compressed="true" preprocess="xml-stripblanks">icon-depend.svg</file>
+		<file alias="scalable/actions/icon-explicit.svg" compressed="true" preprocess="xml-stripblanks">icon-explicit.svg</file>
+		<file alias="scalable/actions/icon-installed.svg" compressed="true" preprocess="xml-stripblanks">icon-installed.svg</file>
+		<file alias="scalable/actions/icon-optional.svg" compressed="true" preprocess="xml-stripblanks">icon-optional.svg</file>
+		<file alias="scalable/actions/icon-orphan.svg" compressed="true" preprocess="xml-stripblanks">icon-orphan.svg</file>
+		<file alias="scalable/actions/icon-uninstalled.svg" compressed="true" preprocess="xml-stripblanks">icon-uninstalled.svg</file>
+	</gresource>
+</gresources>

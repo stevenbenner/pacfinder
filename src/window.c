@@ -102,35 +102,35 @@ static void show_package_overview(alpm_pkg_t *pkg)
 		case PKG_REASON_EXPLICIT:
 			gtk_image_set_from_icon_name(
 				GTK_IMAGE(main_window_gui.details_overview.status_image),
-				"gtk-yes",
+				"icon-explicit",
 				GTK_ICON_SIZE_DIALOG
 			);
 			break;
 		case PKG_REASON_DEPEND:
 			gtk_image_set_from_icon_name(
 				GTK_IMAGE(main_window_gui.details_overview.status_image),
-				"gtk-leave-fullscreen",
+				"icon-depend",
 				GTK_ICON_SIZE_DIALOG
 			);
 			break;
 		case PKG_REASON_OPTIONAL:
 			gtk_image_set_from_icon_name(
 				GTK_IMAGE(main_window_gui.details_overview.status_image),
-				"gtk-connect",
+				"icon-optional",
 				GTK_ICON_SIZE_DIALOG
 			);
 			break;
 		case PKG_REASON_ORPHAN:
 			gtk_image_set_from_icon_name(
 				GTK_IMAGE(main_window_gui.details_overview.status_image),
-				"gtk-disconnect",
+				"icon-orphan",
 				GTK_ICON_SIZE_DIALOG
 			);
 			break;
 		case PKG_REASON_NOT_INSTALLED:
 			gtk_image_set_from_icon_name(
 				GTK_IMAGE(main_window_gui.details_overview.status_image),
-				"open-menu-symbolic",
+				"icon-uninstalled",
 				GTK_ICON_SIZE_DIALOG
 			);
 			break;
@@ -217,20 +217,20 @@ static GtkWidget *create_dep_button(alpm_pkg_t *pkg, const gchar *label)
 
 	switch (get_pkg_status(pkg)) {
 		case PKG_REASON_EXPLICIT:
-			image = gtk_image_new_from_icon_name("gtk-yes", GTK_ICON_SIZE_BUTTON);
+			image = gtk_image_new_from_icon_name("icon-explicit", GTK_ICON_SIZE_BUTTON);
 			break;
 		case PKG_REASON_DEPEND:
-			image = gtk_image_new_from_icon_name("gtk-leave-fullscreen", GTK_ICON_SIZE_BUTTON);
+			image = gtk_image_new_from_icon_name("icon-depend", GTK_ICON_SIZE_BUTTON);
 			break;
 		case PKG_REASON_OPTIONAL:
-			image = gtk_image_new_from_icon_name("gtk-connect", GTK_ICON_SIZE_BUTTON);
+			image = gtk_image_new_from_icon_name("icon-optional", GTK_ICON_SIZE_BUTTON);
 			break;
 		case PKG_REASON_ORPHAN:
-			image = gtk_image_new_from_icon_name("gtk-disconnect", GTK_ICON_SIZE_BUTTON);
+			image = gtk_image_new_from_icon_name("icon-orphan", GTK_ICON_SIZE_BUTTON);
 			break;
 		case PKG_REASON_NOT_INSTALLED:
 		default:
-			image = gtk_image_new_from_icon_name("open-menu-symbolic", GTK_ICON_SIZE_BUTTON);
+			image = gtk_image_new_from_icon_name("icon-uninstalled", GTK_ICON_SIZE_BUTTON);
 	}
 
 	gtk_button_set_image(GTK_BUTTON(button), image);
@@ -543,70 +543,86 @@ static void package_row_selected(GtkTreeSelection *selection, gpointer user_data
 
 static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 {
+	GtkIconTheme *icon_theme;
+	GdkPixbuf *icon;
 	GtkTreeIter toplevel, child;
 	alpm_list_t *i;
 
+	icon_theme = gtk_icon_theme_get_default();
+
 	/* add standard filter lists */
+	icon = gtk_icon_theme_load_icon(icon_theme, "gtk-home", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
 		&toplevel,
-		FILTERS_COL_ICON, "gtk-home",
+		FILTERS_COL_ICON, icon,
 		/* l10n: filter names shown in main filter list */
 		FILTERS_COL_TITLE, _("All Packages"),
 		FILTERS_COL_MASK, HIDE_NONE,
 		-1
 	);
+	g_object_unref(icon);
 
+	icon = gtk_icon_theme_load_icon(icon_theme, "icon-installed", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
 		&toplevel,
-		FILTERS_COL_ICON, "gtk-media-play",
+		FILTERS_COL_ICON, icon,
 		FILTERS_COL_TITLE, _("Installed"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED,
 		-1
 	);
+	g_object_unref(icon);
 
+	icon = gtk_icon_theme_load_icon(icon_theme, "icon-explicit", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
 		&toplevel,
-		FILTERS_COL_ICON, "gtk-yes",
+		FILTERS_COL_ICON, icon,
 		FILTERS_COL_TITLE, _("Explicit"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_DEPEND | HIDE_OPTION | HIDE_ORPHAN,
 		-1
 	);
+	g_object_unref(icon);
 
+	icon = gtk_icon_theme_load_icon(icon_theme, "icon-depend", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
 		&toplevel,
-		FILTERS_COL_ICON, "gtk-leave-fullscreen",
+		FILTERS_COL_ICON, icon,
 		FILTERS_COL_TITLE, _("Dependency"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_OPTION | HIDE_ORPHAN,
 		-1
 	);
+	g_object_unref(icon);
 
+	icon = gtk_icon_theme_load_icon(icon_theme, "icon-optional", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
 		&toplevel,
-		FILTERS_COL_ICON, "gtk-connect",
+		FILTERS_COL_ICON, icon,
 		FILTERS_COL_TITLE, _("Optional"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND | HIDE_ORPHAN,
 		-1
 	);
+	g_object_unref(icon);
 
+	icon = gtk_icon_theme_load_icon(icon_theme, "icon-orphan", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
 		&toplevel,
-		FILTERS_COL_ICON, "gtk-disconnect",
+		FILTERS_COL_ICON, icon,
 		FILTERS_COL_TITLE, _("Orphan"),
 		FILTERS_COL_MASK, HIDE_UNINSTALLED | HIDE_EXPLICIT | HIDE_DEPEND | HIDE_OPTION,
 		-1
 	);
+	g_object_unref(icon);
 
 	/* add known databases */
 	for (i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
@@ -615,46 +631,52 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 
 		db = i->data;
 
+		icon = gtk_icon_theme_load_icon(icon_theme, "gtk-directory", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 		gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 		gtk_tree_store_set(
 			repo_tree_store,
 			&toplevel,
-			FILTERS_COL_ICON, "gtk-directory",
+			FILTERS_COL_ICON, icon,
 			FILTERS_COL_TITLE, alpm_db_get_name(db),
 			FILTERS_COL_MASK, HIDE_NONE,
 			FILTERS_COL_DB, db,
 			-1
 		);
+		g_object_unref(icon);
 
 		/* add any groups found for this database */
 		group_list = alpm_list_copy(alpm_db_get_groupcache(db));
 		group_list = alpm_list_msort(group_list, alpm_list_count(group_list), group_cmp);
 		for (; group_list; group_list = group_list->next) {
 			alpm_group_t *group = group_list->data;
+			icon = gtk_icon_theme_load_icon(icon_theme, "gtk-file", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 			gtk_tree_store_append(repo_tree_store, &child, &toplevel);
 			gtk_tree_store_set(
 				repo_tree_store,
 				&child,
-				FILTERS_COL_ICON, "gtk-file",
+				FILTERS_COL_ICON, icon,
 				FILTERS_COL_TITLE, group->name,
 				FILTERS_COL_MASK, HIDE_NONE,
 				FILTERS_COL_DB, db,
 				FILTERS_COL_GROUP, group,
 				-1
 			);
+			g_object_unref(icon);
 		}
 		alpm_list_free(group_list);
 	}
 
+	icon = gtk_icon_theme_load_icon(icon_theme, "gtk-harddisk", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
 		&toplevel,
-		FILTERS_COL_ICON, "gtk-harddisk",
+		FILTERS_COL_ICON, icon,
 		FILTERS_COL_TITLE, _("Foreign"),
 		FILTERS_COL_MASK, HIDE_NATIVE,
 		-1
 	);
+	g_object_unref(icon);
 }
 
 static void unselect_package(void)
