@@ -551,7 +551,7 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 	icon_theme = gtk_icon_theme_get_default();
 
 	/* add standard filter lists */
-	icon = gtk_icon_theme_load_icon(icon_theme, "gtk-home", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+	icon = gtk_icon_theme_load_icon(icon_theme, "go-home", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
@@ -631,7 +631,7 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 
 		db = i->data;
 
-		icon = gtk_icon_theme_load_icon(icon_theme, "gtk-directory", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+		icon = gtk_icon_theme_load_icon(icon_theme, "folder", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 		gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 		gtk_tree_store_set(
 			repo_tree_store,
@@ -649,7 +649,7 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 		group_list = alpm_list_msort(group_list, alpm_list_count(group_list), group_cmp);
 		for (; group_list; group_list = group_list->next) {
 			alpm_group_t *group = group_list->data;
-			icon = gtk_icon_theme_load_icon(icon_theme, "gtk-file", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+			icon = gtk_icon_theme_load_icon(icon_theme, "text-x-generic", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 			gtk_tree_store_append(repo_tree_store, &child, &toplevel);
 			gtk_tree_store_set(
 				repo_tree_store,
@@ -666,7 +666,7 @@ static void populate_db_tree_view(GtkTreeStore *repo_tree_store)
 		alpm_list_free(group_list);
 	}
 
-	icon = gtk_icon_theme_load_icon(icon_theme, "gtk-harddisk", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+	icon = gtk_icon_theme_load_icon(icon_theme, "drive-harddisk", 16, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
 	gtk_tree_store_append(repo_tree_store, &toplevel, NULL);
 	gtk_tree_store_set(
 		repo_tree_store,
