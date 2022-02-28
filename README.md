@@ -33,6 +33,15 @@ This software is licensed under the [Apache License, Version 2.0][license].
 
 ## Installation
 
+### Install from AUR (recommended)
+
+PacFinder is available in the Arch User Repository (AUR) as [pacfinder][aurpkg].
+You can install the package using your favorite AUR helper, or by following the
+instructions in the [Arch User Repository][aurwiki] topic on the Arch Wiki.
+
+[aurpkg]: https://aur.archlinux.org/packages/pacfinder
+[aurwiki]: https://wiki.archlinux.org/title/Arch_User_Repository
+
 ### Install from tarball
 
 Download the latest distribution tarball from the [releases page][releases] for
