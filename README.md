@@ -33,16 +33,6 @@ This software is licensed under the [Apache License, Version 2.0][license].
 
 ## Installation
 
-### Requirements
-
-In addition to the [base-devel][base-devel] group of packages, you need to have
-the following packages installed on your system to compile and run this program:
-
- * glib2 >= 2.56
- * gtk3 >= 3.22
-
-[base-devel]: https://archlinux.org/groups/x86_64/base-devel/
-
 ### Install from tarball
 
 Download the latest distribution tarball from the [releases page][releases] for
@@ -63,6 +53,16 @@ sudo make install
 If you intend to do development work or make other changes to the project then
 you can follow these instructions. If you just want to use the program then you
 should instead follow the installation instructions above.
+
+### Requirements
+
+In addition to the [base-devel][base-devel] group of packages, you need to have
+the following packages installed on your system to compile and run this program:
+
+ * glib2 >= 2.56
+ * gtk3 >= 3.22
+
+[base-devel]: https://archlinux.org/groups/x86_64/base-devel/
 
 ### Clone git repo
 
