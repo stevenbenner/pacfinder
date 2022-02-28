@@ -56,9 +56,6 @@ make
 sudo make install
 ```
 
-You will now find the PacFinder application in your software list, or you can
-start it from the command line by running `pacfinder`.
-
 [releases]: https://github.com/stevenbenner/pacfinder/releases
 
 ## Building from source
