@@ -1,4 +1,4 @@
-# PacFinder [![Release][releasebadge]][releases]
+# PacFinder [![Release][releasebadge]][releases] [![AUR][aurbadge]][aurpkg]
 
 **Repository & package explorer for Arch Linux.**
 
@@ -13,6 +13,7 @@ This software is licensed under the [Apache License, Version 2.0][license].
 [manjaro]: https://manjaro.org/
 [license]: COPYING
 [releasebadge]: https://img.shields.io/github/release/stevenbenner/pacfinder.svg
+[aurbadge]: https://img.shields.io/aur/version/pacfinder.svg
 
 ![PacFinder Screenshot](https://stevenbenner.com/misc/pacfinder-screenshot.png)
 
