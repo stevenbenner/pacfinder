@@ -22,7 +22,7 @@
 
 int main(int argc, char *argv[])
 {
-	setlocale(LC_ALL, "");
+	setlocale(LC_ALL, "C");
 
 	g_test_init(&argc, &argv, NULL);
 	g_test_set_nonfatal_assertions();
