@@ -18,7 +18,7 @@ AC_COPYRIGHT([Copyright 2022 Steven Benner])
 AC_PREREQ([2.71])
 AC_INIT(
 	[PacFinder],
-	[1.0],
+	[1.1],
 	[https://github.com/stevenbenner/pacfinder/issues],
 	[pacfinder],
 	[https://github.com/stevenbenner/pacfinder]
