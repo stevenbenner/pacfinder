@@ -25,10 +25,12 @@
 #include <alpm.h>
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <glob.h>
 
 #define FS_ROOT_PATH "/"
 #define PACMAN_CONFIG_PATH "/etc/pacman.conf"
 #define PACMAN_DB_PATH "/var/lib/pacman/"
+#define MAX_CONFIG_DEPTH 5
 
 alpm_list_t *foreign_pkg_list = NULL;
 
@@ -36,15 +38,29 @@ static alpm_handle_t *handle = NULL;
 static alpm_db_t *db_local = NULL;
 static alpm_list_t *all_packages_list = NULL;
 
-static gint register_syncs(void)
+static gint register_syncs(gchar *file_path, gint depth)
 {
+	gchar *conf_path;
 	gboolean ret;
 	gchar *contents = NULL;
 	gsize length;
 	gchar **lines = NULL;
 	guint i;
 
-	ret = g_file_get_contents(PACMAN_CONFIG_PATH, &contents, &length, NULL);
+	/* set up params */
+	if (file_path == NULL) {
+		conf_path = PACMAN_CONFIG_PATH;
+		depth = 0;
+	} else {
+		conf_path = file_path;
+	}
+
+	/* prevent recursion loops by limiting max depth */
+	if (depth >= MAX_CONFIG_DEPTH) {
+		return 1;
+	}
+
+	ret = g_file_get_contents(conf_path, &contents, &length, NULL);
 
 	if (ret) {
 		lines = g_strsplit(contents, "\n", -1);
@@ -52,21 +68,41 @@ static gint register_syncs(void)
 		for (i = 0; lines[i] != NULL; i++) {
 			gchar *section = NULL;
 			alpm_db_t *db;
+			gchar **pair = NULL;
+			glob_t globstruct;
+			size_t x;
 
 			g_strstrip(lines[i]);
 
 			if (g_str_has_prefix(lines[i], "[") && g_str_has_suffix(lines[i], "]")) {
+				/* handle sections: sections other than "options" are dbs */
 				section = g_strndup(&lines[i][1], strlen(lines[i]) - 2);
 				if (g_strcmp0(section, "options") != 0) {
 					db = alpm_register_syncdb(handle, section, ALPM_SIG_USE_DEFAULT);
 					alpm_db_set_usage(db, ALPM_DB_USAGE_ALL);
 				}
 				g_free(section);
+			} else {
+				/* handle key=val pairs: find "Include" directives and recurse conf files */
+				pair = g_strsplit(lines[i], "=", 2);
+				if (pair && g_strv_length(pair) == 2) {
+					g_strstrip(pair[0]);
+					if (g_strcmp0(pair[0], "Include") == 0) {
+						g_strstrip(pair[1]);
+						if (glob(pair[1], GLOB_ERR, NULL, &globstruct) == 0) {
+							for (x = 0; x < globstruct.gl_pathc; x++) {
+								register_syncs(globstruct.gl_pathv[x], depth + 1);
+							}
+						}
+						globfree(&globstruct);
+					}
+				}
+				g_strfreev(pair);
 			}
 		}
 	} else {
 		/* l10n: error message shown in cli or log */
-		g_error(_("Failed to read pacman config file: %s"), PACMAN_CONFIG_PATH);
+		g_error(_("Failed to read pacman config file: %s"), conf_path);
 	}
 
 	g_strfreev(lines);
@@ -84,7 +120,7 @@ static void initialize_alpm(void)
 		/* l10n: error message shown in cli or log */
 		g_error(_("Failed to initialize libalpm: %s"), alpm_strerror(err));
 	}
-	register_syncs();
+	register_syncs(NULL, 0);
 }
 
 static GPtrArray *list_to_ptrarray(alpm_list_t *list)
