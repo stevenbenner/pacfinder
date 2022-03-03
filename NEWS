@@ -2,5 +2,10 @@
 PacFinder Release Notes
 =======================
 
+2022-03-03 - PacFinder 1.1
+ - Add handling for "Include" directives in pacman configuration files
+ - Fix test suite failure on systems configured with locales that use a comma
+   for the decimal mark
+
 2022-02-27 - PacFinder 1.0
  - Initial release
