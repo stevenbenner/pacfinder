@@ -100,12 +100,12 @@ static gint register_syncs(gchar *file_path, gint depth)
 				g_strfreev(pair);
 			}
 		}
+		g_strfreev(lines);
 	} else {
 		/* l10n: error message shown in cli or log */
 		g_error(_("Failed to read pacman config file: %s"), conf_path);
 	}
 
-	g_strfreev(lines);
 	g_free(contents);
 
 	return ret;
