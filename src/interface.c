@@ -329,24 +329,26 @@ static GtkWidget *create_package_dependents(void)
 
 static GtkWidget *create_package_details(void)
 {
-	const gint column_count = 2;
-
 	GtkWidget *scrolled_window, *package_details_treeview;
 	gint i;
 
-	main_window_gui.package_details_list_store = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	main_window_gui.package_details_list_store = gtk_list_store_new(
+		DETAILS_NUM_COLS,
+		G_TYPE_STRING,  /* name */
+		G_TYPE_STRING   /* value */
+	);
 	package_details_treeview = gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_details_list_store));
 	gtk_tree_view_set_headers_visible(GTK_TREE_VIEW(package_details_treeview), FALSE);
 	gtk_tree_selection_set_mode(gtk_tree_view_get_selection(GTK_TREE_VIEW(package_details_treeview)), GTK_SELECTION_NONE);
 
-	for (i = 0; i < column_count; i++) {
+	for (i = 0; i < DETAILS_NUM_COLS; i++) {
 		GtkCellRenderer *renderer;
 		GtkTreeViewColumn *column;
 
 		renderer = gtk_cell_renderer_text_new();
 		column = gtk_tree_view_column_new_with_attributes("", renderer, "text", i, NULL);
 
-		if (i == 0) {
+		if (i == DETAILS_COL_NAME) {
 			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
 		}
 

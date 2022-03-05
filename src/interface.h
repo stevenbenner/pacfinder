@@ -38,6 +38,12 @@ enum {
 	PACKAGES_NUM_COLS
 };
 
+enum {
+	DETAILS_COL_NAME = 0,
+	DETAILS_COL_VALUE,
+	DETAILS_NUM_COLS
+};
+
 struct details_overview_t {
 	GtkWidget *status_image;
 	GtkLabel *heading_label;

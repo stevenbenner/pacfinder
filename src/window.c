@@ -414,7 +414,13 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar *value)
 {
 	gtk_list_store_append(main_window_gui.package_details_list_store, iter);
-	gtk_list_store_set(main_window_gui.package_details_list_store, iter, 0, name, 1, value, -1);
+	gtk_list_store_set(
+		main_window_gui.package_details_list_store,
+		iter,
+		DETAILS_COL_NAME, name,
+		DETAILS_COL_VALUE, value,
+		-1
+	);
 }
 
 static void show_package_details(alpm_pkg_t *pkg)
