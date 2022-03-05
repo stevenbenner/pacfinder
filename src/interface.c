@@ -146,11 +146,11 @@ static GtkWidget *create_package_list(void)
 			NULL
 		);
 
-		if (i == 0) {
+		if (i == PACKAGES_COL_NAME) {
 			g_object_set(renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
 		}
 
-		if (i == 2) {
+		if (i == PACKAGES_COL_STATUS) {
 			gtk_tree_view_column_set_cell_data_func(column, renderer, reason_cell_data_fn, NULL, NULL);
 		}
 
