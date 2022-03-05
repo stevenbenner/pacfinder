@@ -31,6 +31,7 @@
 #define RIGHT_PANED_MAX 1000
 #define WINDOW_MIN_WIDTH 600
 #define WINDOW_MIN_HEIGHT 450
+#define COLUMN_WIDTH_MIN 50
 
 static GSettings *settings = NULL;
 
@@ -118,5 +119,13 @@ void get_saved_package_column_widths(gint *w1, gint *w2, gint *w3, gint *w4)
 
 void set_saved_package_column_widths(const gint w1, const gint w2, const gint w3, const gint w4)
 {
-	g_settings_set(settings, "package-list-column-widths", "(iiii)", w1, w2, w3, w4);
+	g_settings_set(
+		settings,
+		"package-list-column-widths",
+		"(iiii)",
+		MAX(w1, COLUMN_WIDTH_MIN),
+		MAX(w2, COLUMN_WIDTH_MIN),
+		MAX(w3, COLUMN_WIDTH_MIN),
+		MAX(w4, COLUMN_WIDTH_MIN)
+	);
 }
