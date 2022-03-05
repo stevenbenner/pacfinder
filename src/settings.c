@@ -92,11 +92,8 @@ gint get_saved_left_width(void)
 
 void set_saved_left_width(gint width)
 {
-	if (width < LEFT_PANED_MIN) {
-		width = LEFT_PANED_MIN;
-	} else if (width > LEFT_PANED_MAX) {
-		width = LEFT_PANED_MAX;
-	}
+	width = MIN(width, LEFT_PANED_MAX);
+	width = MAX(width, LEFT_PANED_MIN);
 
 	g_settings_set_int(settings, "left-width", width);
 }
@@ -108,11 +105,8 @@ gint get_saved_right_height(void)
 
 void set_saved_right_height(gint height)
 {
-	if (height < RIGHT_PANED_MIN) {
-		height = RIGHT_PANED_MIN;
-	} else if (height > RIGHT_PANED_MAX) {
-		height = RIGHT_PANED_MAX;
-	}
+	height = MIN(height, RIGHT_PANED_MAX);
+	height = MAX(height, RIGHT_PANED_MIN);
 
 	g_settings_set_int(settings, "right-height", height);
 }
