@@ -22,7 +22,6 @@ This software is licensed under the [Apache License, Version 2.0][license].
  * Comprehensive list of all packages known to local pacman
  * View & filter packages based on installation status
     * Installed
-    * Not installed
     * Explicitly installed
     * Installed as a dependency
     * Installed as an optional dependency
