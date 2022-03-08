@@ -9,13 +9,14 @@ that uses pacman/libalpm for package management (e.g. [Manjaro][manjaro]).
 
 This software is licensed under the [Apache License, Version 2.0][license].
 
+![PacFinder Screenshot][screenshot]
+
 [archlinux]: https://archlinux.org/
 [manjaro]: https://manjaro.org/
 [license]: COPYING
+[screenshot]: https://stevenbenner.com/misc/pacfinder-screenshot.png
 [releasebadge]: https://img.shields.io/github/release/stevenbenner/pacfinder.svg
 [aurbadge]: https://img.shields.io/aur/version/pacfinder.svg
-
-![PacFinder Screenshot](https://stevenbenner.com/misc/pacfinder-screenshot.png)
 
 ## Features
 
