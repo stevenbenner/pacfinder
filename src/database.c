@@ -39,29 +39,20 @@ static alpm_handle_t *handle = NULL;
 static alpm_db_t *db_local = NULL;
 static alpm_list_t *all_packages_list = NULL;
 
-static gint register_syncs(gchar *file_path, gint depth)
+static gint register_syncs(const gchar *file_path, const gint depth)
 {
-	gchar *conf_path;
 	gboolean ret;
 	gchar *contents = NULL;
 	gsize length;
 	gchar **lines = NULL;
 	guint i;
 
-	/* set up params */
-	if (file_path == NULL) {
-		conf_path = PACMAN_CONFIG_PATH;
-		depth = 0;
-	} else {
-		conf_path = file_path;
-	}
-
 	/* prevent recursion loops by limiting max depth */
 	if (depth >= MAX_CONFIG_DEPTH) {
 		return 1;
 	}
 
-	ret = g_file_get_contents(conf_path, &contents, &length, NULL);
+	ret = g_file_get_contents(file_path, &contents, &length, NULL);
 
 	if (ret) {
 		lines = g_strsplit(contents, "\n", -1);
@@ -104,7 +95,7 @@ static gint register_syncs(gchar *file_path, gint depth)
 		g_strfreev(lines);
 	} else {
 		/* l10n: error message shown in cli or log */
-		g_error(_("Failed to read pacman config file: %s"), conf_path);
+		g_error(_("Failed to read pacman config file: %s"), file_path);
 	}
 
 	g_free(contents);
@@ -121,7 +112,7 @@ static void initialize_alpm(void)
 		/* l10n: error message shown in cli or log */
 		g_error(_("Failed to initialize libalpm: %s"), alpm_strerror(err));
 	}
-	register_syncs(NULL, 0);
+	register_syncs(PACMAN_CONFIG_PATH, 0);
 }
 
 static GPtrArray *list_to_ptrarray(alpm_list_t *list)
