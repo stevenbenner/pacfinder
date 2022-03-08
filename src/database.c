@@ -26,6 +26,7 @@
 #include <glib.h>
 #include <glib/gi18n.h>
 #include <glob.h>
+#include <sys/types.h>
 
 #define FS_ROOT_PATH "/"
 #define PACMAN_CONFIG_PATH "/etc/pacman.conf"
