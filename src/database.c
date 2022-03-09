@@ -115,54 +115,6 @@ static void initialize_alpm(void)
 	register_syncs(PACMAN_CONFIG_PATH, 0);
 }
 
-static GPtrArray *list_to_ptrarray(alpm_list_t *list)
-{
-	alpm_list_t *i;
-	GPtrArray *arr;
-
-	arr = g_ptr_array_new_with_free_func(g_free);
-
-	for (i = list; i; i = alpm_list_next(i)) {
-		g_ptr_array_add(arr, g_strdup(i->data));
-	}
-	g_ptr_array_add(arr, NULL);
-
-	return arr;
-}
-
-gchar *list_to_string(alpm_list_t *list)
-{
-	GPtrArray *arr;
-	gchar *str;
-
-	arr = list_to_ptrarray(list);
-	str = g_strjoinv(", ", (gchar **)(arr->pdata));
-
-	g_ptr_array_free(arr, TRUE);
-
-	return str;
-}
-
-gchar *deplist_to_string(alpm_list_t *list)
-{
-	alpm_list_t *string_list, *i;
-	gchar *str;
-
-	string_list = NULL;
-
-	for (i = list; i; i = alpm_list_next(i)) {
-		gchar *dep_str = alpm_dep_compute_string(i->data);
-		string_list = alpm_list_add(string_list, dep_str);
-	}
-
-	str = list_to_string(string_list);
-
-	alpm_list_free_inner(string_list, g_free);
-	alpm_list_free(string_list);
-
-	return str;
-}
-
 int package_cmp(const void *p1, const void *p2) {
 	alpm_pkg_t *pkg1 = (alpm_pkg_t *)p1;
 	alpm_pkg_t *pkg2 = (alpm_pkg_t *)p2;

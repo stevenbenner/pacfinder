@@ -18,9 +18,12 @@
 #ifndef PF_UTIL_H
 #define PF_UTIL_H
 
+#include <alpm.h>
 #include <glib.h>
 #include <sys/types.h>
 
+gchar *list_to_string(alpm_list_t *list);
+gchar *deplist_to_string(alpm_list_t *list);
 gchar *human_readable_size(const off_t size);
 
 #endif /* PF_UTIL_H */
