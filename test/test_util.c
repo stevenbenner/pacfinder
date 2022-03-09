@@ -17,10 +17,39 @@
 
 #include "test_util.h"
 
+#include <alpm.h>
 #include <glib.h>
 #include <math.h>
 
 #include "util.h"
+
+static void test_list_to_string(void)
+{
+	alpm_list_t *empty_list = NULL;
+	alpm_list_t *list_of_one = NULL;
+	alpm_list_t *list_of_three = NULL;
+
+	list_of_one = alpm_list_add(list_of_one, "item 1");
+
+	list_of_three = alpm_list_add(list_of_three, "item 1");
+	list_of_three = alpm_list_add(list_of_three, "item 2");
+	list_of_three = alpm_list_add(list_of_three, "item 3");
+
+	gchar *null_items = list_to_string(empty_list);
+	gchar *one_item = list_to_string(list_of_one);
+	gchar *three_items = list_to_string(list_of_three);
+
+	g_assert_cmpstr(null_items, ==, "");
+	g_assert_cmpstr(one_item, ==, "item 1");
+	g_assert_cmpstr(three_items, ==, "item 1, item 2, item 3");
+
+	g_free(null_items);
+	g_free(one_item);
+	g_free(three_items);
+	alpm_list_free(empty_list);
+	alpm_list_free(list_of_one);
+	alpm_list_free(list_of_three);
+}
 
 static void test_human_readable_size(void)
 {
@@ -60,5 +89,6 @@ static void test_human_readable_size(void)
 
 void test_util(void)
 {
+	g_test_add_func("/util/list_to_string", test_list_to_string);
 	g_test_add_func("/util/human_readable_size", test_human_readable_size);
 }
