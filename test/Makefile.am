@@ -20,6 +20,6 @@ test_suite_CFLAGS = \
 test_suite_LDADD = \
 	@GTK_LIBS@
 
-TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/build-aux/tap-driver.sh
+LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) $(top_srcdir)/build-aux/tap-driver.sh
 
 TESTS = test_suite
