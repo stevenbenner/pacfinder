@@ -40,8 +40,8 @@ static void test_human_readable_size(void)
 	g_assert_cmpstr(max_b, ==, "1023 B");
 	g_assert_cmpstr(one_k, ==, "1.00 KiB");
 	g_assert_cmpstr(one_point_five_k, ==, "1.50 KiB");
-	g_assert_cmpstr(one_point_nine_nine_m, ==, "1.99 MiB");
 	g_assert_cmpstr(one_m, ==, "1.00 MiB");
+	g_assert_cmpstr(one_point_nine_nine_m, ==, "1.99 MiB");
 	g_assert_cmpstr(one_g, ==, "1.00 GiB");
 	g_assert_cmpstr(one_t, ==, "1.00 TiB");
 	g_assert_cmpstr(one_p, ==, "1024.00 TiB");
@@ -51,8 +51,8 @@ static void test_human_readable_size(void)
 	g_free(max_b);
 	g_free(one_k);
 	g_free(one_point_five_k);
-	g_free(one_point_nine_nine_m);
 	g_free(one_m);
+	g_free(one_point_nine_nine_m);
 	g_free(one_g);
 	g_free(one_t);
 	g_free(one_p);
