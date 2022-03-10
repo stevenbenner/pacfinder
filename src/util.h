@@ -25,5 +25,8 @@
 gchar *list_to_string(alpm_list_t *list);
 gchar *deplist_to_string(alpm_list_t *list);
 gchar *human_readable_size(const off_t size);
+int package_cmp(const void *p1, const void *p2);
+int group_cmp(const void *p1, const void *p2);
+int group_cmp_find(const void *p1, const void *p2);
 
 #endif /* PF_UTIL_H */

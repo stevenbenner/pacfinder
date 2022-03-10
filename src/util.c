@@ -95,3 +95,24 @@ gchar *human_readable_size(const off_t size)
 		return g_strdup_printf(_("%ld %s"), size, _(sizes[size_index]));
 	}
 }
+
+int package_cmp(const void *p1, const void *p2) {
+	alpm_pkg_t *pkg1 = (alpm_pkg_t *)p1;
+	alpm_pkg_t *pkg2 = (alpm_pkg_t *)p2;
+
+	return g_strcmp0(alpm_pkg_get_name(pkg1), alpm_pkg_get_name(pkg2));
+}
+
+int group_cmp(const void *p1, const void *p2) {
+	const alpm_group_t *grp1 = p1;
+	const alpm_group_t *grp2 = p2;
+
+	return g_strcmp0(grp1->name, grp2->name);
+}
+
+int group_cmp_find(const void *p1, const void *p2) {
+	const alpm_group_t *grp1 = (alpm_group_t *)&p1;
+	const alpm_group_t *grp2 = p2;
+
+	return g_strcmp0(grp1->name, grp2->name);
+}

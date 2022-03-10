@@ -28,6 +28,9 @@
 #include <glob.h>
 #include <sys/types.h>
 
+/* pacfinder */
+#include "util.h"
+
 #define FS_ROOT_PATH "/"
 #define PACMAN_CONFIG_PATH "/etc/pacman.conf"
 #define PACMAN_DB_PATH "/var/lib/pacman/"
@@ -113,27 +116,6 @@ static void initialize_alpm(void)
 		g_error(_("Failed to initialize libalpm: %s"), alpm_strerror(err));
 	}
 	register_syncs(PACMAN_CONFIG_PATH, 0);
-}
-
-int package_cmp(const void *p1, const void *p2) {
-	alpm_pkg_t *pkg1 = (alpm_pkg_t *)p1;
-	alpm_pkg_t *pkg2 = (alpm_pkg_t *)p2;
-
-	return g_strcmp0(alpm_pkg_get_name(pkg1), alpm_pkg_get_name(pkg2));
-}
-
-int group_cmp(const void *p1, const void *p2) {
-	const alpm_group_t *grp1 = p1;
-	const alpm_group_t *grp2 = p2;
-
-	return g_strcmp0(grp1->name, grp2->name);
-}
-
-int group_cmp_find(const void *p1, const void *p2) {
-	const alpm_group_t *grp1 = (alpm_group_t *)&p1;
-	const alpm_group_t *grp2 = p2;
-
-	return g_strcmp0(grp1->name, grp2->name);
 }
 
 alpm_handle_t *get_alpm_handle(void)
