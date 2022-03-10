@@ -74,7 +74,17 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 				section = g_strndup(&lines[i][1], strlen(lines[i]) - 2);
 				if (g_strcmp0(section, "options") != 0) {
 					db = alpm_register_syncdb(handle, section, ALPM_SIG_USE_DEFAULT);
-					alpm_db_set_usage(db, ALPM_DB_USAGE_ALL);
+					if (db) {
+						alpm_db_set_usage(db, ALPM_DB_USAGE_ALL);
+					} else {
+						g_warning(
+							/* l10n: error message - first %s is db name, second is error message */
+							_("Failed to register '%s' database: %s"),
+							section,
+							alpm_strerror(alpm_errno(handle))
+						);
+						ret = FALSE;
+					}
 				}
 				g_free(section);
 			} else {
