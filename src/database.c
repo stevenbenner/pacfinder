@@ -52,6 +52,8 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 
 	/* prevent recursion loops by limiting max depth */
 	if (depth >= MAX_CONFIG_DEPTH) {
+		/* l10n: warning message shown in cli or log - %s is file path of skipped file */
+		g_warning(_("Maximum pacman config recursion level exceeded. File skipped: %s"), file_path);
 		return TRUE;
 	}
 
