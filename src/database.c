@@ -42,7 +42,7 @@ static alpm_handle_t *handle = NULL;
 static alpm_db_t *db_local = NULL;
 static alpm_list_t *all_packages_list = NULL;
 
-static gint register_syncs(const gchar *file_path, const gint depth)
+static gboolean register_syncs(const gchar *file_path, const gint depth)
 {
 	gboolean ret;
 	gchar *contents = NULL;
@@ -52,7 +52,7 @@ static gint register_syncs(const gchar *file_path, const gint depth)
 
 	/* prevent recursion loops by limiting max depth */
 	if (depth >= MAX_CONFIG_DEPTH) {
-		return 1;
+		return TRUE;
 	}
 
 	ret = g_file_get_contents(file_path, &contents, &length, NULL);
