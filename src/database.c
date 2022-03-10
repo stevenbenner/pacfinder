@@ -86,7 +86,11 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 						g_strstrip(pair[1]);
 						if (glob(pair[1], GLOB_ERR, NULL, &globstruct) == 0) {
 							for (x = 0; x < globstruct.gl_pathc; x++) {
-								register_syncs(globstruct.gl_pathv[x], depth + 1);
+								ret = register_syncs(globstruct.gl_pathv[x], depth + 1);
+								/* break on failure */
+								if (ret == FALSE) {
+									break;
+								}
 							}
 						}
 						globfree(&globstruct);
@@ -94,11 +98,16 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 				}
 				g_strfreev(pair);
 			}
+
+			/* break on failure */
+			if (ret == FALSE) {
+				break;
+			}
 		}
 		g_strfreev(lines);
 	} else {
 		/* l10n: error message shown in cli or log */
-		g_error(_("Failed to read pacman config file: %s"), file_path);
+		g_warning(_("Failed to read pacman config file: %s"), file_path);
 	}
 
 	g_free(contents);
@@ -110,12 +119,18 @@ static void initialize_alpm(void)
 {
 	alpm_errno_t err;
 
+	/* set up libalpm */
 	handle = alpm_initialize(FS_ROOT_PATH, PACMAN_DB_PATH, &err);
 	if (!handle) {
 		/* l10n: error message shown in cli or log */
 		g_error(_("Failed to initialize libalpm: %s"), alpm_strerror(err));
 	}
-	register_syncs(PACMAN_CONFIG_PATH, 0);
+
+	/* process pacman conf files and register dbs */
+	if (register_syncs(PACMAN_CONFIG_PATH, 0) == FALSE) {
+		/* l10n: error message shown in cli or log */
+		g_error(_("Failed to register pacman sync databases"));
+	}
 }
 
 alpm_handle_t *get_alpm_handle(void)
