@@ -176,7 +176,6 @@ alpm_db_t *get_local_db(void)
 alpm_list_t *get_all_packages(void)
 {
 	alpm_list_t *i;
-	alpm_db_t *db_local;
 
 	/* collect all packages from the syncdbs */
 	if (all_packages_list == NULL) {
@@ -196,8 +195,7 @@ alpm_list_t *get_all_packages(void)
 	/* iterate the localdb packages and find any that are not listed in the
 	 * syncdbs - when found, add it to the "all packages" list as well as keep
 	 * track of them in the "foreign" packages list */
-	db_local = get_local_db();
-	for (i = alpm_db_get_pkgcache(db_local); i; i = i->next) {
+	for (i = alpm_db_get_pkgcache(get_local_db()); i; i = i->next) {
 		alpm_pkg_t *pkg = i->data;
 
 		if (!alpm_list_find(all_packages_list, pkg, package_cmp)) {
