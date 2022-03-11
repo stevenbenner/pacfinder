@@ -78,7 +78,7 @@ gchar *deplist_to_string(alpm_list_t *list)
 gchar *human_readable_size(const off_t size)
 {
 	/* l10n: file size units */
-	const gchar *sizes[] = { N_("B"), N_("KiB"), N_("MiB"), N_("GiB"), N_("TiB") };
+	static const gchar *sizes[] = { N_("B"), N_("KiB"), N_("MiB"), N_("GiB"), N_("TiB") };
 	guint size_index = 0;
 	gfloat file_size = size;
 
