@@ -44,6 +44,8 @@ static alpm_list_t *all_packages_list = NULL;
 
 static gboolean register_syncs(const gchar *file_path, const gint depth)
 {
+	static GList *processed_files = NULL;
+
 	gboolean ret;
 	gchar *contents = NULL;
 	gsize length;
@@ -54,6 +56,13 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 	if (depth >= MAX_CONFIG_DEPTH) {
 		/* l10n: warning message shown in cli or log - %s is file path of skipped file */
 		g_warning(_("Maximum pacman config recursion level exceeded. File skipped: %s"), file_path);
+		return TRUE;
+	}
+
+	/* prevent repeated processing of files included multiple times */
+	if (g_list_find_custom(processed_files, file_path, (GCompareFunc)g_strcmp0) == NULL) {
+		processed_files = g_list_append(processed_files, g_strdup(file_path));
+	} else {
 		return TRUE;
 	}
 
@@ -122,6 +131,9 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 		g_warning(_("Failed to read pacman config file: %s"), file_path);
 	}
 
+	if (depth == 0) {
+		g_list_free_full(g_steal_pointer(&processed_files), g_free);
+	}
 	g_free(contents);
 
 	return ret;
