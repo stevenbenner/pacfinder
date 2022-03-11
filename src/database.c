@@ -232,15 +232,13 @@ install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 	};
 
 	install_reason_t ret;
-	alpm_db_t *db_local;
 	alpm_pkg_t *local_pkg;
 	alpm_pkgreason_t install_reason;
 	alpm_list_t *required_by, *optional_for;
 
 	ret = PKG_REASON_NOT_INSTALLED;
 
-	db_local = get_local_db();
-	local_pkg = alpm_db_get_pkg(db_local, alpm_pkg_get_name(pkg));
+	local_pkg = alpm_db_get_pkg(get_local_db(), alpm_pkg_get_name(pkg));
 
 	if (local_pkg != NULL) {
 		install_reason = alpm_pkg_get_reason(local_pkg);
