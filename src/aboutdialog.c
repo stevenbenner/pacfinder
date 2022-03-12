@@ -54,6 +54,8 @@ void show_about_dialog(GtkWindow *parent)
 		"website", PACKAGE_URL,
 		"copyright", copyright_str,
 		"authors", authors,
+		/* l10n: translator names shown in the about dialog: Your Name <me@example.com> */
+		"translator-credits", _("translator-credits"),
 		"license-type", GTK_LICENSE_APACHE_2_0,
 		NULL
 	);
