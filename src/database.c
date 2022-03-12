@@ -179,7 +179,7 @@ alpm_list_t *get_all_packages(void)
 
 	/* collect all packages from the syncdbs */
 	if (all_packages_list == NULL) {
-		for(i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
+		for (i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
 			alpm_db_t *db = i->data;
 			alpm_list_t *db_package_list = alpm_db_get_pkgcache(db);
 
