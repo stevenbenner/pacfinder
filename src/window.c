@@ -725,6 +725,18 @@ static void block_signal_search_changed(gboolean block)
 	}
 }
 
+static void load_data(void)
+{
+	/* close package view */
+	show_package(NULL);
+
+	/* load repo tree */
+	populate_db_tree_view(main_window_gui.repo_tree_store);
+
+	/* load package list */
+	show_package_list();
+}
+
 static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 {
 	GtkTreeModel *repo_model;
@@ -1085,17 +1097,18 @@ static void bind_events_to_widgets(void)
 void initialize_main_window(void)
 {
 	create_main_menu(main_window_gui.menu_button);
-	populate_db_tree_view(main_window_gui.repo_tree_store);
-	show_package_list();
-	show_package(NULL);
+
+	bind_events_to_window(main_window_gui.window);
+	bind_events_to_widgets();
 	gtk_tree_model_filter_set_visible_func(
 		main_window_gui.package_list_model,
 		(GtkTreeModelFilterVisibleFunc)row_visible,
 		NULL,
 		NULL
 	);
-	bind_events_to_window(main_window_gui.window);
-	bind_events_to_widgets();
+
+	load_data();
+
 	gtk_window_set_icon_name(main_window_gui.window, APPLICATION_ID);
 	gtk_widget_show_all(GTK_WIDGET(main_window_gui.window));
 }
