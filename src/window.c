@@ -61,7 +61,6 @@ static struct {
 /* local variables */
 static gulong pkg_selchange_handler_id;
 static gulong search_changed_handler_id;
-static GtkTreeModel *package_list_model;
 
 static void show_package(alpm_pkg_t *pkg);
 
@@ -87,9 +86,6 @@ static void show_package_list(void)
 			-1
 		);
 	}
-
-	package_list_model = gtk_tree_model_filter_new(GTK_TREE_MODEL(main_window_gui.package_list_store), NULL);
-	gtk_tree_view_set_model(main_window_gui.package_treeview, GTK_TREE_MODEL(package_list_model));
 }
 
 static void show_package_overview(alpm_pkg_t *pkg)
@@ -757,7 +753,7 @@ static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
 		package_filters.db = db;
 
 		/* trigger refilter of package list */
-		gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(package_list_model));
+		gtk_tree_model_filter_refilter(main_window_gui.package_list_model);
 
 		/* release selection blocking */
 		block_signal_package_treeview_selection(FALSE);
@@ -882,7 +878,7 @@ static void on_search_changed(GtkSearchEntry *entry, gpointer user_data)
 	package_filters.search_string = g_ascii_strdown(gtk_entry_get_text(GTK_ENTRY(entry)), -1);
 
 	/* trigger refilter of package list */
-	gtk_tree_model_filter_refilter(GTK_TREE_MODEL_FILTER(package_list_model));
+	gtk_tree_model_filter_refilter(main_window_gui.package_list_model);
 
 	/* clean up */
 	g_free(package_filters.search_string);
@@ -1093,7 +1089,7 @@ void initialize_main_window(void)
 	show_package_list();
 	show_package(NULL);
 	gtk_tree_model_filter_set_visible_func(
-		GTK_TREE_MODEL_FILTER(package_list_model),
+		main_window_gui.package_list_model,
 		(GtkTreeModelFilterVisibleFunc)row_visible,
 		NULL,
 		NULL

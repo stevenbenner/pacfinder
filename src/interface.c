@@ -129,8 +129,11 @@ static GtkWidget *create_package_list(void)
 		G_TYPE_POINTER /* alpm_pkg_t */
 	);
 
+	main_window_gui.package_list_model = GTK_TREE_MODEL_FILTER(
+		gtk_tree_model_filter_new(GTK_TREE_MODEL(main_window_gui.package_list_store), NULL)
+	);
 	main_window_gui.package_treeview = GTK_TREE_VIEW(
-		gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_list_store))
+		gtk_tree_view_new_with_model(GTK_TREE_MODEL(main_window_gui.package_list_model))
 	);
 
 	for (i = 0; i < PACKAGES_NUM_COLS - 1; i++) { /* COLS-1 for the non-visible pointer column */

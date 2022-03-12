@@ -67,6 +67,7 @@ struct main_window_gui_t {
 	GtkTreeView *package_treeview;
 	GtkTreeStore *repo_tree_store;
 	GtkListStore *package_list_store;
+	GtkTreeModelFilter *package_list_model;
 	GtkNotebook *details_notebook;
 	struct details_overview_t details_overview;
 	GtkFlowBox *package_details_deps_box;
@@ -75,6 +76,7 @@ struct main_window_gui_t {
 	GtkGrid *package_details_optsfor_grid;
 	GtkListStore *package_details_list_store;
 };
+
 extern struct main_window_gui_t main_window_gui;
 
 void create_app_window(GtkApplication *app);
