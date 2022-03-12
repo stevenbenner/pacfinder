@@ -47,7 +47,7 @@ static GtkWidget *create_header_bar(void)
 	gtk_button_set_image(GTK_BUTTON(main_window_gui.menu_button), menu_image);
 	gtk_header_bar_pack_end(GTK_HEADER_BAR(header_bar), main_window_gui.menu_button);
 
-	main_window_gui.refresh_button = gtk_button_new_from_icon_name("gtk-refresh", GTK_ICON_SIZE_SMALL_TOOLBAR);
+	main_window_gui.refresh_button = gtk_button_new_from_icon_name("view-refresh", GTK_ICON_SIZE_SMALL_TOOLBAR);
 	gtk_header_bar_pack_end(GTK_HEADER_BAR(header_bar), main_window_gui.refresh_button);
 
 	return header_bar;
