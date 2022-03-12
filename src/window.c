@@ -59,6 +59,7 @@ static struct {
 } package_filters;
 
 /* local variables */
+static gulong repo_selchange_handler_id;
 static gulong pkg_selchange_handler_id;
 static gulong search_changed_handler_id;
 
@@ -67,9 +68,10 @@ static void show_package(alpm_pkg_t *pkg);
 static void show_package_list(void)
 {
 	alpm_list_t *i;
+	gint icount;
 	GtkTreeIter iter;
 
-	for (i = get_all_packages(); i; i = alpm_list_next(i)) {
+	for (i = get_all_packages(), icount = 0; i; i = alpm_list_next(i), icount++) {
 		alpm_pkg_t *pkg = NULL;
 
 		pkg = i->data;
@@ -85,6 +87,14 @@ static void show_package_list(void)
 			PACKAGES_COL_PKG, pkg,
 			-1
 		);
+
+		/* keep gtk moving while we're working - this is needed to ensure that the refresh
+		 * button gets disabled when clicked, preventing double-refresh on double-click */
+		if (icount % 10 == 0) {
+			while (gtk_events_pending()) {
+				gtk_main_iteration();
+			}
+		}
 	}
 }
 
@@ -705,6 +715,17 @@ static void unselect_package(void)
 	show_package(NULL);
 }
 
+static void block_signal_repo_treeview_selection(gboolean block)
+{
+	GtkTreeSelection *selection = gtk_tree_view_get_selection(main_window_gui.repo_treeview);
+
+	if (block) {
+		g_signal_handler_block(selection, repo_selchange_handler_id);
+	} else {
+		g_signal_handler_unblock(selection, repo_selchange_handler_id);
+	}
+}
+
 static void block_signal_package_treeview_selection(gboolean block)
 {
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(main_window_gui.package_treeview);
@@ -727,14 +748,45 @@ static void block_signal_search_changed(gboolean block)
 
 static void load_data(void)
 {
+	/* block interactions that need data */
+	block_signal_repo_treeview_selection(TRUE);
+	block_signal_package_treeview_selection(TRUE);
+	block_signal_search_changed(TRUE);
+	gtk_widget_set_sensitive(main_window_gui.refresh_button, FALSE);
+
+	/* reset filters */
+	package_filters.status_filter = HIDE_NONE;
+	package_filters.group = NULL;
+	package_filters.db = NULL;
+	package_filters.search_string = NULL;
+
+	/* reset search entry */
+	gtk_entry_set_text(GTK_ENTRY(main_window_gui.search_entry), "");
+
 	/* close package view */
 	show_package(NULL);
 
+	/* reset database */
+	database_free();
+
 	/* load repo tree */
+	gtk_tree_store_clear(main_window_gui.repo_tree_store);
 	populate_db_tree_view(main_window_gui.repo_tree_store);
 
 	/* load package list */
+	gtk_tree_view_set_model(main_window_gui.package_treeview, NULL);
+	gtk_list_store_clear(main_window_gui.package_list_store);
 	show_package_list();
+	gtk_tree_view_set_model(
+		main_window_gui.package_treeview,
+		GTK_TREE_MODEL(main_window_gui.package_list_model)
+	);
+
+	/* unblock interactions */
+	gtk_widget_set_sensitive(main_window_gui.refresh_button, TRUE);
+	block_signal_search_changed(FALSE);
+	block_signal_repo_treeview_selection(FALSE);
+	block_signal_package_treeview_selection(FALSE);
 }
 
 static void repo_row_selected(GtkTreeSelection *selection, gpointer user_data)
@@ -1048,13 +1100,18 @@ static gboolean on_paned_reposition(GtkWidget *widget, GdkEvent *event, gpointer
 	return FALSE;
 }
 
+static void on_refresh_click(GtkWidget *widget, GdkEvent *event, gpointer user_data)
+{
+	load_data();
+}
+
 static void bind_events_to_widgets(void)
 {
 	GtkTreeSelection *selection;
 
 	/* filter list item selected */
 	selection = gtk_tree_view_get_selection(main_window_gui.repo_treeview);
-	g_signal_connect(
+	repo_selchange_handler_id = g_signal_connect(
 		G_OBJECT(selection),
 		"changed",
 		G_CALLBACK(repo_row_selected),
@@ -1075,6 +1132,14 @@ static void bind_events_to_widgets(void)
 		main_window_gui.search_entry,
 		"search-changed",
 		G_CALLBACK(on_search_changed),
+		NULL
+	);
+
+	/* refresh button click */
+	g_signal_connect(
+		main_window_gui.refresh_button,
+		"clicked",
+		G_CALLBACK(on_refresh_click),
 		NULL
 	);
 

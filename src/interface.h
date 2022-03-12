@@ -60,6 +60,7 @@ struct details_overview_t {
 struct main_window_gui_t {
 	GtkWindow *window;
 	GtkWidget *search_entry;
+	GtkWidget *refresh_button;
 	GtkWidget *menu_button;
 	GtkPaned *hpaned;
 	GtkPaned *vpaned;
