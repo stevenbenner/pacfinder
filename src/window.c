@@ -905,7 +905,7 @@ static void activate_about(GSimpleAction *simple, GVariant *parameter, gpointer 
 
 static void activate_quit(GSimpleAction *simple, GVariant *parameter, gpointer user_data)
 {
-	exit(0);
+	exit(EXIT_SUCCESS);
 }
 
 static GActionGroup *create_action_group(void)
