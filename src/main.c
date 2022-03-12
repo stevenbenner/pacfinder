@@ -46,7 +46,7 @@ static void init_i18n(void)
 #endif
 }
 
-void init_cli_options(GApplication *app, struct app_options_t *options)
+static void init_cli_options(GApplication *app, struct app_options_t *options)
 {
 	const GOptionEntry cli_options[] = {
 		{
