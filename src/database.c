@@ -177,8 +177,8 @@ alpm_list_t *get_all_packages(void)
 {
 	alpm_list_t *i;
 
-	/* collect all packages from the syncdbs */
 	if (all_packages_list == NULL) {
+		/* collect all packages from the syncdbs */
 		for (i = alpm_get_syncdbs(get_alpm_handle()); i; i = i->next) {
 			alpm_db_t *db = i->data;
 			alpm_list_t *db_package_list = alpm_db_get_pkgcache(db);
@@ -190,26 +190,26 @@ alpm_list_t *get_all_packages(void)
 				);
 			}
 		}
-	}
 
-	/* iterate the localdb packages and find any that are not listed in the
-	 * syncdbs - when found, add it to the "all packages" list as well as keep
-	 * track of them in the "foreign" packages list */
-	for (i = alpm_db_get_pkgcache(get_local_db()); i; i = i->next) {
-		alpm_pkg_t *pkg = i->data;
+		/* iterate the localdb packages and find any that are not listed in the
+		 * syncdbs - when found, add it to the "all packages" list as well as keep
+		 * track of them in the "foreign" packages list */
+		for (i = alpm_db_get_pkgcache(get_local_db()); i; i = i->next) {
+			alpm_pkg_t *pkg = i->data;
 
-		if (!alpm_list_find(all_packages_list, pkg, package_cmp)) {
-			foreign_pkg_list = alpm_list_add(foreign_pkg_list, pkg);
-			all_packages_list = alpm_list_add(all_packages_list, pkg);
+			if (!alpm_list_find(all_packages_list, pkg, package_cmp)) {
+				foreign_pkg_list = alpm_list_add(foreign_pkg_list, pkg);
+				all_packages_list = alpm_list_add(all_packages_list, pkg);
+			}
 		}
-	}
 
-	/* sort the final list */
-	all_packages_list = alpm_list_msort(
-		all_packages_list,
-		alpm_list_count(all_packages_list),
-		package_cmp
-	);
+		/* sort the final list */
+		all_packages_list = alpm_list_msort(
+			all_packages_list,
+			alpm_list_count(all_packages_list),
+			package_cmp
+		);
+	}
 
 	return all_packages_list;
 }
