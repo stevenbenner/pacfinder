@@ -196,9 +196,8 @@ static void on_dep_clicked(GtkButton* self, alpm_depend_t *user_data)
 	}
 }
 
-static void on_deppkg_clicked(GtkButton* self, alpm_depend_t *user_data)
+static void on_deppkg_clicked(GtkButton* self, alpm_pkg_t *pkg)
 {
-	alpm_pkg_t *pkg = (alpm_pkg_t *)user_data;
 	if (pkg != NULL) {
 		show_package(pkg);
 		gtk_notebook_set_current_page(main_window_gui.details_notebook, 0);
