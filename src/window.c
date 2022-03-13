@@ -187,21 +187,17 @@ static void show_package_overview(alpm_pkg_t *pkg)
 	g_free(str);
 }
 
-static void on_dep_clicked(GtkButton* self, alpm_depend_t *user_data)
-{
-	alpm_pkg_t *pkg = find_satisfier(user_data->name);
-	if (pkg != NULL) {
-		show_package(pkg);
-		gtk_notebook_set_current_page(main_window_gui.details_notebook, 0);
-	}
-}
-
 static void on_deppkg_clicked(GtkButton* self, alpm_pkg_t *pkg)
 {
 	if (pkg != NULL) {
 		show_package(pkg);
 		gtk_notebook_set_current_page(main_window_gui.details_notebook, 0);
 	}
+}
+
+static void on_dep_clicked(GtkButton* self, alpm_depend_t *dep)
+{
+	on_deppkg_clicked(self, find_satisfier(dep->name));
 }
 
 static GtkWidget *create_dep_button(alpm_pkg_t *pkg, const gchar *label)
