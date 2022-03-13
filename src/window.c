@@ -72,9 +72,7 @@ static void show_package_list(void)
 	GtkTreeIter iter;
 
 	for (i = get_all_packages(), icount = 0; i; i = alpm_list_next(i), icount++) {
-		alpm_pkg_t *pkg = NULL;
-
-		pkg = i->data;
+		alpm_pkg_t *pkg = i->data;
 
 		gtk_list_store_append(main_window_gui.package_list_store, &iter);
 		gtk_list_store_set(
