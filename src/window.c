@@ -65,7 +65,7 @@ static gulong search_changed_handler_id;
 
 static void show_package(alpm_pkg_t *pkg);
 
-static void show_package_list(void)
+static void show_package_list(GtkListStore *package_list_store)
 {
 	alpm_list_t *i;
 	gint icount;
@@ -74,9 +74,9 @@ static void show_package_list(void)
 	for (i = get_all_packages(), icount = 0; i; i = alpm_list_next(i), icount++) {
 		alpm_pkg_t *pkg = i->data;
 
-		gtk_list_store_append(main_window_gui.package_list_store, &iter);
+		gtk_list_store_append(package_list_store, &iter);
 		gtk_list_store_set(
-			main_window_gui.package_list_store,
+			package_list_store,
 			&iter,
 			PACKAGES_COL_NAME, alpm_pkg_get_name(pkg),
 			PACKAGES_COL_VERSION, alpm_pkg_get_version(pkg),
@@ -774,7 +774,7 @@ static void load_data(void)
 	/* load package list */
 	gtk_tree_view_set_model(main_window_gui.package_treeview, NULL);
 	gtk_list_store_clear(main_window_gui.package_list_store);
-	show_package_list();
+	show_package_list(main_window_gui.package_list_store);
 	gtk_tree_view_set_model(
 		main_window_gui.package_treeview,
 		GTK_TREE_MODEL(main_window_gui.package_list_model)
