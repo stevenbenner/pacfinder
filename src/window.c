@@ -425,7 +425,6 @@ static void append_details_row(GtkTreeIter *iter, const gchar *name, const gchar
 
 static void show_package_details(alpm_pkg_t *pkg)
 {
-	alpm_db_t *db_local;
 	alpm_pkg_t *local_pkg;
 	gchar *licenses_str, *groups_str, *provides_str, *dependson_str, *optionals_str,
 	      *requiredby_str, *optionalfor_str, *conflicts_str, *replaces_str, *fsize_str, *isize_str,
@@ -435,8 +434,7 @@ static void show_package_details(alpm_pkg_t *pkg)
 	GtkTreeIter iter;
 
 	/* grab local package, if it exists */
-	db_local = get_local_db();
-	local_pkg = alpm_db_get_pkg(db_local, alpm_pkg_get_name(pkg));
+	local_pkg = alpm_db_get_pkg(get_local_db(), alpm_pkg_get_name(pkg));
 
 	/* compute dependency lists */
 	requiredby = alpm_pkg_compute_requiredby(pkg);
