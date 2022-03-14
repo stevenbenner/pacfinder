@@ -276,8 +276,7 @@ static void show_package_deps(alpm_pkg_t *pkg)
 	}
 
 	/* append optional dependencies */
-	row = 0;
-	for (i = alpm_pkg_get_optdepends(pkg); i; i = alpm_list_next(i)) {
+	for (i = alpm_pkg_get_optdepends(pkg), row = 0; i; i = alpm_list_next(i), row++) {
 		alpm_depend_t *dep;
 		gchar *dep_str;
 		GtkWidget *button, *label;
@@ -298,8 +297,6 @@ static void show_package_deps(alpm_pkg_t *pkg)
 
 		gtk_grid_attach(main_window_gui.package_details_opts_grid, button, 0, row, 1, 1);
 		gtk_grid_attach(main_window_gui.package_details_opts_grid, label, 1, row, 1, 1);
-
-		row++;
 
 		g_free(dep_str);
 	}
@@ -342,8 +339,7 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 
 	/* append optional for dependents */
 	optional_for = alpm_pkg_compute_optionalfor(pkg);
-	row = 0;
-	for (i = optional_for; i; i = alpm_list_next(i)) {
+	for (i = optional_for, row = 0; i; i = alpm_list_next(i), row++) {
 		alpm_pkg_t *dep;
 		alpm_list_t *dep_opts;
 		gchar *dep_desc;
@@ -401,8 +397,6 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 
 		gtk_grid_attach(main_window_gui.package_details_optsfor_grid, button, 0, row, 1, 1);
 		gtk_grid_attach(main_window_gui.package_details_optsfor_grid, label, 1, row, 1, 1);
-
-		row++;
 	}
 	alpm_list_free_inner(optional_for, g_free);
 	alpm_list_free(optional_for);
