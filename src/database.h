@@ -36,6 +36,7 @@ alpm_db_t *get_local_db(void);
 alpm_list_t *get_all_packages(void);
 alpm_pkg_t *find_package(const gchar *pkg_name);
 alpm_pkg_t *find_satisfier(const gchar *dep_str);
+alpm_depend_t *find_pkg_optdep(alpm_pkg_t *pkg, alpm_pkg_t *optpkg);
 install_reason_t get_pkg_status(alpm_pkg_t *pkg);
 void database_free(void);
 

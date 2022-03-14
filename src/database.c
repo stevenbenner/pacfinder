@@ -223,6 +223,41 @@ alpm_pkg_t *find_satisfier(const gchar *dep_str)
 	return alpm_find_satisfier(all_packages_list, dep_str);
 }
 
+alpm_depend_t *find_pkg_optdep(alpm_pkg_t *pkg, alpm_pkg_t *optpkg)
+{
+	const gchar *pkgname = alpm_pkg_get_name(pkg);
+	alpm_depend_t *ret = NULL;
+	alpm_list_t *optdeps;
+
+	for (optdeps = alpm_pkg_get_optdepends(optpkg); optdeps; optdeps = alpm_list_next(optdeps)) {
+		alpm_depend_t *opt = optdeps->data;
+		gchar *opt_name = opt->name;
+		alpm_list_t *provides;
+
+		/* package name comparison */
+		if (g_strcmp0(opt_name, pkgname) == 0) {
+			ret = opt;
+			break;
+		}
+
+		/* check all provides for a match */
+		for (provides = alpm_pkg_get_provides(pkg); provides; provides = alpm_list_next(provides)) {
+			const alpm_depend_t *prov = provides->data;
+			if (g_strcmp0(opt_name, prov->name) == 0) {
+				ret = opt;
+				break;
+			}
+		}
+
+		/* if we found a match in the provides then we're done */
+		if (ret != NULL) {
+			break;
+		}
+	}
+
+	return ret;
+}
+
 install_reason_t get_pkg_status(alpm_pkg_t *pkg)
 {
 	static const install_reason_t reason_map[] = {

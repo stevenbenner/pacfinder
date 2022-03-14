@@ -341,48 +341,11 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 	optional_for = alpm_pkg_compute_optionalfor(pkg);
 	for (i = optional_for, row = 0; i; i = alpm_list_next(i), row++) {
 		alpm_pkg_t *dep;
-		alpm_list_t *dep_opts;
-		gchar *dep_desc;
+		alpm_depend_t *optdep;
 		GtkWidget *button, *label;
 
 		dep = find_satisfier(i->data);
-		dep_opts = alpm_pkg_get_optdepends(dep);
-		dep_desc = NULL;
-
-		/* find the matching optional dependency in the dependent to
-		 * get the description */
-		for (; dep_opts; dep_opts = alpm_list_next(dep_opts)) {
-			alpm_depend_t *opt;
-			gchar *opt_name;
-			alpm_list_t *prov_list;
-
-			opt = dep_opts->data;
-			opt_name = opt->name;
-
-			/* simple name comparison */
-			if (g_strcmp0(opt_name, alpm_pkg_get_name(pkg)) == 0) {
-				dep_desc = opt->desc;
-				break;
-			}
-
-			/* check all provides for a match */
-			prov_list = alpm_pkg_get_provides(pkg);
-			for (; prov_list; prov_list = alpm_list_next(prov_list)) {
-				alpm_depend_t *prov;
-
-				prov = prov_list->data;
-
-				if (g_strcmp0(opt_name, prov->name) == 0) {
-					dep_desc = opt->desc;
-					break;
-				}
-			}
-
-			/* if we found a match in the provides then we're done */
-			if (dep_desc != NULL) {
-				break;
-			}
-		}
+		optdep = find_pkg_optdep(pkg, dep);
 
 		button = create_dep_button(dep, alpm_pkg_get_name(dep));
 		gtk_widget_set_margin_start(button, 5);
@@ -390,7 +353,7 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 		gtk_widget_set_margin_bottom(button, 5);
 		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep);
 
-		label = gtk_label_new(dep_desc);
+		label = gtk_label_new(optdep ? optdep->desc : NULL);
 		gtk_widget_set_halign(label, GTK_ALIGN_START);
 		gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 		gtk_label_set_xalign(GTK_LABEL(label), 0);
