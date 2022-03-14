@@ -48,7 +48,6 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 
 	gboolean ret;
 	gchar *contents = NULL;
-	gsize length;
 	gchar **lines = NULL;
 	guint i;
 
@@ -66,7 +65,7 @@ static gboolean register_syncs(const gchar *file_path, const gint depth)
 		return TRUE;
 	}
 
-	ret = g_file_get_contents(file_path, &contents, &length, NULL);
+	ret = g_file_get_contents(file_path, &contents, NULL, NULL);
 
 	if (ret) {
 		lines = g_strsplit(contents, "\n", -1);
