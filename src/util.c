@@ -103,7 +103,7 @@ gchar *strtrunc_dep_desc(const gchar *str)
 	g_return_val_if_fail(str != NULL, NULL);
 
 	name = g_strdup(str);
-	desc = g_strrstr(name, ": ");
+	desc = strstr(name, ": ");
 
 	if (desc != NULL) {
 		name[desc - name] = '\0';
