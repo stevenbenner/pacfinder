@@ -87,8 +87,42 @@ static void test_human_readable_size(void)
 	g_free(one_p);
 }
 
+static void test_strtrunc_dep_desc(void)
+{
+	gchar *pkg_empty = strtrunc_dep_desc("");
+	gchar *pkg_simple = strtrunc_dep_desc("pacfinder");
+	gchar *pkg_version = strtrunc_dep_desc("pacfinder>=1.1");
+	gchar *pkg_verepoch = strtrunc_dep_desc("pacfinder=1:1.1");
+	gchar *pkg_desc = strtrunc_dep_desc("pacfinder: Package explorer");
+	gchar *pkg_desc_colon = strtrunc_dep_desc("pacfinder: Package explorer: Arch");
+	gchar *pkg_desc_epoch = strtrunc_dep_desc("pacfinder=1:1.1: Package explorer");
+	gchar *pkg_desc_epoch_colon = strtrunc_dep_desc("pacfinder=1:1.1: Package explorer: Arch");
+	gchar *prov_version = strtrunc_dep_desc("libalpm.so>=13");
+
+	g_assert_cmpstr(pkg_empty, ==, "");
+	g_assert_cmpstr(pkg_simple, ==, "pacfinder");
+	g_assert_cmpstr(pkg_version, ==, "pacfinder>=1.1");
+	g_assert_cmpstr(pkg_verepoch, ==, "pacfinder=1:1.1");
+	g_assert_cmpstr(pkg_desc, ==, "pacfinder");
+	g_assert_cmpstr(pkg_desc_colon, ==, "pacfinder");
+	g_assert_cmpstr(pkg_desc_epoch, ==, "pacfinder=1:1.1");
+	g_assert_cmpstr(pkg_desc_epoch_colon, ==, "pacfinder=1:1.1");
+	g_assert_cmpstr(prov_version, ==, "libalpm.so>=13");
+
+	g_free(pkg_empty);
+	g_free(pkg_simple);
+	g_free(pkg_version);
+	g_free(pkg_verepoch);
+	g_free(pkg_desc);
+	g_free(pkg_desc_colon);
+	g_free(pkg_desc_epoch);
+	g_free(pkg_desc_epoch_colon);
+	g_free(prov_version);
+}
+
 void test_util(void)
 {
 	g_test_add_func("/util/list_to_string", test_list_to_string);
 	g_test_add_func("/util/human_readable_size", test_human_readable_size);
+	g_test_add_func("/util/strtrunc_dep_desc", test_strtrunc_dep_desc);
 }
