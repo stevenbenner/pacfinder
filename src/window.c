@@ -202,17 +202,10 @@ static void on_dep_clicked(GtkButton* self, alpm_depend_t *dep)
 
 static GtkWidget *create_dep_button(alpm_pkg_t *pkg, const gchar *label)
 {
-	gchar *name, *desc;
+	gchar *name;
 	GtkWidget *button, *image;
 
-	/* handle labels created with alpm_dep_compute_string() by
-	 * removing the description from the string */
-	name = g_strdup(label);
-	desc = g_strrstr(name, ": ");
-	if (desc != NULL) {
-		name[desc - name] = '\0';
-	}
-
+	name = strtrunc_dep_desc(label);
 	button = gtk_button_new_with_label(name);
 
 	switch (get_pkg_status(pkg)) {

@@ -96,6 +96,22 @@ gchar *human_readable_size(const off_t size)
 	}
 }
 
+gchar *strtrunc_dep_desc(const gchar *str)
+{
+	gchar *name, *desc;
+
+	g_return_val_if_fail(str != NULL, NULL);
+
+	name = g_strdup(str);
+	desc = g_strrstr(name, ": ");
+
+	if (desc != NULL) {
+		name[desc - name] = '\0';
+	}
+
+	return name;
+}
+
 int package_cmp(const void *p1, const void *p2) {
 	alpm_pkg_t *pkg1 = (alpm_pkg_t *)p1;
 	alpm_pkg_t *pkg2 = (alpm_pkg_t *)p2;
