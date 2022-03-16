@@ -82,6 +82,8 @@ gchar *human_readable_size(const off_t size)
 	guint size_index = 0;
 	gfloat file_size = size;
 
+	g_return_val_if_fail(size >= 0, NULL);
+
 	while (file_size >= 1024 && size_index < 4) {
 		size_index++;
 		file_size = file_size / 1024;
