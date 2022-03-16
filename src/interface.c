@@ -48,6 +48,8 @@ static GtkWidget *create_header_bar(void)
 	gtk_header_bar_pack_end(GTK_HEADER_BAR(header_bar), main_window_gui.menu_button);
 
 	main_window_gui.refresh_button = gtk_button_new_from_icon_name("view-refresh", GTK_ICON_SIZE_SMALL_TOOLBAR);
+	/* l10n: refresh button tooltip */
+	gtk_widget_set_tooltip_text(main_window_gui.refresh_button, _("Refresh all data"));
 	gtk_header_bar_pack_end(GTK_HEADER_BAR(header_bar), main_window_gui.refresh_button);
 
 	return header_bar;
