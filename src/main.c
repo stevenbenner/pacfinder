@@ -22,6 +22,7 @@
 #include "main.h"
 
 /* system libraries */
+#include <alpm.h>
 #include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <locale.h>
@@ -90,11 +91,23 @@ static void on_activate_app(GtkApplication *app, struct app_options_t *options)
 
 int main(int argc, char **argv)
 {
+	const gchar *current_desktop = g_getenv("XDG_CURRENT_DESKTOP");
 	GtkApplication *app;
 	int status;
 
 	/* set up internationalization */
 	init_i18n();
+
+	/* log informational message to help with diagnostics */
+	g_message(
+		"PacFinder %s (libalpm %s, GTK %d.%d.%d, %s)",
+		PACKAGE_VERSION,
+		alpm_version(),
+		gtk_get_major_version(),
+		gtk_get_minor_version(),
+		gtk_get_micro_version(),
+		current_desktop ? current_desktop : "n/a"
+	);
 
 	/* prevent users from running as root */
 	if (geteuid() == 0) {
