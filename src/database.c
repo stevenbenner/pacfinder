@@ -220,7 +220,20 @@ alpm_pkg_t *find_package(const gchar *pkg_name)
 
 alpm_pkg_t *find_satisfier(const gchar *dep_str)
 {
-	return alpm_find_satisfier(all_packages_list, dep_str);
+	alpm_pkg_t *ret;
+
+	/* prefer installed packages */
+	ret = alpm_find_satisfier(alpm_db_get_pkgcache(get_local_db()), dep_str);
+
+	if (ret) {
+		/* return sync db version of the package, for full dependency relations list */
+		ret = find_package(alpm_pkg_get_name(ret));
+	} else {
+		/* if no installed packages satisfy, then search all known packages */
+		ret = alpm_find_satisfier(all_packages_list, dep_str);
+	}
+
+	return ret;
 }
 
 alpm_depend_t *find_pkg_optdep(alpm_pkg_t *pkg, alpm_pkg_t *optpkg)
