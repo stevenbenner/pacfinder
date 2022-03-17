@@ -337,7 +337,7 @@ static void show_package_depsfor(alpm_pkg_t *pkg)
 		alpm_depend_t *optdep;
 		GtkWidget *button, *label;
 
-		dep = find_satisfier(i->data);
+		dep = find_package(i->data);
 		optdep = find_pkg_optdep(pkg, dep);
 
 		button = create_dep_button(dep, alpm_pkg_get_name(dep));
