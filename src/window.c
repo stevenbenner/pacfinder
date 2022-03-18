@@ -195,11 +195,6 @@ static void on_deppkg_clicked(GtkButton* self, alpm_pkg_t *pkg)
 	}
 }
 
-static void on_dep_clicked(GtkButton* self, alpm_depend_t *dep)
-{
-	on_deppkg_clicked(self, find_satisfier(dep->name));
-}
-
 static GtkWidget *create_dep_button(alpm_pkg_t *pkg, const gchar *label)
 {
 	gchar *name;
@@ -253,15 +248,15 @@ static void show_package_deps(alpm_pkg_t *pkg)
 
 	/* append required dependencies */
 	for (i = alpm_pkg_get_depends(pkg); i; i = alpm_list_next(i)) {
-		alpm_depend_t *dep;
 		gchar *dep_str;
+		alpm_pkg_t *dep_pkg;
 		GtkWidget *button;
 
-		dep = i->data;
-		dep_str = alpm_dep_compute_string(dep);
+		dep_str = alpm_dep_compute_string(i->data);
+		dep_pkg = find_satisfier(dep_str);
 
-		button = create_dep_button(find_satisfier(dep_str), dep_str);
-		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
+		button = create_dep_button(dep_pkg, dep_str);
+		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep_pkg);
 
 		gtk_flow_box_insert(main_window_gui.package_details_deps_box, button, -1);
 
@@ -270,20 +265,22 @@ static void show_package_deps(alpm_pkg_t *pkg)
 
 	/* append optional dependencies */
 	for (i = alpm_pkg_get_optdepends(pkg), row = 0; i; i = alpm_list_next(i), row++) {
-		alpm_depend_t *dep;
+		const alpm_depend_t *dep_obj;
 		gchar *dep_str;
+		alpm_pkg_t *dep_pkg;
 		GtkWidget *button, *label;
 
-		dep = i->data;
-		dep_str = alpm_dep_compute_string(dep);
+		dep_obj = i->data;
+		dep_str = alpm_dep_compute_string(dep_obj);
+		dep_pkg = find_satisfier(dep_str);
 
-		button = create_dep_button(find_satisfier(dep_str), dep_str);
+		button = create_dep_button(dep_pkg, dep_str);
 		gtk_widget_set_margin_start(button, 5);
 		gtk_widget_set_margin_top(button, 5);
 		gtk_widget_set_margin_bottom(button, 5);
-		g_signal_connect(button, "clicked", G_CALLBACK(on_dep_clicked), dep);
+		g_signal_connect(button, "clicked", G_CALLBACK(on_deppkg_clicked), dep_pkg);
 
-		label = gtk_label_new(dep->desc);
+		label = gtk_label_new(dep_obj->desc);
 		gtk_widget_set_halign(label, GTK_ALIGN_START);
 		gtk_label_set_line_wrap(GTK_LABEL(label), TRUE);
 		gtk_label_set_xalign(GTK_LABEL(label), 0);
