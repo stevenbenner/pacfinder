@@ -55,9 +55,10 @@ gchar *list_to_string(const alpm_list_t *list)
 	return str;
 }
 
-gchar *deplist_to_string(alpm_list_t *list)
+gchar *deplist_to_string(const alpm_list_t *list)
 {
-	alpm_list_t *string_list, *i;
+	const alpm_list_t *i;
+	alpm_list_t *string_list;
 	gchar *str;
 
 	string_list = NULL;
