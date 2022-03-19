@@ -42,7 +42,7 @@ static GPtrArray *list_to_ptrarray(const alpm_list_t *list)
 	return arr;
 }
 
-gchar *list_to_string(alpm_list_t *list)
+gchar *list_to_string(const alpm_list_t *list)
 {
 	GPtrArray *arr;
 	gchar *str;
