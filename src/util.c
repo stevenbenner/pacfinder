@@ -27,9 +27,9 @@
 #include <glib/gi18n.h>
 #include <sys/types.h>
 
-static GPtrArray *list_to_ptrarray(alpm_list_t *list)
+static GPtrArray *list_to_ptrarray(const alpm_list_t *list)
 {
-	alpm_list_t *i;
+	const alpm_list_t *i;
 	GPtrArray *arr;
 
 	arr = g_ptr_array_new_with_free_func(g_free);
