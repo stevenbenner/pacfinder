@@ -52,15 +52,14 @@ gchar *list_to_string(const alpm_list_t *list)
 
 gchar *deplist_to_string(const alpm_list_t *list)
 {
-	const alpm_list_t *i;
-	alpm_list_t *string_list;
+	const alpm_list_t *i = list;
+	alpm_list_t *string_list = NULL;
 	gchar *str;
 
-	string_list = NULL;
-
-	for (i = list; i; i = alpm_list_next(i)) {
+	while (i) {
 		gchar *dep_str = alpm_dep_compute_string(i->data);
 		string_list = alpm_list_add(string_list, dep_str);
+		i = alpm_list_next(i);
 	}
 
 	str = list_to_string(string_list);
