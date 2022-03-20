@@ -29,13 +29,12 @@
 
 static GPtrArray *list_to_ptrarray(const alpm_list_t *list)
 {
-	const alpm_list_t *i;
-	GPtrArray *arr;
+	const alpm_list_t *i = list;
+	GPtrArray *arr = g_ptr_array_new_with_free_func(g_free);
 
-	arr = g_ptr_array_new_with_free_func(g_free);
-
-	for (i = list; i; i = alpm_list_next(i)) {
+	while (i) {
 		g_ptr_array_add(arr, g_strdup(i->data));
+		i = alpm_list_next(i);
 	}
 	g_ptr_array_add(arr, NULL);
 
