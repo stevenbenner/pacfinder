@@ -43,12 +43,8 @@ static GPtrArray *list_to_ptrarray(const alpm_list_t *list)
 
 gchar *list_to_string(const alpm_list_t *list)
 {
-	GPtrArray *arr;
-	gchar *str;
-
-	arr = list_to_ptrarray(list);
-	str = g_strjoinv(", ", (gchar **)(arr->pdata));
-
+	GPtrArray *arr = list_to_ptrarray(list);
+	gchar *str = g_strjoinv(", ", (gchar **)(arr->pdata));
 	g_ptr_array_free(arr, TRUE);
 
 	return str;
