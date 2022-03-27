@@ -2,6 +2,23 @@
 PacFinder Release Notes
 =======================
 
+2022-03-27 - PacFinder 1.2
+ - Add refresh button - This button reloads all of the databases from the file-
+   system, so any changes that you've made to your installed packages can be
+   shown without needing to restart the program [GH-7]
+ - Add error handling for broken pacman configurations
+ - Fix dependency list entries in some cases linking to an uninstalled package
+   that provides the dependency named in the list, instead of linking to the
+   installed package satisfying the dependency, and showing an incorrect install
+   status icon [GH-9]
+ - Fix package list columns becoming stuck if shrunk down to zero width - now a
+   minimum width limit of 50 pixels enforced on saved column widths [GH-3]
+ - Fix "optional" and "optional for" dependency list entries showing incorrect
+   names if the optional dependency description included a colon [GH-8]
+ - Improve pacman configuration file processing, resulting in a small load time
+   performance optimization
+ - Log warning if pacman config file recursion limit is exceeded
+
 2022-03-03 - PacFinder 1.1
  - Add handling for "Include" directives in pacman configuration files
  - Fix test suite failure on systems configured with locales that use a comma
